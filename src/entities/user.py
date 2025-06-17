@@ -1,5 +1,5 @@
 """
-User entity model compatible with NextAuth.js.
+User entity model.
 """
 
 from datetime import UTC, datetime
@@ -12,7 +12,7 @@ from src.database.core import Base
 
 
 class User(Base):
-    """User entity compatible with NextAuth.js schema."""
+    """User entity with schema compatible for NextAuth.js integration."""
 
     __tablename__ = "users"
 
@@ -24,6 +24,7 @@ class User(Base):
     image = Column(Text, nullable=True)
 
     # Additional fields for our application
+    password_hash = Column(String(255), nullable=True)  # For local auth
     company_name = Column(String(255), nullable=True)
     role = Column(String(50), default="user", nullable=False)  # user, admin
     is_active = Column(Boolean, default=True, nullable=False)

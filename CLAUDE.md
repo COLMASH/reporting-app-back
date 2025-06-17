@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a FastAPI backend for Excel file analysis using AI agents, designed to work with a Next.js frontend using NextAuth v5. The architecture follows clean architecture principles similar to NestJS but implemented in Python.
+This is a FastAPI backend for Excel file analysis using AI agents. It provides authentication and API endpoints for a Next.js frontend. The architecture follows clean architecture principles similar to NestJS but implemented in Python.
 
 ## Key Development Commands
 
@@ -35,8 +35,8 @@ Each feature module follows this pattern:
 - `service.py` - Business logic
 - `models.py` - Pydantic schemas for validation (like DTOs)
 
-### Database Schema (NextAuth Compatible)
-The database includes NextAuth v5 required tables:
+### Database Schema
+The database includes tables compatible with NextAuth.js:
 - `users` (id as Integer, not UUID)
 - `accounts`, `sessions`, `verification_token`
 
@@ -46,10 +46,13 @@ Application tables use UUID primary keys:
 - `results` - Charts, insights, and metrics from analysis
 
 ### Authentication Flow
-1. Frontend sends NextAuth JWT in Authorization header
-2. Backend validates JWT with shared secret
-3. Auto-creates users from valid tokens
-4. Uses dependency injection: `CurrentUser` for protected routes
+1. Backend provides `/auth/signup` and `/auth/login` endpoints
+2. Frontend sends JWT in Authorization header
+3. Backend validates JWT with shared secret
+4. Users must exist in database (no auto-creation)
+5. Uses dependency injection: `CurrentUser` for protected routes
+6. First user automatically becomes admin
+7. Subsequent users require admin authentication to create
 
 ### File Processing Pipeline
 1. Upload → Supabase storage (`/api/v1/files/upload`)
@@ -61,10 +64,13 @@ Application tables use UUID primary keys:
 ## Critical Implementation Notes
 
 ### When Working with Authentication
-- JWT validation expects NextAuth token structure (email, sub, name, picture)
-- User ID in NextAuth tables is Integer, not UUID
+- Backend generates and validates all JWT tokens
+- JWT token structure includes: email, sub, name, picture, id, exp, iat
+- Users must be created via `/api/v1/auth/signup` endpoint (admin-only after first user)
+- First user automatically becomes admin
+- Login endpoint at `/api/v1/auth/login` for password-based auth
 - Always use `CurrentUser` dependency for auth routes
-- Development login endpoint available at `/api/v1/auth/dev/login`
+- No automatic user creation from JWT tokens
 
 ### When Adding New Endpoints
 - Add router to `src/api.py` register_routes()
@@ -74,7 +80,7 @@ Application tables use UUID primary keys:
 
 ### When Modifying Database Models
 - Run `uv run alembic revision --autogenerate -m "description"`
-- NextAuth tables should maintain compatibility
+- Auth tables (`users`, `accounts`, `sessions`, `verification_token`) should maintain schema compatibility with NextAuth.js
 - Use UUID for new application tables
 - Add relationships in entity files
 
@@ -82,7 +88,7 @@ Application tables use UUID primary keys:
 Essential for running:
 - `DATABASE_URL` - PostgreSQL connection (URL-encode special characters like @ as %40)
 - `SUPABASE_URL`, `SUPABASE_ANON_KEY` - File storage
-- `JWT_SECRET` - Must match NextAuth configuration
+- `JWT_SECRET` - Shared secret for JWT token generation/validation
 - `REDIS_URL` - For Celery background tasks
 - `APP_DEBUG` - Debug mode (not DEBUG to avoid conflicts with VS Code/Cursor)
 

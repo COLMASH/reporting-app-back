@@ -1,5 +1,5 @@
 """
-NextAuth.js required entities for authentication.
+Authentication-related entities with schema compatible for NextAuth.js integration.
 """
 
 from sqlalchemy import BigInteger, Column, ForeignKey, Integer, String, Text
@@ -10,7 +10,7 @@ from src.database.core import Base
 
 
 class Account(Base):
-    """OAuth account connections for NextAuth.js."""
+    """OAuth account connections (for NextAuth.js compatibility)."""
 
     __tablename__ = "accounts"
 
@@ -35,7 +35,7 @@ class Account(Base):
 
 
 class Session(Base):
-    """Active user sessions for NextAuth.js."""
+    """User sessions table (for NextAuth.js compatibility)."""
 
     __tablename__ = "sessions"
 
@@ -52,7 +52,7 @@ class Session(Base):
 
 
 class VerificationToken(Base):
-    """Email verification tokens for NextAuth.js."""
+    """Email verification tokens table (for NextAuth.js compatibility)."""
 
     __tablename__ = "verification_token"
 

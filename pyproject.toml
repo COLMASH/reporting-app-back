@@ -64,6 +64,7 @@ dev-dependencies = [
     "black==24.8.0",
     "ruff==0.6.5",
     "mypy==1.11.2",
+    "types-passlib==1.7.7.20240819",
     
     # Development Tools
     "ipython==8.26.0",

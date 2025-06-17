@@ -89,6 +89,14 @@ class AnalysisFailedError(AnalysisError):
         )
 
 
+# Resource Errors
+class ConflictError(BaseError):
+    """Resource conflict errors."""
+
+    def __init__(self, detail: str):
+        super().__init__(detail=detail, status_code=status.HTTP_409_CONFLICT)
+
+
 # Validation Errors
 class ValidationError(BaseError):
     """Input validation errors."""

@@ -37,10 +37,20 @@ class UserInfo(BaseModel):
 
 
 class LoginRequest(BaseModel):
-    """Login request schema (for testing/development)."""
+    """Login request schema."""
 
     email: EmailStr
     password: str = Field(..., min_length=8)
+
+
+class SignupRequest(BaseModel):
+    """Signup request schema for creating new users."""
+
+    email: EmailStr
+    password: str = Field(..., min_length=8)
+    name: str
+    company_name: str | None = None
+    role: str = Field(default="user", pattern="^(user|admin)$")
 
 
 class TokenResponse(BaseModel):

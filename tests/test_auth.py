@@ -3,7 +3,7 @@ Authentication tests.
 
 TODO: Implement comprehensive authentication tests:
 - JWT token validation
-- User creation from NextAuth tokens
+- User signup and login flows
 - Permission checks (user vs admin)
 - Token expiration handling
 - Invalid token scenarios
@@ -40,12 +40,12 @@ class TestAuthenticationFlow:
     TODO: Implement comprehensive authentication flow tests.
 
     Test cases to implement:
-    - Valid NextAuth JWT token processing
+    - Valid JWT token processing
     - Invalid JWT signature handling
     - Expired token rejection
     - Missing required claims (email, sub)
-    - User auto-creation on first login
-    - Existing user login
+    - User signup flow (first user as admin)
+    - User login with password
     - Admin role verification
     - Rate limiting on auth endpoints
     """

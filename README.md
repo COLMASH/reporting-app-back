@@ -1,6 +1,6 @@
 # Reporting Backend
 
-FastAPI backend for Excel file analysis and reporting with AI agents, designed to work with a Next.js frontend using NextAuth v5.
+FastAPI backend for Excel file analysis and reporting with AI agents. Provides authentication and API endpoints for a Next.js frontend.
 
 ## 🏗️ Architecture
 
@@ -16,7 +16,7 @@ This project follows clean architecture principles with a clear separation of co
 
 - **Framework**: FastAPI (Python 3.12)
 - **Database**: PostgreSQL with SQLAlchemy ORM
-- **Authentication**: JWT tokens (NextAuth.js v5 compatible)
+- **Authentication**: JWT-based authentication with signup/login endpoints
 - **File Storage**: Supabase Storage
 - **Background Tasks**: Celery with Redis
 - **AI/LLM**: LangChain and LangGraph
@@ -196,7 +196,7 @@ See `.env.example` for all required environment variables.
 - `DATABASE_URL`: PostgreSQL connection string
 - `SUPABASE_URL`: Supabase project URL
 - `SUPABASE_ANON_KEY`: Supabase anonymous key
-- `JWT_SECRET`: Secret for JWT tokens (must match NextAuth)
+- `JWT_SECRET`: Secret for JWT tokens
 - `REDIS_URL`: Redis connection string
 
 **AI Configuration**:

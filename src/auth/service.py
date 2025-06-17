@@ -10,6 +10,7 @@ import jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jwt import PyJWTError
+from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
 from src.auth import models
@@ -20,14 +21,28 @@ from src.exceptions import AuthenticationError
 
 # Security scheme
 security = HTTPBearer()
+security_optional = HTTPBearer(auto_error=False)
 logger = logging.getLogger(__name__)
+
+# Password hashing
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
+def hash_password(password: str) -> str:
+    """Hash a password for storing."""
+    return pwd_context.hash(password)
+
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Verify a hashed password against a plain text password."""
+    return pwd_context.verify(plain_password, hashed_password)
 
 
 def decode_token(token: str) -> models.TokenData:
     """
-    Decode and validate JWT token from NextAuth.
+    Decode and validate JWT token.
 
-    NextAuth tokens typically include:
+    Expected token fields:
     - sub: Subject (user email)
     - name: User's full name
     - email: User's email
@@ -36,8 +51,7 @@ def decode_token(token: str) -> models.TokenData:
     - exp: Expiration timestamp
     """
     try:
-        # Decode token without verification for NextAuth compatibility
-        # In production, you should verify with the same secret NextAuth uses
+        # Decode token with verification using shared secret
         payload = jwt.decode(
             token,
             settings.jwt_secret,
@@ -50,7 +64,7 @@ def decode_token(token: str) -> models.TokenData:
         if not email:
             raise AuthenticationError("Invalid token: missing email")
 
-        # NextAuth uses different field names, so we map them
+        # Map token fields to our token data structure
         return models.TokenData(
             user_id=payload.get("id", 0),  # Will be set from database
             email=email,
@@ -69,7 +83,7 @@ async def get_current_user(
 ) -> User:
     """
     Get current user from JWT token.
-    Creates user if they don't exist (for NextAuth integration).
+    User must exist in database (created via signup endpoint).
     """
     token = credentials.credentials
     token_data = decode_token(token)
@@ -77,23 +91,10 @@ async def get_current_user(
     # Look up user by email
     user = db.query(User).filter(User.email == token_data.email).first()
 
-    # If user doesn't exist, create them (NextAuth handles registration)
+    # User must exist
     if not user:
-        user = User(
-            email=token_data.email,
-            name=token_data.name,
-            image=token_data.image,
-            emailVerified=datetime.now(UTC),
-            is_active=True,
-        )
-        db.add(user)
-        db.commit()
-        db.refresh(user)
-        logger.info(f"Created new user from NextAuth token: {user.email}")
-
-    # Update token_data with actual user ID
-    if user.id is not None:
-        token_data.user_id = int(user.id)  # Convert to int for mypy
+        logger.warning(f"Authentication attempt for non-existent user: {token_data.email}")
+        raise AuthenticationError("User not found")
 
     # Check if user is active
     if not user.is_active:
@@ -123,11 +124,48 @@ CurrentUser = Annotated[User, Depends(get_current_active_user)]
 AdminUser = Annotated[User, Depends(get_admin_user)]
 
 
-# Development/Testing only - Create JWT token
+async def get_current_user_optional(
+    db: Annotated[Session, Depends(get_db)],
+    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(security_optional)],
+) -> User | None:
+    """
+    Get current user from JWT token if provided.
+    Returns None if no token is provided or token is invalid.
+    Used for endpoints that have conditional authentication.
+    """
+    if not credentials:
+        return None
+
+    try:
+        token = credentials.credentials
+        token_data = decode_token(token)
+
+        # Look up user by email
+        user = db.query(User).filter(User.email == token_data.email).first()
+
+        # Only return user if they exist and are active
+        if user and user.is_active:
+            return user
+
+        # Log authentication attempts for non-existent users
+        if not user:
+            logger.warning(f"Optional auth attempt for non-existent user: {token_data.email}")
+
+    except Exception as e:
+        # Log the error but don't raise - this is optional auth
+        logger.debug(f"Optional auth failed: {str(e)}")
+        pass
+
+    return None
+
+
+# Optional user dependency
+OptionalUser = Annotated[User | None, Depends(get_current_user_optional)]
+
+
 def create_access_token(user: User, expires_delta: timedelta | None = None) -> str:
     """
-    Create JWT token for development/testing.
-    In production, NextAuth handles token creation.
+    Create JWT token for user authentication.
     """
     if expires_delta:
         expire = datetime.now(UTC) + expires_delta

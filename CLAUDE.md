@@ -80,10 +80,11 @@ Application tables use UUID primary keys:
 
 ### Environment Variables
 Essential for running:
-- `DATABASE_URL` - PostgreSQL connection
+- `DATABASE_URL` - PostgreSQL connection (URL-encode special characters like @ as %40)
 - `SUPABASE_URL`, `SUPABASE_ANON_KEY` - File storage
 - `JWT_SECRET` - Must match NextAuth configuration
 - `REDIS_URL` - For Celery background tasks
+- `APP_DEBUG` - Debug mode (not DEBUG to avoid conflicts with VS Code/Cursor)
 
 ## Integration Points
 
@@ -122,3 +123,16 @@ Essential for running:
 - Set `LANGCHAIN_TRACING_V2=true` for LangSmith traces
 - Check Celery logs: `docker-compose logs celery`
 - Analysis progress tracked in database (0.0 to 1.0)
+
+## Project Structure Notes
+
+### Scripts Organization
+All utility and build scripts are in the `scripts/` folder:
+- `check_db_connection.py` - Test database connectivity
+- `check_env_vars.py` - Verify environment variables
+- `build_scripts.py` - UV build commands (check, format, test, build)
+
+### Important Configuration Details
+- The app uses `APP_DEBUG` instead of `DEBUG` to avoid conflicts with IDE environment variables
+- Database passwords with special characters (like @) must be URL-encoded in DATABASE_URL
+- Supabase pooler connections require the project reference in the username format

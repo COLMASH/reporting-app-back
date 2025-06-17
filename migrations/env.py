@@ -26,7 +26,9 @@ from src.entities import (
 config = context.config
 
 # Set database URL from settings
-config.set_main_option("sqlalchemy.url", settings.database_url)
+# Escape % characters for ConfigParser
+db_url = settings.database_url.replace('%', '%%')
+config.set_main_option("sqlalchemy.url", db_url)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

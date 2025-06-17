@@ -44,7 +44,7 @@ services:
       - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
       - JWT_SECRET=${JWT_SECRET:-development-secret-key}
       - ENVIRONMENT=development
-      - DEBUG=true
+      - APP_DEBUG=true
     depends_on:
       db:
         condition: service_healthy

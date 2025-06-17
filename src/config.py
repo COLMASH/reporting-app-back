@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     environment: str = Field(
         default="development", description="Environment (development, staging, production)"
     )
-    debug: bool = Field(default=False, description="Debug mode")
+    debug: bool = Field(default=False, description="Debug mode", alias="APP_DEBUG")
     log_level: str = Field(default="INFO", description="Logging level")
 
     # Database

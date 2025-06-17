@@ -78,10 +78,10 @@ build-backend = "hatchling.build"
 packages = ["src"]
 
 [project.scripts]
-check = "scripts:check"
-format = "scripts:format"
-test = "scripts:test"
-build = "scripts:build"
+check = "scripts.build_scripts:check"
+format = "scripts.build_scripts:format"
+test = "scripts.build_scripts:test"
+build = "scripts.build_scripts:build"
 
 [tool.ruff]
 line-length = 100

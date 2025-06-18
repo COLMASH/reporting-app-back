@@ -75,7 +75,20 @@ def build():
     print(import_check.stdout.strip())
     
     # Run tests
-    if run_command(["pytest", "tests/"]) != 0:
+    test_result = subprocess.run(
+        ["pytest", "tests/"], 
+        capture_output=True,
+        text=True
+    )
+    
+    # Print stdout (test results)
+    if test_result.stdout:
+        print(test_result.stdout, end='')
+    
+    # Only print stderr if tests failed (to avoid duplicate warnings)
+    if test_result.returncode != 0:
+        if test_result.stderr:
+            print(test_result.stderr, end='')
         print("❌ Tests failed")
         sys.exit(1)
     

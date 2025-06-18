@@ -9,26 +9,30 @@ TODO: Implement comprehensive authentication tests:
 - Invalid token scenarios
 """
 
+import uuid
+
 from src.auth.models import TokenData
 
 
 def test_token_data_model():
     """Test TokenData model creation."""
+    test_uuid = uuid.uuid4()
     token_data = TokenData(
-        user_id=1,
+        user_id=str(test_uuid),
         email="test@example.com",
         name="Test User",
         image="https://example.com/avatar.jpg",
     )
-    assert token_data.user_id == 1
+    assert token_data.user_id == str(test_uuid)
     assert token_data.email == "test@example.com"
-    assert token_data.get_user_id() == 1
+    assert token_data.get_user_id() == str(test_uuid)
 
 
 def test_token_data_minimal():
     """Test TokenData with minimal fields."""
-    token_data = TokenData(user_id=2, email="minimal@example.com")
-    assert token_data.user_id == 2
+    test_uuid = uuid.uuid4()
+    token_data = TokenData(user_id=str(test_uuid), email="minimal@example.com")
+    assert token_data.user_id == str(test_uuid)
     assert token_data.email == "minimal@example.com"
     assert token_data.name is None
     assert token_data.image is None

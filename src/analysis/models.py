@@ -41,5 +41,4 @@ class AnalysisInfo(BaseModel):
     completed_at: datetime | None
     error_message: str | None
 
-    class Config:
-        from_attributes = True
+    model_config = {"from_attributes": True}

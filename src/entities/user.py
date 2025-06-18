@@ -2,10 +2,11 @@
 User entity model.
 """
 
+import uuid
 from datetime import UTC, datetime
 
-from sqlalchemy import Boolean, Column, DateTime, Integer, String, Text
-from sqlalchemy.dialects.postgresql import TIMESTAMP
+from sqlalchemy import Boolean, Column, DateTime, String, Text
+from sqlalchemy.dialects.postgresql import TIMESTAMP, UUID
 from sqlalchemy.orm import relationship
 
 from src.database.core import Base
@@ -16,8 +17,8 @@ class User(Base):
 
     __tablename__ = "users"
 
-    # NextAuth required fields
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    # Primary key
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String(255), nullable=True)
     email = Column(String(255), unique=True, index=True, nullable=True)
     emailVerified = Column(TIMESTAMP(timezone=True), nullable=True)

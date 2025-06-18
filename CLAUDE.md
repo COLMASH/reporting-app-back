@@ -36,11 +36,9 @@ Each feature module follows this pattern:
 - `models.py` - Pydantic schemas for validation (like DTOs)
 
 ### Database Schema
-The database includes tables compatible with NextAuth.js:
-- `users` (id as Integer, not UUID)
-- `accounts`, `sessions`, `verification_token`
-
-Application tables use UUID primary keys:
+All tables use UUID primary keys for consistency and security:
+- `users` - User accounts with authentication
+- `accounts`, `sessions`, `verification_token` - Auth-related tables (NextAuth.js compatible schema)
 - `file_uploads` - Tracks Excel files with company/department metadata
 - `analyses` - Processing jobs with agent type and progress tracking
 - `results` - Charts, insights, and metrics from analysis
@@ -65,7 +63,7 @@ Application tables use UUID primary keys:
 
 ### When Working with Authentication
 - Backend generates and validates all JWT tokens
-- JWT token structure includes: email, sub, name, picture, id, exp, iat
+- JWT token structure includes: email, sub, name, picture, id (as UUID string), exp, iat
 - Users must be created via `/api/v1/auth/signup` endpoint (admin-only after first user)
 - First user automatically becomes admin
 - Login endpoint at `/api/v1/auth/login` for password-based auth
@@ -80,8 +78,9 @@ Application tables use UUID primary keys:
 
 ### When Modifying Database Models
 - Run `uv run alembic revision --autogenerate -m "description"`
-- Auth tables (`users`, `accounts`, `sessions`, `verification_token`) should maintain schema compatibility with NextAuth.js
-- Use UUID for new application tables
+- ALL tables use UUID primary keys (UUID type with default=uuid.uuid4)
+- Auth tables (`users`, `accounts`, `sessions`, `verification_token`) maintain NextAuth.js-compatible column names
+- Foreign keys must reference UUID types
 - Add relationships in entity files
 
 ### Environment Variables
@@ -142,3 +141,22 @@ All utility and build scripts are in the `scripts/` folder:
 - The app uses `APP_DEBUG` instead of `DEBUG` to avoid conflicts with IDE environment variables
 - Database passwords with special characters (like @) must be URL-encoded in DATABASE_URL
 - Supabase pooler connections require the project reference in the username format
+
+### When Creating New Entities
+All new entities MUST use UUID primary keys:
+```python
+import uuid
+from sqlalchemy import Column
+from sqlalchemy.dialects.postgresql import UUID
+
+class NewEntity(Base):
+    __tablename__ = "new_entity"
+    
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    # ... other columns
+```
+
+Foreign keys to other tables must also use UUID type:
+```python
+user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+```

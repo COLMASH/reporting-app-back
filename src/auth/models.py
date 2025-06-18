@@ -3,6 +3,7 @@ Authentication schemas/models for request/response validation.
 """
 
 from datetime import datetime
+from uuid import UUID
 
 from pydantic import BaseModel, EmailStr, Field
 
@@ -10,20 +11,20 @@ from pydantic import BaseModel, EmailStr, Field
 class TokenData(BaseModel):
     """Decoded JWT token data."""
 
-    user_id: int
+    user_id: UUID | str  # Can be UUID or string representation
     email: str
     name: str | None = None
     image: str | None = None
 
-    def get_user_id(self) -> int:
-        """Get user ID as integer."""
+    def get_user_id(self) -> UUID | str:
+        """Get user ID."""
         return self.user_id
 
 
 class UserInfo(BaseModel):
     """User information response."""
 
-    id: int
+    id: UUID
     email: str | None
     name: str | None
     image: str | None
@@ -32,8 +33,7 @@ class UserInfo(BaseModel):
     is_active: bool
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = {"from_attributes": True}
 
 
 class LoginRequest(BaseModel):

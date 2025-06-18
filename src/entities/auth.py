@@ -2,8 +2,10 @@
 Authentication-related entities with schema compatible for NextAuth.js integration.
 """
 
-from sqlalchemy import BigInteger, Column, ForeignKey, Integer, String, Text
-from sqlalchemy.dialects.postgresql import TIMESTAMP
+import uuid
+
+from sqlalchemy import BigInteger, Column, ForeignKey, String, Text
+from sqlalchemy.dialects.postgresql import TIMESTAMP, UUID
 from sqlalchemy.orm import relationship
 
 from src.database.core import Base
@@ -14,8 +16,8 @@ class Account(Base):
 
     __tablename__ = "accounts"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    userId = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    userId = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     type = Column(String(255), nullable=False)
     provider = Column(String(255), nullable=False)
     providerAccountId = Column(String(255), nullable=False)
@@ -39,8 +41,8 @@ class Session(Base):
 
     __tablename__ = "sessions"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    userId = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    userId = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     expires = Column(TIMESTAMP(timezone=True), nullable=False)
     sessionToken = Column(String(255), nullable=False, unique=True, index=True)
 

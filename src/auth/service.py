@@ -6,11 +6,11 @@ import logging
 from datetime import UTC, datetime, timedelta
 from typing import Annotated
 
+import bcrypt
 import jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jwt import PyJWTError
-from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
 from src.auth import models
@@ -24,18 +24,19 @@ security = HTTPBearer()
 security_optional = HTTPBearer(auto_error=False)
 logger = logging.getLogger(__name__)
 
-# Password hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 
 def hash_password(password: str) -> str:
     """Hash a password for storing."""
-    return pwd_context.hash(password)
+    # Generate salt and hash the password
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(password.encode("utf-8"), salt)
+    return hashed.decode("utf-8")
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verify a hashed password against a plain text password."""
-    return pwd_context.verify(plain_password, hashed_password)
+    # Check if the password matches the hash
+    return bcrypt.checkpw(plain_password.encode("utf-8"), hashed_password.encode("utf-8"))
 
 
 def decode_token(token: str) -> models.TokenData:
@@ -65,8 +66,11 @@ def decode_token(token: str) -> models.TokenData:
             raise AuthenticationError("Invalid token: missing email")
 
         # Map token fields to our token data structure
+        # Handle UUID from token - it might be a string
+        user_id = payload.get("id", "")
+
         return models.TokenData(
-            user_id=payload.get("id", 0),  # Will be set from database
+            user_id=user_id,  # UUID will be validated when used
             email=email,
             name=payload.get("name"),
             image=payload.get("picture") or payload.get("image"),
@@ -174,7 +178,7 @@ def create_access_token(user: User, expires_delta: timedelta | None = None) -> s
 
     to_encode = {
         "sub": user.email,
-        "id": user.id,
+        "id": str(user.id),  # Convert UUID to string for JSON serialization
         "email": user.email,
         "name": user.name,
         "image": user.image,

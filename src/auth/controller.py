@@ -34,9 +34,7 @@ async def verify_token(current_user: CurrentUser) -> models.UserInfo:
 
 @router.post("/signup", response_model=models.UserInfo)
 async def signup(
-    request: models.SignupRequest,
-    db: DbSession,
-    current_user: OptionalUser
+    request: models.SignupRequest, db: DbSession, current_user: OptionalUser
 ) -> models.UserInfo:
     """
     Create a new user account.

@@ -32,5 +32,4 @@ class FileInfo(BaseModel):
     processing_started_at: datetime | None
     processing_completed_at: datetime | None
 
-    class Config:
-        from_attributes = True
+    model_config = {"from_attributes": True}

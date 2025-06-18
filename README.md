@@ -19,15 +19,17 @@ This project follows clean architecture principles with a clear separation of co
 - **Authentication**: JWT-based authentication with signup/login endpoints
 - **File Storage**: Supabase Storage
 - **Background Tasks**: Celery with Redis
-- **AI/LLM**: LangChain and LangGraph
+- **AI/LLM**: LangChain and LangGraph (planned)
 - **Package Manager**: UV (modern Python package manager)
 
 ## 📋 Prerequisites
 
 - Python 3.12+
 - PostgreSQL (or Supabase account)
-- Redis (for background tasks)
 - UV package manager
+
+Optional:
+- Redis (only if you want persistent rate limiting or plan to add Celery tasks)
 
 ## 🛠️ Installation
 
@@ -51,7 +53,7 @@ uv sync
 ### 4. Set up environment variables
 ```bash
 cp .env.example .env
-# Edit .env with your configuration (Supabase keys, JWT secret, etc.)
+# Edit .env with your configuration
 ```
 
 ### 5. Run database migrations
@@ -66,21 +68,7 @@ uv run uvicorn src.main:app --reload
 # API will be available at http://localhost:8000
 ```
 
-## 🐳 Using Docker
 
-```bash
-# Start all services (PostgreSQL, Redis, FastAPI, Celery)
-docker-compose up
-
-# Run in background
-docker-compose up -d
-
-# View logs
-docker-compose logs -f app
-
-# Stop all services
-docker-compose down
-```
 
 ## 📚 API Documentation
 
@@ -111,11 +99,14 @@ reporting-back/
 │   └── agents/             # AI/LangGraph agents
 ├── migrations/             # Alembic database migrations
 ├── tests/                  # Test suite
+├── scripts/               # Utility scripts
+│   ├── build_scripts.py  # UV build commands
+│   ├── check_db_connection.py
+│   └── check_env_vars.py
 ├── .env.example           # Environment variables template
 ├── pyproject.toml         # Project dependencies and scripts
 ├── alembic.ini           # Migration configuration
-├── Dockerfile            # Container configuration
-└── docker-compose.yml    # Local development setup
+└── build.sh              # Build script for deployments
 ```
 
 ## 👨‍💻 Development
@@ -181,27 +172,56 @@ uv run pytest-watch
 
 ## 🚀 Deployment
 
-The application is configured for deployment on Render using Docker.
+### Render Deployment (Recommended - No Docker Required!)
 
-1. Push to GitHub
-2. Connect repository to Render
-3. Deploy using the Dockerfile
-4. Set environment variables in Render dashboard
+The application uses Render's native Python runtime with UV support:
+
+1. **Push to GitHub**:
+   ```bash
+   git add .
+   git commit -m "Ready for deployment"
+   git push
+   ```
+2. **Create New Web Service on Render**:
+   - Go to [render.com](https://render.com)
+   - New → Web Service
+   - Connect your GitHub repo
+   - Choose branch (main, develop, etc.)
+3. **Configure Service**:
+   - **Runtime**: Python
+   - **Build Command**: `./build.sh`
+   - **Start Command**: `uv run uvicorn src.main:app --host 0.0.0.0 --port $PORT`
+4. **Set environment variables** in Render dashboard:
+   - `DATABASE_URL` - Your Supabase URL (different per environment)
+   - `SUPABASE_URL` - Your Supabase project  
+   - `SUPABASE_ANON_KEY` - Your anon key
+   - `JWT_SECRET` - Generate secure key
+   - `ENVIRONMENT` - production/staging/development
+   - `APP_DEBUG` - false for production
+   - `BACKEND_CORS_ORIGINS` - Your frontend URL
+
+
+### Local Development
+
+```bash
+# Start the development server
+uv run uvicorn src.main:app --reload
+```
+
+That's it! The app uses your Supabase development database.
 
 ### Required Environment Variables
 
 See `.env.example` for all required environment variables.
 
 **Essential variables**:
-- `DATABASE_URL`: PostgreSQL connection string
+- `DATABASE_URL`: PostgreSQL connection string (URL-encode special chars like @ as %40)
 - `SUPABASE_URL`: Supabase project URL
 - `SUPABASE_ANON_KEY`: Supabase anonymous key
 - `JWT_SECRET`: Secret for JWT tokens
-- `REDIS_URL`: Redis connection string
+- `REDIS_URL`: Redis connection string (optional - uses in-memory if not set)
+- `APP_DEBUG`: Debug mode (true/false) - renamed from DEBUG to avoid conflicts
 
-**AI Configuration**:
-- `OPENAI_API_KEY`: OpenAI API key for LangChain
-- `LANGCHAIN_API_KEY`: LangSmith API key (optional)
 
 ## 🔧 Troubleshooting
 
@@ -216,11 +236,9 @@ See `.env.example` for all required environment variables.
    ```
 
 2. **Database connection errors**
-   ```bash
-   # Check PostgreSQL is running
-   docker-compose up db
-   # Or use local PostgreSQL
-   ```
+   - Check your DATABASE_URL in .env
+   - For Supabase: ensure project is active
+   - For local: ensure PostgreSQL is running
 
 3. **UV sync fails**
    ```bash

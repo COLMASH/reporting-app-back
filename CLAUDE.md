@@ -10,10 +10,10 @@ This is a FastAPI backend for Excel file analysis using AI agents. It provides a
 
 ```bash
 # Environment setup
-uv sync                                    # Install dependencies (creates .venv)
+uv sync                                    # Install dependencies
 uv run uvicorn src.main:app --reload      # Start dev server
 
-# Code quality checks (like npm run build)
+# Code quality checks
 uv run check                              # Run linting and type checking
 uv run format                             # Auto-format code
 uv run build                              # Full check: lint + type check + tests
@@ -21,10 +21,15 @@ uv run build                              # Full check: lint + type check + test
 # Database operations
 uv run alembic upgrade head               # Apply migrations
 uv run alembic revision --autogenerate -m "description"  # Create migration
+```
 
-# Docker development
-docker-compose up                         # Start all services
-docker-compose up db redis                # Start only databases
+### Deployment (Render - No Docker Required)
+```bash
+# Deploy to Render
+git push origin main                      # Render auto-deploys
+
+# Local development
+uv run uvicorn src.main:app --reload     # Simple and fast
 ```
 
 ## Architecture & Key Patterns
@@ -83,6 +88,14 @@ All tables use UUID primary keys for consistency and security:
 - Foreign keys must reference UUID types
 - Add relationships in entity files
 
+### Redis Configuration
+- **Not required for MVP** - Rate limiting works without Redis using in-memory storage
+- If Redis URL not provided, rate limits reset on app restart (fine for MVP)
+- Add Redis later when you need:
+  - Persistent rate limiting across restarts
+  - Multiple app instances sharing rate limits
+  - Celery background tasks (not implemented yet)
+
 ### Environment Variables
 Essential for running:
 - `DATABASE_URL` - PostgreSQL connection (URL-encode special characters like @ as %40)
@@ -90,6 +103,12 @@ Essential for running:
 - `JWT_SECRET` - Shared secret for JWT token generation/validation
 - `REDIS_URL` - For Celery background tasks
 - `APP_DEBUG` - Debug mode (not DEBUG to avoid conflicts with VS Code/Cursor)
+- `ENVIRONMENT` - Controls which .env.{environment} file to load (development/staging/production)
+
+### Environment Configuration
+- Uses single `.env` file for simplicity
+- For production, Render dashboard overrides these values
+- Keep development values in .env, production values in Render
 
 ## Integration Points
 
@@ -136,11 +155,19 @@ All utility and build scripts are in the `scripts/` folder:
 - `check_db_connection.py` - Test database connectivity
 - `check_env_vars.py` - Verify environment variables
 - `build_scripts.py` - UV build commands (check, format, test, build)
+- `build.sh` - Render deployment build script (at project root)
 
 ### Important Configuration Details
 - The app uses `APP_DEBUG` instead of `DEBUG` to avoid conflicts with IDE environment variables
 - Database passwords with special characters (like @) must be URL-encoded in DATABASE_URL
 - Supabase pooler connections require the project reference in the username format
+
+### Deployment Configuration
+- **Platform**: Render with native Python runtime (no Docker needed)
+- **Manual Setup**: Configure each service directly in Render dashboard
+- **build.sh**: Runs migrations during deployment
+- **Branch-based Deployments**: Different env vars per branch (main, staging, develop)
+- **Local Development**: Use UV directly with Supabase or local PostgreSQL
 
 ### When Creating New Entities
 All new entities MUST use UUID primary keys:

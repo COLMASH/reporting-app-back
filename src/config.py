@@ -49,13 +49,7 @@ class Settings(BaseSettings):
     # Redis
     redis_url: str = Field(default="redis://localhost:6379", description="Redis connection URL")
 
-    # AI/LLM
-    openai_api_key: str | None = Field(default=None, description="OpenAI API key")
-    langchain_api_key: str | None = Field(default=None, description="LangChain/LangSmith API key")
-    langchain_tracing_v2: bool = Field(default=False, description="Enable LangChain tracing")
-    langchain_project: str = Field(
-        default="reporting-backend", description="LangChain project name"
-    )
+    # AI/LLM configuration removed - not implemented yet
 
     # File Upload
     max_upload_size_mb: int = Field(default=50, description="Maximum file upload size in MB")
@@ -66,10 +60,6 @@ class Settings(BaseSettings):
     # Rate Limiting
     rate_limit_requests: int = Field(default=100, description="Rate limit requests per period")
     rate_limit_period: int = Field(default=60, description="Rate limit period in seconds")
-
-    # Monitoring
-    sentry_dsn: str | None = Field(default=None, description="Sentry DSN for error tracking")
-    prometheus_enabled: bool = Field(default=False, description="Enable Prometheus metrics")
 
     model_config = SettingsConfigDict(
         env_file=".env", env_file_encoding="utf-8", case_sensitive=False, extra="ignore"
@@ -124,5 +114,4 @@ class Settings(BaseSettings):
 
 
 # Create global settings instance
-# Pydantic settings will load from environment variables or .env file
 settings = Settings()

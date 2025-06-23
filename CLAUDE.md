@@ -46,9 +46,9 @@ uv run alembic revision --autogenerate -m "description"  # Create migration
 ## Critical Implementation Notes
 
 ### When Adding New Endpoints
-- Add router to `src/api.py` register_routes()
-- Follow pattern: controller → service → repository
-- Use exceptions from `src/exceptions.py`
+- Add router to `src/core/api.py` register_routes()
+- Follow pattern: controller → service (with direct DB access)
+- Use exceptions from `src/core/exceptions.py`
 - Rate limiting: 100 req/min (works without Redis)
 
 ### When Creating New Database Models
@@ -60,7 +60,7 @@ uv run alembic revision --autogenerate -m "description"  # Create migration
 import uuid
 from sqlalchemy import Column
 from sqlalchemy.dialects.postgresql import UUID
-from src.database.core import Base
+from src.core.database.core import Base
 
 class NewModel(Base):
     __tablename__ = "new_model"
@@ -78,9 +78,9 @@ class NewModel(Base):
 uv run alembic revision --autogenerate -m "Add NewModel"
 ```
 
-Example: If adding a `Comment` model to `src/results/models.py`:
-- In `src/main.py`: `from src.results.models import ChartType, Comment, Result  # noqa: F401`
-- In `migrations/env.py`: `from src.results.models import Comment`
+Example: If adding a `Comment` model to `src/modules/reporting_results/models.py`:
+- In `src/main.py`: `from src.modules.reporting_results.models import ChartType, Comment, Result  # noqa: F401`
+- In `migrations/env.py`: `from src.modules.reporting_results.models import Comment`
 
 ### Environment Configuration
 - Uses single `.env` file for simplicity

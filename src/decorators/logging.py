@@ -109,12 +109,12 @@ def log_endpoint(func: Callable) -> Callable:
             return result
 
         except Exception as e:
-            # Log any exceptions
+            # Log any exceptions without exposing local variables
             logger.error(
                 f"{func.__name__} failed",
                 request_id=request_id,
                 error=str(e),
-                exc_info=True,
+                # Don't use exc_info=True as it exposes local variables including passwords
             )
             raise
 

@@ -166,7 +166,8 @@ class TestLogEndpointDecorator:
         assert "test_function failed" in error_call[0][0]
         assert error_call[1]["error"] == "Test error: bad-value"
         assert error_call[1]["request_id"] == "unknown"
-        assert error_call[1]["exc_info"] is True
+        # exc_info is no longer used to avoid exposing sensitive data
+        assert "exc_info" not in error_call[1]
 
     @pytest.mark.asyncio
     async def test_optional_parameters(self):

@@ -73,7 +73,7 @@ class LoggingMiddleware(BaseHTTPMiddleware):
             # Calculate request duration
             duration_ms = round((time.time() - start_time) * 1000, 2)
 
-            # Log error
+            # Log error without exposing local variables
             logger.error(
                 "Request failed",
                 request_id=request_id,
@@ -81,7 +81,7 @@ class LoggingMiddleware(BaseHTTPMiddleware):
                 path=path,
                 duration_ms=duration_ms,
                 error=str(e),
-                exc_info=True,
+                # Don't use exc_info=True to avoid exposing sensitive data in stack traces
             )
 
             # Re-raise to let exception handlers deal with it

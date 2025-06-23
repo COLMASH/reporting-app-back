@@ -49,10 +49,7 @@ def configure_logging(level: str | None = None) -> None:
 
     # Use JSON renderer in production, console renderer in development
     if settings.is_production:
-        processors.extend([
-            structlog.processors.format_exc_info,
-            JSONRenderer()
-        ])
+        processors.extend([structlog.processors.format_exc_info, JSONRenderer()])
     else:
         # ConsoleRenderer handles exceptions internally, so we don't need format_exc_info
         processors.append(structlog.dev.ConsoleRenderer())

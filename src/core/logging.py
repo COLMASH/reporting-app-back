@@ -10,7 +10,7 @@ from typing import Any
 import structlog
 from structlog.processors import JSONRenderer, TimeStamper, add_log_level
 
-from src.config import settings
+from src.core.config import settings
 
 
 class LogLevels(str, Enum):

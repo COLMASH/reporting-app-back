@@ -12,15 +12,15 @@ from pathlib import Path
 # Add project root to Python path
 sys.path.append(str(Path(__file__).parent.parent))
 
-from src.config import settings
-from src.database.core import Base
+from src.core.config import settings
+from src.core.database.core import Base
 
 # Import all models to ensure they're registered with SQLAlchemy
 # Import in dependency order to avoid circular import issues
-from src.auth.models import User, Account, Session, VerificationToken
-from src.files.models import FileUpload
-from src.analysis.models import Analysis
-from src.results.models import Result
+from src.modules.auth.models import User, Account, Session, VerificationToken
+from src.modules.reporting_files.models import FileUpload
+from src.modules.reporting_analysis.models import Analysis
+from src.modules.reporting_results.models import Result
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

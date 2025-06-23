@@ -20,11 +20,11 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jwt import PyJWTError
 from sqlalchemy.orm import Session
 
-from src.auth import schemas
-from src.auth.models import User
-from src.config import settings
-from src.database.core import get_db
-from src.exceptions import AuthenticationError
+from src.core.config import settings
+from src.core.database.core import get_db
+from src.core.exceptions import AuthenticationError
+from src.modules.auth import schemas
+from src.modules.auth.models import User
 
 logger = logging.getLogger(__name__)
 
@@ -246,7 +246,7 @@ async def signup_user(
     - After that, only admins can create users
     - Email must be unique
     """
-    from src.exceptions import ConflictError
+    from src.core.exceptions import ConflictError
 
     # Check if this is the first user
     user_count = db.query(User).count()

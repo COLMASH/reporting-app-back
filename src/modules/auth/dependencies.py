@@ -11,9 +11,13 @@ from typing import Annotated
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from src.auth.models import User
-from src.auth.service import get_admin_user, get_current_active_user, get_current_user_optional
-from src.database.core import get_db
+from src.core.database.core import get_db
+from src.modules.auth.models import User
+from src.modules.auth.service import (
+    get_admin_user,
+    get_current_active_user,
+    get_current_user_optional,
+)
 
 # Database session dependency
 DbSession = Annotated[Session, Depends(get_db)]

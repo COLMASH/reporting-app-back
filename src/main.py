@@ -12,18 +12,19 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
 
+from src.core.api import register_routes
+from src.core.config import settings
+from src.core.database.core import Base, engine
+from src.core.exceptions import BaseError
+from src.core.logging import get_logger
+from src.core.middleware.logging import LoggingMiddleware
+from src.modules.auth.models import Account, User, VerificationToken  # noqa: F401
+
 # Import all entities to ensure they're registered with SQLAlchemy
 # These imports must happen after database setup but before app creation
-from src.analysis.models import Analysis  # noqa: F401
-from src.api import register_routes
-from src.auth.models import Account, User, VerificationToken  # noqa: F401
-from src.config import settings
-from src.database.core import Base, engine
-from src.exceptions import BaseError
-from src.files.models import FileUpload  # noqa: F401
-from src.logging import get_logger
-from src.middleware.logging import LoggingMiddleware
-from src.results.models import Result  # noqa: F401
+from src.modules.reporting_analysis.models import Analysis  # noqa: F401
+from src.modules.reporting_files.models import FileUpload  # noqa: F401
+from src.modules.reporting_results.models import Result  # noqa: F401
 
 logger = get_logger(__name__)
 

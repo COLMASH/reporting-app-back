@@ -7,8 +7,8 @@ from uuid import UUID
 
 from fastapi import APIRouter, File, HTTPException, UploadFile, status
 
-from src.auth.dependencies import CurrentUser, DbSession
-from src.files import schemas
+from src.modules.auth.dependencies import CurrentUser, DbSession
+from src.modules.reporting_files import schemas
 
 router = APIRouter(prefix="/files", tags=["files"])
 

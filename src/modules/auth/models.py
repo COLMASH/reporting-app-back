@@ -9,7 +9,7 @@ from sqlalchemy import BigInteger, Boolean, Column, DateTime, ForeignKey, String
 from sqlalchemy.dialects.postgresql import TIMESTAMP, UUID
 from sqlalchemy.orm import relationship
 
-from src.database.core import Base
+from src.core.database.core import Base
 
 
 class User(Base):

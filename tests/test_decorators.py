@@ -10,7 +10,7 @@ import pytest
 from fastapi import Request
 from pydantic import BaseModel
 
-from src.decorators.logging import log_endpoint
+from src.core.decorators.logging import log_endpoint
 
 
 # Test Models
@@ -43,7 +43,7 @@ class TestLogEndpointDecorator:
     def setup_method(self):
         """Setup for each test method."""
         # Patch the get_logger function
-        self.logger_patcher = patch("src.decorators.logging.get_logger")
+        self.logger_patcher = patch("src.core.decorators.logging.get_logger")
         self.mock_get_logger = self.logger_patcher.start()
         self.mock_logger = MagicMock()
         self.mock_get_logger.return_value = self.mock_logger

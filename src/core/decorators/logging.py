@@ -10,7 +10,7 @@ from typing import Any
 
 from fastapi import Request
 
-from src.logging import get_logger
+from src.core.logging import get_logger
 
 
 def log_endpoint(func: Callable) -> Callable:

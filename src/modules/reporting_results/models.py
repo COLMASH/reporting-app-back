@@ -21,7 +21,7 @@ from sqlalchemy import (
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
-from src.database.core import Base
+from src.core.database.core import Base
 
 
 class ChartType(str, enum.Enum):
@@ -42,11 +42,13 @@ class ChartType(str, enum.Enum):
 class Result(Base):
     """Individual analysis results (charts, insights, etc.)."""
 
-    __tablename__ = "results"
+    __tablename__ = "reporting_results"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     analysis_id = Column(
-        UUID(as_uuid=True), ForeignKey("analyses.id", ondelete="CASCADE"), nullable=False
+        UUID(as_uuid=True),
+        ForeignKey("reporting_analyses.id", ondelete="CASCADE"),
+        nullable=False
     )
 
     # Result metadata

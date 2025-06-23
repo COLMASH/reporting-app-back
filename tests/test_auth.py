@@ -13,11 +13,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from src.auth import schemas, service
-from src.auth.models import User
-from src.config import settings
-from src.database.core import Base, get_db
+from src.core.config import settings
+from src.core.database.core import Base, get_db
 from src.main import app
+from src.modules.auth import schemas, service
+from src.modules.auth.models import User
 
 # Create test database
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"

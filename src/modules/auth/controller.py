@@ -4,10 +4,10 @@ Authentication endpoints.
 
 from fastapi import APIRouter, Request
 
-from src.auth import schemas
-from src.auth.dependencies import CurrentUser, DbSession, OptionalUser
-from src.auth.service import login_user, signup_user
-from src.decorators import log_endpoint
+from src.core.decorators import log_endpoint
+from src.modules.auth import schemas
+from src.modules.auth.dependencies import CurrentUser, DbSession, OptionalUser
+from src.modules.auth.service import login_user, signup_user
 
 router = APIRouter(prefix="/auth", tags=["authentication"])
 

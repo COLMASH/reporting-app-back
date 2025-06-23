@@ -10,9 +10,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from src.auth.models import User
-from src.database.core import Base, get_db
+from src.core.database.core import Base, get_db
 from src.main import app
+from src.modules.auth.models import User
 
 # Test database URL (using SQLite for tests)
 TEST_DATABASE_URL = "sqlite:///:memory:"
@@ -84,7 +84,7 @@ def admin_user(test_db) -> User:
 @pytest.fixture
 def auth_headers(test_user) -> dict:
     """Create authentication headers for test user."""
-    from src.auth.service import create_access_token
+    from src.modules.auth.service import create_access_token
 
     token = create_access_token(test_user)
     return {"Authorization": f"Bearer {token}"}
@@ -93,7 +93,7 @@ def auth_headers(test_user) -> dict:
 @pytest.fixture
 def admin_auth_headers(admin_user) -> dict:
     """Create authentication headers for admin user."""
-    from src.auth.service import create_access_token
+    from src.modules.auth.service import create_access_token
 
     token = create_access_token(admin_user)
     return {"Authorization": f"Bearer {token}"}

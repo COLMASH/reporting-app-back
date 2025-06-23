@@ -5,7 +5,7 @@ Rate limiting configuration and utilities.
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 
-from src.config import settings
+from src.core.config import settings
 
 
 def get_rate_limit_string() -> str:

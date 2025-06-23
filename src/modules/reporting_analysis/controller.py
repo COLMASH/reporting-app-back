@@ -6,8 +6,8 @@ from uuid import UUID
 
 from fastapi import APIRouter, HTTPException, status
 
-from src.analysis import schemas
-from src.auth.dependencies import CurrentUser, DbSession
+from src.modules.auth.dependencies import CurrentUser, DbSession
+from src.modules.reporting_analysis import schemas
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
 

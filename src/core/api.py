@@ -4,10 +4,10 @@ API route registration.
 
 from fastapi import FastAPI
 
-from src.analysis.controller import router as analysis_router
-from src.auth.controller import router as auth_router
-from src.files.controller import router as files_router
-from src.results.controller import router as results_router
+from src.modules.auth.controller import router as auth_router
+from src.modules.reporting_analysis.controller import router as analysis_router
+from src.modules.reporting_files.controller import router as files_router
+from src.modules.reporting_results.controller import router as results_router
 
 
 def register_routes(app: FastAPI) -> None:

@@ -10,7 +10,7 @@ from sqlalchemy import JSON, Column, DateTime, Enum, Float, ForeignKey, Integer,
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
-from src.database.core import Base
+from src.core.database.core import Base
 
 
 class AnalysisStatus(str, enum.Enum):
@@ -35,11 +35,13 @@ class AgentType(str, enum.Enum):
 class Analysis(Base):
     """Analysis job tracking and results."""
 
-    __tablename__ = "analyses"
+    __tablename__ = "reporting_analyses"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     file_id = Column(
-        UUID(as_uuid=True), ForeignKey("file_uploads.id", ondelete="CASCADE"), nullable=False
+        UUID(as_uuid=True),
+        ForeignKey("reporting_file_uploads.id", ondelete="CASCADE"),
+        nullable=False
     )
 
     # Analysis configuration

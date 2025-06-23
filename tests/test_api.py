@@ -19,7 +19,7 @@ def test_health_check():
     from fastapi import FastAPI
     from fastapi.testclient import TestClient
 
-    from src.api import register_routes
+    from src.core.api import register_routes
 
     # Create a test app without lifespan events (no DB connection)
     test_app = FastAPI()
@@ -38,7 +38,7 @@ def test_root_endpoint():
     from fastapi import FastAPI
     from fastapi.testclient import TestClient
 
-    from src.api import register_routes
+    from src.core.api import register_routes
 
     # Create a test app without lifespan events (no DB connection)
     test_app = FastAPI()

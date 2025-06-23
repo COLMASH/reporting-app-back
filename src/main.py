@@ -19,6 +19,7 @@ from src.database.core import Base, engine
 # Import all entities to ensure they're registered with SQLAlchemy
 from src.exceptions import BaseError
 from src.logging import get_logger
+from src.middleware.logging import LoggingMiddleware
 
 logger = get_logger(__name__)
 
@@ -53,6 +54,9 @@ app = FastAPI(
     redoc_url="/redoc" if not settings.is_production else None,
     lifespan=lifespan,
 )
+
+# Configure logging middleware (must be added after CORS)
+app.add_middleware(LoggingMiddleware)
 
 # Configure CORS
 app.add_middleware(

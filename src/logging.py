@@ -45,13 +45,16 @@ def configure_logging(level: str | None = None) -> None:
         structlog.stdlib.PositionalArgumentsFormatter(),
         TimeStamper(fmt="iso"),
         structlog.processors.StackInfoRenderer(),
-        structlog.processors.format_exc_info,
     ]
 
     # Use JSON renderer in production, console renderer in development
     if settings.is_production:
-        processors.append(JSONRenderer())
+        processors.extend([
+            structlog.processors.format_exc_info,
+            JSONRenderer()
+        ])
     else:
+        # ConsoleRenderer handles exceptions internally, so we don't need format_exc_info
         processors.append(structlog.dev.ConsoleRenderer())
 
     structlog.configure(

@@ -2,7 +2,6 @@
 Pytest configuration and fixtures.
 """
 
-import asyncio
 from collections.abc import Generator
 
 import pytest
@@ -17,14 +16,6 @@ from src.main import app
 
 # Test database URL (using SQLite for tests)
 TEST_DATABASE_URL = "sqlite:///:memory:"
-
-
-@pytest.fixture(scope="session")
-def event_loop():
-    """Create an instance of the default event loop for the test session."""
-    loop = asyncio.get_event_loop_policy().new_event_loop()
-    yield loop
-    loop.close()
 
 
 @pytest.fixture(scope="session")

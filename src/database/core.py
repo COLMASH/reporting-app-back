@@ -29,8 +29,8 @@ else:
 # Create database engine
 engine = create_engine(
     settings.database_url,
-    echo=settings.debug,
-    **engine_kwargs,  # Log SQL queries in debug mode
+    echo=False,  # Disable SQL query logging
+    **engine_kwargs,
 )
 
 # Create session factory

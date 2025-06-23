@@ -10,8 +10,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
+from src.auth.models import User
 from src.database.core import Base, get_db
-from src.entities.user import User
 from src.main import app
 
 # Test database URL (using SQLite for tests)

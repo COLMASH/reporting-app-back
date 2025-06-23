@@ -6,22 +6,21 @@ from uuid import UUID
 
 from fastapi import APIRouter, HTTPException, status
 
-from src.analysis import models
-from src.auth.service import CurrentUser
-from src.database.core import DbSession
+from src.analysis import schemas
+from src.auth.dependencies import CurrentUser, DbSession
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
 
 
-@router.post("/", response_model=models.AnalysisResponse)
+@router.post("/", response_model=schemas.AnalysisResponse)
 async def create_analysis(
-    request: models.AnalysisRequest, current_user: CurrentUser, db: DbSession
-) -> models.AnalysisResponse:
+    request: schemas.AnalysisRequest, current_user: CurrentUser, db: DbSession
+) -> schemas.AnalysisResponse:
     """
     Create a new analysis job for a file.
     """
     # TODO: Implement analysis creation
-    return models.AnalysisResponse(
+    return schemas.AnalysisResponse(
         id="temp-id",
         file_id=request.file_id,
         status="pending",
@@ -30,10 +29,10 @@ async def create_analysis(
     )
 
 
-@router.get("/{analysis_id}", response_model=models.AnalysisInfo)
+@router.get("/{analysis_id}", response_model=schemas.AnalysisInfo)
 async def get_analysis_status(
     analysis_id: UUID, current_user: CurrentUser, db: DbSession
-) -> models.AnalysisInfo:
+) -> schemas.AnalysisInfo:
     """
     Get analysis status and progress.
     """
@@ -41,10 +40,10 @@ async def get_analysis_status(
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Analysis not found")
 
 
-@router.get("/file/{file_id}", response_model=list[models.AnalysisInfo])
+@router.get("/file/{file_id}", response_model=list[schemas.AnalysisInfo])
 async def get_file_analyses(
     file_id: UUID, current_user: CurrentUser, db: DbSession
-) -> list[models.AnalysisInfo]:
+) -> list[schemas.AnalysisInfo]:
     """
     Get all analyses for a specific file.
     """

@@ -13,10 +13,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from src.auth import models, service
+from src.auth import schemas, service
+from src.auth.models import User
 from src.config import settings
 from src.database.core import Base, get_db
-from src.entities.user import User
 from src.main import app
 
 # Create test database
@@ -125,7 +125,7 @@ def expired_token(test_user: User):
 def test_token_data_model():
     """Test TokenData model creation."""
     test_uuid = uuid.uuid4()
-    token_data = models.TokenData(
+    token_data = schemas.TokenData(
         user_id=str(test_uuid),
         email="test@example.com",
         name="Test User",
@@ -140,7 +140,7 @@ def test_token_data_model():
 def test_password_validation():
     """Test password validation rules."""
     # Valid password
-    valid_request = models.SignupRequest(
+    valid_request = schemas.SignupRequest(
         email="test@example.com",
         password="ValidPass123!",
         name="Test User",
@@ -149,28 +149,28 @@ def test_password_validation():
 
     # Invalid passwords
     with pytest.raises(ValueError, match="at least one lowercase"):
-        models.SignupRequest(
+        schemas.SignupRequest(
             email="test@example.com",
             password="VALIDPASS123!",
             name="Test User",
         )
 
     with pytest.raises(ValueError, match="at least one uppercase"):
-        models.SignupRequest(
+        schemas.SignupRequest(
             email="test@example.com",
             password="validpass123!",
             name="Test User",
         )
 
     with pytest.raises(ValueError, match="at least one number"):
-        models.SignupRequest(
+        schemas.SignupRequest(
             email="test@example.com",
             password="ValidPass!",
             name="Test User",
         )
 
     with pytest.raises(ValueError, match="at least one special character"):
-        models.SignupRequest(
+        schemas.SignupRequest(
             email="test@example.com",
             password="ValidPass123",
             name="Test User",

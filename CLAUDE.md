@@ -28,7 +28,9 @@ uv run alembic revision --autogenerate -m "description"  # Create migration
 ### Module Structure
 - `controller.py` - HTTP endpoints (like NestJS controllers)
 - `service.py` - Business logic
-- `models.py` - Pydantic schemas for validation
+- `schemas.py` - Pydantic schemas for validation
+- `models.py` - SQLAlchemy database models
+- `dependencies.py` - FastAPI dependency injection (optional)
 
 ### Database Rules
 - **ALL tables MUST use UUID primary keys**
@@ -49,18 +51,36 @@ uv run alembic revision --autogenerate -m "description"  # Create migration
 - Use exceptions from `src/exceptions.py`
 - Rate limiting: 100 req/min (works without Redis)
 
-### When Creating New Entities
+### When Creating New Database Models
+
+**IMPORTANT: Models must be imported in 2 places for SQLAlchemy to work properly**
+
+1. Create the model in the appropriate module's `models.py`:
 ```python
 import uuid
 from sqlalchemy import Column
 from sqlalchemy.dialects.postgresql import UUID
+from src.database.core import Base
 
-class NewEntity(Base):
-    __tablename__ = "new_entity"
+class NewModel(Base):
+    __tablename__ = "new_model"
     
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     # ... other columns
 ```
+
+2. Import the model in **BOTH** of these files:
+   - `src/main.py` - Add to the "Import all entities" section with `# noqa: F401`
+   - `migrations/env.py` - Add import for Alembic to detect the model
+
+3. Generate migration:
+```bash
+uv run alembic revision --autogenerate -m "Add NewModel"
+```
+
+Example: If adding a `Comment` model to `src/results/models.py`:
+- In `src/main.py`: `from src.results.models import ChartType, Comment, Result  # noqa: F401`
+- In `migrations/env.py`: `from src.results.models import Comment`
 
 ### Environment Configuration
 - Uses single `.env` file for simplicity

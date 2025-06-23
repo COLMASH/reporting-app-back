@@ -1,123 +1,98 @@
 """
-Authentication schemas/models for request/response validation.
+Database models for authentication module.
 """
 
-from datetime import datetime
-from typing import Literal
-from uuid import UUID
+import uuid
+from datetime import UTC, datetime
 
-from pydantic import BaseModel, EmailStr, Field, field_validator
+from sqlalchemy import BigInteger, Boolean, Column, DateTime, ForeignKey, String, Text
+from sqlalchemy.dialects.postgresql import TIMESTAMP, UUID
+from sqlalchemy.orm import relationship
 
-
-class TokenData(BaseModel):
-    """Decoded JWT token data from JWT payload."""
-
-    user_id: UUID | str = Field(..., description="User's unique identifier (UUID or string)")
-    email: str = Field(..., description="User's email address from token")
-    name: str | None = Field(None, description="User's display name")
-    image: str | None = Field(None, description="URL to user's profile image")
+from src.database.core import Base
 
 
-class UserInfo(BaseModel):
-    """User information response."""
+class User(Base):
+    """User entity with schema compatible for NextAuth.js integration."""
 
-    id: UUID = Field(..., description="User's unique identifier")
-    email: str = Field(..., description="User's email address")
-    name: str | None = Field(None, description="User's full name")
-    image: str | None = Field(None, description="URL to user's profile image")
-    company_name: str | None = Field(None, description="User's company name")
-    role: Literal["user", "admin"] = Field(..., description="User's role in the system")
-    is_active: bool = Field(True, description="Whether the user account is active")
-    created_at: datetime = Field(..., description="Account creation timestamp")
+    __tablename__ = "users"
 
-    model_config = {"from_attributes": True}
+    # Primary key
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String(255), nullable=True)
+    email = Column(String(255), unique=True, index=True, nullable=True)
+    emailVerified = Column(TIMESTAMP(timezone=True), nullable=True)
+    image = Column(Text, nullable=True)
 
+    # Additional fields for our application
+    password_hash = Column(String(255), nullable=True)  # For local auth
+    company_name = Column(String(255), nullable=True)
+    role = Column(String(50), default="user", nullable=False)  # user, admin
+    is_active = Column(Boolean, default=True, nullable=False)
 
-# Base class for shared password validation
-class PasswordMixin(BaseModel):
-    """Mixin for password validation."""
+    # Timestamps
+    created_at = Column(DateTime, nullable=False, default=lambda: datetime.now(UTC))
+    updated_at = Column(DateTime, nullable=True, onupdate=lambda: datetime.now(UTC))
 
-    password: str = Field(
-        ...,
-        min_length=8,
-        max_length=100,
-        description=(
-            "Password must contain: 1 lowercase, 1 uppercase, "
-            "1 number, 1 special char (@$!%*?&), min 8 chars"
-        ),
-    )
+    # Relationships
+    accounts = relationship("Account", back_populates="user", cascade="all, delete-orphan")
+    sessions = relationship("Session", back_populates="user", cascade="all, delete-orphan")
+    files = relationship("FileUpload", back_populates="user", cascade="all, delete-orphan")
 
-    @field_validator("password")
-    @classmethod
-    def validate_password_strength(cls, v: str) -> str:
-        """
-        Ensure password meets security requirements:
-        - At least one lowercase letter
-        - At least one uppercase letter
-        - At least one digit
-        - At least one special character (@$!%*?&)
-        - Minimum 8 characters (already enforced by Field)
-        """
-        if not any(char.islower() for char in v):
-            raise ValueError("Password must contain at least one lowercase letter")
-        if not any(char.isupper() for char in v):
-            raise ValueError("Password must contain at least one uppercase letter")
-        if not any(char.isdigit() for char in v):
-            raise ValueError("Password must contain at least one number")
-        if not any(char in "@$!%*?&" for char in v):
-            raise ValueError("Password must contain at least one special character (@$!%*?&)")
-        return v
+    def __repr__(self) -> str:
+        return f"<User(email='{self.email}', id='{self.id}')>"
 
 
-class LoginRequest(PasswordMixin):
-    """Login request schema."""
+class Account(Base):
+    """OAuth account connections (for NextAuth.js compatibility)."""
 
-    email: EmailStr = Field(..., description="User email address")
+    __tablename__ = "accounts"
 
-    model_config = {
-        "json_schema_extra": {
-            "example": {
-                "email": "user@example.com",
-                "password": "SecurePass123!",
-            }
-        }
-    }
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    userId = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    type = Column(String(255), nullable=False)
+    provider = Column(String(255), nullable=False)
+    providerAccountId = Column(String(255), nullable=False)
+    refresh_token = Column(Text, nullable=True)
+    access_token = Column(Text, nullable=True)
+    expires_at = Column(BigInteger, nullable=True)
+    id_token = Column(Text, nullable=True)
+    scope = Column(Text, nullable=True)
+    session_state = Column(Text, nullable=True)
+    token_type = Column(Text, nullable=True)
 
+    # Relationships
+    user = relationship("User", back_populates="accounts")
 
-class SignupRequest(PasswordMixin):
-    """Signup request schema for creating new users."""
-
-    email: EmailStr = Field(..., description="User email address")
-    name: str = Field(..., min_length=1, max_length=100, description="User's full name")
-    company_name: str | None = Field(None, max_length=200, description="Optional company name")
-    role: Literal["user", "admin"] = Field("user", description="User role (admin/user)")
-
-    model_config = {
-        "json_schema_extra": {
-            "example": {
-                "email": "newuser@example.com",
-                "password": "SecurePass123!",
-                "name": "John Doe",
-                "company_name": "Acme Corp",
-                "role": "user",
-            }
-        }
-    }
+    def __repr__(self) -> str:
+        return f"<Account(provider='{self.provider}', userId='{self.userId}')>"
 
 
-class TokenResponse(BaseModel):
-    """JWT token response following OAuth2 standard."""
+class Session(Base):
+    """User sessions table (for NextAuth.js compatibility)."""
 
-    access_token: str = Field(..., description="JWT access token")
-    token_type: Literal["bearer"] = Field("bearer", description="Token type (always 'bearer')")
-    expires_in: int = Field(..., gt=0, description="Token expiration time in seconds")
+    __tablename__ = "sessions"
 
-    model_config = {
-        "json_schema_extra": {
-            "example": {
-                "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-                "token_type": "bearer",
-                "expires_in": 3600,
-            }
-        }
-    }
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    userId = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    expires = Column(TIMESTAMP(timezone=True), nullable=False)
+    sessionToken = Column(String(255), nullable=False, unique=True, index=True)
+
+    # Relationships
+    user = relationship("User", back_populates="sessions")
+
+    def __repr__(self) -> str:
+        return f"<Session(userId='{self.userId}', expires='{self.expires}')>"
+
+
+class VerificationToken(Base):
+    """Email verification tokens table (for NextAuth.js compatibility)."""
+
+    __tablename__ = "verification_token"
+
+    identifier = Column(Text, primary_key=True)
+    token = Column(Text, primary_key=True)
+    expires = Column(TIMESTAMP(timezone=True), nullable=False)
+
+    def __repr__(self) -> str:
+        return f"<VerificationToken(identifier='{self.identifier}')>"

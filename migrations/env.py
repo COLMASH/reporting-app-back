@@ -15,11 +15,12 @@ sys.path.append(str(Path(__file__).parent.parent))
 from src.config import settings
 from src.database.core import Base
 
-# Import all models to ensure they're registered
-from src.entities import (
-    User, Account, Session, VerificationToken,
-    FileUpload, Analysis, Result
-)
+# Import all models to ensure they're registered with SQLAlchemy
+# Import in dependency order to avoid circular import issues
+from src.auth.models import User, Account, Session, VerificationToken
+from src.files.models import FileUpload
+from src.analysis.models import Analysis
+from src.results.models import Result
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

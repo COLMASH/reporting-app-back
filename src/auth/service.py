@@ -20,10 +20,10 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jwt import PyJWTError
 from sqlalchemy.orm import Session
 
-from src.auth import models
+from src.auth import schemas
+from src.auth.models import User
 from src.config import settings
 from src.database.core import get_db
-from src.entities.user import User
 from src.exceptions import AuthenticationError
 
 logger = logging.getLogger(__name__)
@@ -63,7 +63,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 # =============================================================================
 
 
-def decode_token(token: str) -> models.TokenData:
+def decode_token(token: str) -> schemas.TokenData:
     """
     Decode and validate JWT token.
 
@@ -93,7 +93,7 @@ def decode_token(token: str) -> models.TokenData:
         # Handle UUID from token - it might be a string
         user_id = payload.get("id", "")
 
-        return models.TokenData(
+        return schemas.TokenData(
             user_id=user_id,  # UUID will be validated when used
             email=email,
             name=payload.get("name"),
@@ -234,7 +234,7 @@ def create_access_token(user: User, expires_delta: timedelta | None = None) -> s
 
 
 async def signup_user(
-    signup_data: models.SignupRequest,
+    signup_data: schemas.SignupRequest,
     current_user: User | None,
     db: Session,
 ) -> User:
@@ -284,7 +284,7 @@ async def signup_user(
     return user
 
 
-async def login_user(email: str, password: str, db: Session) -> models.TokenResponse:
+async def login_user(email: str, password: str, db: Session) -> schemas.TokenResponse:
     """
     Login user with email/password and return access token.
 
@@ -312,18 +312,8 @@ async def login_user(email: str, password: str, db: Session) -> models.TokenResp
     # Create token
     access_token = create_access_token(user)
 
-    return models.TokenResponse(
+    return schemas.TokenResponse(
         access_token=access_token,
         token_type="bearer",
         expires_in=settings.jwt_expiration_minutes * 60,
     )
-
-
-# =============================================================================
-# Type Aliases for Clean Endpoint Usage
-# =============================================================================
-
-# Use these in your endpoints for clean, readable code
-CurrentUser = Annotated[User, Depends(get_current_active_user)]
-AdminUser = Annotated[User, Depends(get_admin_user)]
-OptionalUser = Annotated[User | None, Depends(get_current_user_optional)]

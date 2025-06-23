@@ -6,17 +6,16 @@ from uuid import UUID
 
 from fastapi import APIRouter, HTTPException, status
 
-from src.auth.service import CurrentUser
-from src.database.core import DbSession
-from src.results import models
+from src.auth.dependencies import CurrentUser, DbSession
+from src.results import schemas
 
 router = APIRouter(prefix="/results", tags=["results"])
 
 
-@router.get("/analysis/{analysis_id}", response_model=list[models.ResultInfo])
+@router.get("/analysis/{analysis_id}", response_model=list[schemas.ResultInfo])
 async def get_analysis_results(
     analysis_id: UUID, current_user: CurrentUser, db: DbSession
-) -> list[models.ResultInfo]:
+) -> list[schemas.ResultInfo]:
     """
     Get all results for a specific analysis.
     """
@@ -24,10 +23,10 @@ async def get_analysis_results(
     return []
 
 
-@router.get("/{result_id}", response_model=models.ResultDetail)
+@router.get("/{result_id}", response_model=schemas.ResultDetail)
 async def get_result_detail(
     result_id: UUID, current_user: CurrentUser, db: DbSession
-) -> models.ResultDetail:
+) -> schemas.ResultDetail:
     """
     Get detailed information about a specific result.
     """

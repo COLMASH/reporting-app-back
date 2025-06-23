@@ -1,47 +1,81 @@
 """
-Results schemas/models.
+Database models for results module.
 """
 
-from datetime import datetime
-from typing import Any
-from uuid import UUID
+import enum
+import uuid
+from datetime import UTC, datetime
 
-from pydantic import BaseModel, Field
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    Column,
+    DateTime,
+    Enum,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+)
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
+
+from src.database.core import Base
 
 
-class ResultInfo(BaseModel):
-    """Basic result information."""
+class ChartType(str, enum.Enum):
+    """Supported chart types for visualization."""
 
-    id: UUID
-    analysis_id: UUID
-    result_type: str
-    title: str
-    description: str | None
-    chart_type: str | None
-    order_index: int
-    is_primary: bool
-    created_at: datetime
+    BAR = "bar"
+    LINE = "line"
+    PIE = "pie"
+    SCATTER = "scatter"
+    HEATMAP = "heatmap"
+    TABLE = "table"
+    KPI = "kpi"
+    AREA = "area"
+    RADAR = "radar"
+    TREEMAP = "treemap"
 
-    model_config = {"from_attributes": True}
 
+class Result(Base):
+    """Individual analysis results (charts, insights, etc.)."""
 
-class ResultDetail(BaseModel):
-    """Detailed result with data."""
+    __tablename__ = "results"
 
-    id: UUID
-    analysis_id: UUID
-    result_type: str
-    title: str
-    description: str | None
-    chart_type: str | None
-    chart_data: dict[str, Any] | None
-    chart_config: dict[str, Any] | None
-    insight_text: str | None
-    confidence_score: float | None = Field(None, ge=0.0, le=1.0)
-    order_index: int
-    is_primary: bool
-    display_size: str
-    extra_metadata: dict[str, Any] | None
-    created_at: datetime
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    analysis_id = Column(
+        UUID(as_uuid=True), ForeignKey("analyses.id", ondelete="CASCADE"), nullable=False
+    )
 
-    model_config = {"from_attributes": True}
+    # Result metadata
+    result_type = Column(String, nullable=False)  # "chart", "insight", "summary", "metric"
+    title = Column(String, nullable=False)
+    description = Column(Text, nullable=True)
+
+    # Chart-specific fields
+    chart_type: Column[ChartType | None] = Column(Enum(ChartType), nullable=True)
+    chart_data = Column(JSON, nullable=True)  # Structured data for chart rendering
+    chart_config = Column(JSON, nullable=True)  # Chart configuration (colors, labels, etc.)
+
+    # Insight-specific fields
+    insight_text = Column(Text, nullable=True)
+    confidence_score = Column(Float, nullable=True)  # 0.0 to 1.0
+
+    # Display configuration
+    order_index = Column(Integer, default=0, nullable=False)  # For ordering results
+    is_primary = Column(Boolean, default=False, nullable=False)  # Primary/featured result
+    display_size = Column(String, default="medium", nullable=False)  # small, medium, large, full
+
+    # Additional metadata
+    extra_metadata = Column(JSON, nullable=True)  # Flexible field for additional data
+
+    # Timestamps
+    created_at = Column(DateTime, nullable=False, default=lambda: datetime.now(UTC))
+
+    # Relationships
+    analysis = relationship("Analysis", back_populates="results")
+
+    def __repr__(self) -> str:
+        return f"<Result(type='{self.result_type}', title='{self.title}')>"

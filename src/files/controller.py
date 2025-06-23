@@ -7,14 +7,13 @@ from uuid import UUID
 
 from fastapi import APIRouter, File, HTTPException, UploadFile, status
 
-from src.auth.service import CurrentUser
-from src.database.core import DbSession
-from src.files import models
+from src.auth.dependencies import CurrentUser, DbSession
+from src.files import schemas
 
 router = APIRouter(prefix="/files", tags=["files"])
 
 
-@router.post("/upload", response_model=models.FileUploadResponse)
+@router.post("/upload", response_model=schemas.FileUploadResponse)
 async def upload_file(
     file: Annotated[UploadFile, File(...)],
     current_user: CurrentUser,
@@ -22,7 +21,7 @@ async def upload_file(
     company_name: str | None = None,
     department: str | None = None,
     classification: str | None = None,
-) -> models.FileUploadResponse:
+) -> schemas.FileUploadResponse:
     """
     Upload an Excel file for processing.
 
@@ -32,7 +31,7 @@ async def upload_file(
     - **classification**: Data classification (portfolio, operations, etc.)
     """
     # TODO: Implement file upload logic
-    return models.FileUploadResponse(
+    return schemas.FileUploadResponse(
         id="temp-id",
         filename=file.filename or "unknown.xlsx",
         status="uploaded",
@@ -40,8 +39,8 @@ async def upload_file(
     )
 
 
-@router.get("/", response_model=list[models.FileInfo])
-async def list_files(current_user: CurrentUser, db: DbSession) -> list[models.FileInfo]:
+@router.get("/", response_model=list[schemas.FileInfo])
+async def list_files(current_user: CurrentUser, db: DbSession) -> list[schemas.FileInfo]:
     """
     List all files uploaded by the current user.
     """
@@ -49,8 +48,10 @@ async def list_files(current_user: CurrentUser, db: DbSession) -> list[models.Fi
     return []
 
 
-@router.get("/{file_id}", response_model=models.FileInfo)
-async def get_file_info(file_id: UUID, current_user: CurrentUser, db: DbSession) -> models.FileInfo:
+@router.get("/{file_id}", response_model=schemas.FileInfo)
+async def get_file_info(
+    file_id: UUID, current_user: CurrentUser, db: DbSession
+) -> schemas.FileInfo:
     """
     Get information about a specific file.
     """

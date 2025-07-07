@@ -22,9 +22,7 @@ from src.modules.auth.models import Account, User, VerificationToken  # noqa: F4
 
 # Import all entities to ensure they're registered with SQLAlchemy
 # These imports must happen after database setup but before app creation
-from src.modules.reporting_analysis.models import Analysis  # noqa: F401
-from src.modules.reporting_files.models import FileUpload  # noqa: F401
-from src.modules.reporting_results.models import Result  # noqa: F401
+from src.modules.reporting.models import Analysis, FileUpload, Result  # noqa: F401
 
 logger = get_logger(__name__)
 

@@ -30,8 +30,8 @@ class Settings(BaseSettings):
         default="https://placeholder.supabase.co", description="Supabase project URL"
     )
     supabase_anon_key: str = Field(default="placeholder-key", description="Supabase anonymous key")
-    supabase_service_key: str | None = Field(
-        default=None, description="Supabase service key (optional)"
+    supabase_bucket_name: str = Field(
+        default="excel-files", description="Supabase storage bucket name for file uploads"
     )
 
     # Authentication
@@ -49,7 +49,8 @@ class Settings(BaseSettings):
     # Redis
     redis_url: str = Field(default="redis://localhost:6379", description="Redis connection URL")
 
-    # AI/LLM configuration removed - not implemented yet
+    # AI/LLM
+    openai_api_key: str = Field(default="", description="OpenAI API key for LLM operations")
 
     # File Upload
     max_upload_size_mb: int = Field(default=50, description="Maximum file upload size in MB")
@@ -115,3 +116,9 @@ class Settings(BaseSettings):
 
 # Create global settings instance
 settings = Settings()
+
+
+# Helper function to get settings
+def get_settings() -> Settings:
+    """Get settings instance."""
+    return settings

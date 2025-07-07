@@ -18,9 +18,7 @@ from src.core.database.core import Base
 # Import all models to ensure they're registered with SQLAlchemy
 # Import in dependency order to avoid circular import issues
 from src.modules.auth.models import User, Account, Session, VerificationToken
-from src.modules.reporting_files.models import FileUpload
-from src.modules.reporting_analysis.models import Analysis
-from src.modules.reporting_results.models import Result
+from src.modules.reporting.models import FileUpload, Analysis, Result
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

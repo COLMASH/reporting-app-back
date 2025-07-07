@@ -130,3 +130,19 @@ class AIServiceError(ExternalServiceError):
 
     def __init__(self, reason: str):
         super().__init__(service="AI Service", reason=reason)
+
+
+# Storage Errors
+class StorageError(BaseError):
+    """Storage related errors."""
+
+    def __init__(self, detail: str):
+        super().__init__(detail=detail, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+# Generic Errors
+class NotFoundError(BaseError):
+    """Generic not found error."""
+
+    def __init__(self, resource: str):
+        super().__init__(detail=f"{resource} not found", status_code=status.HTTP_404_NOT_FOUND)

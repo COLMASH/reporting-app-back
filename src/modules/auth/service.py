@@ -301,7 +301,7 @@ async def login_user(email: str, password: str, db: Session) -> schemas.TokenRes
 
     # Verify password
     # Type assertion needed because SQLAlchemy columns are typed as Column[str]
-    password_hash: str = user.password_hash  # type: ignore[assignment]
+    password_hash: str = user.password_hash
     if not verify_password(password, password_hash):
         raise AuthenticationError("Invalid email or password")
 

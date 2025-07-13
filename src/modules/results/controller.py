@@ -57,20 +57,6 @@ async def get_analysis_results(
     )
 
 
-# TODO: Implement PUT /results/{result_id} endpoint
-@router.put("/{result_id}", response_model=schemas.ResultResponse)
-async def update_result(
-    result_id: str,
-    request: schemas.ResultCreateRequest,
-    current_user: CurrentUser,
-    db: DbSession,
-) -> schemas.ResultResponse:
-    """Update result data."""
-    # TODO: Implement result update endpoint
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Result update not yet implemented"
-    )
-
 
 # TODO: Implement DELETE /results/{result_id} endpoint
 @router.delete("/{result_id}", status_code=status.HTTP_204_NO_CONTENT)

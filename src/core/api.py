@@ -5,7 +5,9 @@ API route registration.
 from fastapi import FastAPI
 
 from src.modules.auth.controller import router as auth_router
+from src.modules.files.controller import router as files_router
 from src.modules.reporting.controller import router as reporting_router
+from src.modules.results.controller import router as results_router
 
 
 def register_routes(app: FastAPI) -> None:
@@ -20,7 +22,9 @@ def register_routes(app: FastAPI) -> None:
 
     # Register routers
     app.include_router(auth_router, prefix=api_v1_prefix)
+    app.include_router(files_router, prefix=api_v1_prefix)
     app.include_router(reporting_router, prefix=api_v1_prefix)
+    app.include_router(results_router, prefix=api_v1_prefix)
 
     # Health check route
     @app.get("/health")

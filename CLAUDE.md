@@ -25,9 +25,28 @@ uv run alembic revision --autogenerate -m "description"  # Create migration
 
 ## Architecture & Key Patterns
 
+### CRITICAL: Avoid OOP for Major Logic
+**This project MUST avoid Object-Oriented Programming patterns for major business logic.** Use functional programming approaches instead:
+- Prefer pure functions over classes with state
+- Use data classes/TypedDicts for data structures only
+- Keep logic in simple functions that transform data
+- Avoid inheritance hierarchies and complex class structures
+
+**EXCEPTION: The following files are ALLOWED to use Python classes:**
+- Core infrastructure files:
+  - `src/core/middleware/logging.py` - Middleware classes
+  - `src/core/config.py` - Settings configuration class
+  - `src/core/exceptions.py` - Exception class hierarchy
+  - `src/core/storage.py` - Storage client class (for encapsulation)
+- In modules folder ONLY:
+  - `**/models.py` - SQLAlchemy database models
+  - `**/schemas.py` - Pydantic validation schemas
+
+All other files, especially `service.py` files, MUST use functional programming.
+
 ### Module Structure
 - `controller.py` - HTTP endpoints (like NestJS controllers)
-- `service.py` - Business logic
+- `service.py` - Business logic (use simple functions, NOT classes)
 - `schemas.py` - Pydantic schemas for validation
 - `models.py` - SQLAlchemy database models
 - `dependencies.py` - FastAPI dependency injection (optional)

@@ -57,7 +57,6 @@ async def get_analysis_results(
     )
 
 
-
 # TODO: Implement DELETE /results/{result_id} endpoint
 @router.delete("/{result_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_result(

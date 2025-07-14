@@ -51,6 +51,9 @@ class Settings(BaseSettings):
 
     # AI/LLM
     openai_api_key: str = Field(default="", description="OpenAI API key for LLM operations")
+    anthropic_api_key: str = Field(
+        default="", description="Anthropic API key for Claude operations"
+    )
 
     # File Upload
     max_upload_size_mb: int = Field(default=50, description="Maximum file upload size in MB")

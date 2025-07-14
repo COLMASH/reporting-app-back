@@ -32,8 +32,6 @@ def get_analysis_results(db: Session, analysis_id: UUID) -> list[Result]:
     raise NotImplementedError("get_analysis_results not yet implemented")
 
 
-
-
 # TODO: Implement delete_result function
 def delete_result(db: Session, result_id: UUID) -> None:
     """Delete a result."""

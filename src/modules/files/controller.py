@@ -10,7 +10,8 @@ from fastapi import APIRouter, HTTPException, status
 
 from src.core.config import settings
 from src.core.logging import get_logger
-from src.core.storage import get_storage_client
+from src.core.storage.anthropic import upload_file_to_anthropic
+from src.core.storage.supabase import get_storage_client
 from src.modules.auth.dependencies import CurrentUser, DbSession
 from src.modules.files import schemas
 from src.modules.files import service as file_service
@@ -43,7 +44,13 @@ async def upload_file(
         # Read file content
         content = await file.read()
 
-        # Upload to Supabase
+        # First upload to Anthropic
+        anthropic_file_id = await upload_file_to_anthropic(
+            file_content=content,
+            filename=file.filename or "uploaded_file",
+        )
+
+        # If Anthropic succeeds, upload to Supabase
         storage = get_storage_client()
         await storage.upload_file(
             file_path=supabase_path,
@@ -51,7 +58,7 @@ async def upload_file(
             content_type=file.content_type,
         )
 
-        # Create database record
+        # Create database record with both storage references
         file_metadata = file_service.create_file_metadata(
             db=db,
             user_id=current_user.id,
@@ -62,6 +69,7 @@ async def upload_file(
             file_size=file.size or len(content),
             mime_type=file.content_type,
             supabase_bucket=settings.supabase_bucket_name,
+            anthropic_file_id=anthropic_file_id,
         )
 
         logger.info(

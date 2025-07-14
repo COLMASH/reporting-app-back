@@ -8,7 +8,8 @@ from sqlalchemy.orm import Session
 
 from src.core.exceptions import NotFoundError, StorageError
 from src.core.logging import get_logger
-from src.core.storage import get_storage_client
+from src.core.storage.anthropic import delete_file_from_anthropic
+from src.core.storage.supabase import get_storage_client
 from src.modules.files.models import File, FileStatus
 
 logger = get_logger(__name__)
@@ -71,12 +72,24 @@ async def delete_file(db: Session, file_id: UUID, user_id: UUID) -> None:
     file = get_file_by_id(db, file_id, user_id)
     storage = get_storage_client()
 
+    # Delete from Anthropic if file_id exists
+    if file.anthropic_file_id:
+        try:
+            await delete_file_from_anthropic(str(file.anthropic_file_id))
+        except StorageError as e:
+            logger.error(
+                "Failed to delete file from Anthropic",
+                file_id=str(file_id),
+                anthropic_file_id=file.anthropic_file_id,
+                error=str(e),
+            )
+
     # Delete from Supabase storage
     try:
         await storage.delete_file(str(file.supabase_path))
     except StorageError as e:
         logger.error(
-            "Failed to delete file from storage",
+            "Failed to delete file from Supabase",
             file_id=str(file_id),
             error=str(e),
         )

@@ -59,6 +59,9 @@ class File(Base):
     supabase_bucket = Column(String, nullable=False)
     supabase_path = Column(String, nullable=False, unique=True)
 
+    # Anthropic file storage
+    anthropic_file_id = Column(String, nullable=True)  # File ID from Anthropic API
+
     # Business metadata
     company_name = Column(String, nullable=False)
     department = Column(String, nullable=True)

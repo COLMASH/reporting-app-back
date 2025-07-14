@@ -29,7 +29,6 @@ async def upload_file(
     company_name: str,
     current_user: CurrentUser,
     db: DbSessionDep,
-    department: str | None = None,
     data_classification: schemas.DataClassification | None = None,
 ) -> schemas.FileResponse:
     """
@@ -68,7 +67,6 @@ async def upload_file(
             original_filename=file.filename or "unknown",
             supabase_path=supabase_path,
             company_name=company_name,
-            department=department,
             data_classification=data_classification,
             file_size=file.size or len(content),
             mime_type=file.content_type,

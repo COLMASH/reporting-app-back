@@ -63,7 +63,6 @@ class File(Base):
 
     # Business metadata
     company_name = Column(String, nullable=False)
-    department = Column(String, nullable=True)
     data_classification = Column(Enum(DataClassification), nullable=True)
 
     # Processing status

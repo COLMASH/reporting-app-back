@@ -5,7 +5,7 @@ Pydantic schemas for files module.
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict
 
 from src.modules.files.models import DataClassification, FileStatus
 
@@ -14,8 +14,7 @@ from src.modules.files.models import DataClassification, FileStatus
 class FileUploadRequest(BaseModel):
     """Request for file upload metadata."""
 
-    company_name: str = Field(..., min_length=1, max_length=255)
-    department: str | None = Field(None, max_length=100)
+    company_name: str
     data_classification: DataClassification | None = None
 
 
@@ -30,7 +29,6 @@ class FileResponse(BaseModel):
     mime_type: str | None
     file_extension: str
     company_name: str
-    department: str | None
     data_classification: DataClassification | None
     status: FileStatus
     created_at: datetime

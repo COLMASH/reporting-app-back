@@ -13,7 +13,6 @@ from sqlalchemy import (
     ForeignKey,
     Integer,
     String,
-    Text,
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
@@ -69,13 +68,9 @@ class File(Base):
 
     # Processing status
     status = Column(Enum(FileStatus), default=FileStatus.UPLOADED, nullable=False)
-    error_message = Column(Text, nullable=True)
-    processing_started_at = Column(DateTime, nullable=True)
-    processing_completed_at = Column(DateTime, nullable=True)
 
     # Timestamps
     created_at = Column(DateTime, nullable=False, default=lambda: datetime.now(UTC))
-    updated_at = Column(DateTime, nullable=True, onupdate=lambda: datetime.now(UTC))
 
     # Relationships
     user = relationship("User", back_populates="files")

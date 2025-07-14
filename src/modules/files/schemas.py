@@ -33,10 +33,9 @@ class FileResponse(BaseModel):
     department: str | None
     data_classification: DataClassification | None
     status: FileStatus
-    error_message: str | None
     created_at: datetime
-    updated_at: datetime | None
     supabase_path: str
+    anthropic_file_id: str | None
 
     model_config = ConfigDict(from_attributes=True)
 

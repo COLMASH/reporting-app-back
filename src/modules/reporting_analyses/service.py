@@ -6,7 +6,6 @@ Main Functions:
 - get_analysis_by_id: Retrieve analysis by ID
 - get_user_analyses: Get all analyses for a user
 - get_file_analyses: Get all analyses for a file
-- update_analysis_status: Update analysis status (TODO)
 - cancel_analysis: Cancel analysis execution (TODO)
 
 Error Handling:
@@ -16,7 +15,7 @@ Error Handling:
 """
 
 from datetime import UTC, datetime
-from typing import Any
+from typing import Any, cast
 from uuid import UUID
 
 from sqlalchemy.orm import Session
@@ -33,6 +32,117 @@ from src.modules.reporting_analyses.models import Analysis, AnalysisStatus
 from src.modules.results.models import Result
 
 logger = get_logger(__name__)
+
+
+def _create_result(
+    db: Session,
+    analysis_id: UUID,
+    result_type: str,
+    title: str,
+    description: str,
+    order_index: int,
+    insight_text: str | None = None,
+    insight_data: dict | None = None,
+) -> None:
+    """Helper to create a result record."""
+    result = Result(
+        analysis_id=analysis_id,
+        result_type=result_type,
+        title=title,
+        description=description,
+        insight_text=insight_text,
+        insight_data=insight_data,
+        order_index=order_index,
+    )
+    db.add(result)
+
+
+def _create_results_from_structured_output(
+    db: Session,
+    analysis_id: UUID,
+    structured_output: dict[str, Any],
+) -> int:
+    """Create result records from structured output.
+
+    Returns:
+        Number of results created
+    """
+    results_created = 0
+    order_index = 0
+
+    # Create summary result
+    _create_result(
+        db=db,
+        analysis_id=analysis_id,
+        result_type="summary",
+        title="Executive Summary",
+        description="High-level overview of the Excel analysis",
+        insight_text=structured_output.get("summary", "No summary available"),
+        order_index=order_index,
+    )
+    results_created += 1
+    order_index += 1
+
+    # Create key metrics result
+    if structured_output.get("key_metrics"):
+        _create_result(
+            db=db,
+            analysis_id=analysis_id,
+            result_type="metrics",
+            title="Key Metrics",
+            description="Important KPIs extracted from the data",
+            insight_data=structured_output.get("key_metrics"),
+            order_index=order_index,
+        )
+        results_created += 1
+        order_index += 1
+
+    # Create visualization results
+    if structured_output.get("visualizations"):
+        for idx, viz in enumerate(structured_output["visualizations"]):
+            _create_result(
+                db=db,
+                analysis_id=analysis_id,
+                result_type="visualization",
+                title=viz.get("title", f"Visualization {idx + 1}"),
+                description=viz.get("description", ""),
+                insight_data=viz,
+                order_index=order_index,
+            )
+            results_created += 1
+            order_index += 1
+
+    # Create data quality result
+    if structured_output.get("data_quality"):
+        _create_result(
+            db=db,
+            analysis_id=analysis_id,
+            result_type="data_quality",
+            title="Data Quality Assessment",
+            description="Quality metrics and issues found in the data",
+            insight_data=structured_output.get("data_quality"),
+            order_index=order_index,
+        )
+        results_created += 1
+        order_index += 1
+
+    # Create recommendations result
+    if structured_output.get("recommendations"):
+        recommendations_text = "\n".join(
+            [f"• {rec}" for rec in structured_output["recommendations"]]
+        )
+        _create_result(
+            db=db,
+            analysis_id=analysis_id,
+            result_type="recommendations",
+            title="Business Recommendations",
+            description="Actionable insights based on the analysis",
+            insight_text=recommendations_text,
+            order_index=order_index,
+        )
+        results_created += 1
+
+    return results_created
 
 
 async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = None) -> Analysis:
@@ -86,22 +196,31 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
             analysis.status = AnalysisStatus.COMPLETED
             analysis.completed_at = datetime.now(UTC)
 
-            # Create result record
-            analysis_result = Result(
-                analysis_id=analysis.id,
-                result_type="summary",
-                title="Excel File Analysis",
-                description="AI-generated analysis of the Excel file contents",
-                insight_text=result.get("analysis", "No analysis generated"),
-                order_index=0,
-                is_primary=True,
-            )
-            db.add(analysis_result)
+            # Get structured output if available
+            structured_output = result.get("structured_output")
+
+            if structured_output:
+                results_created = _create_results_from_structured_output(
+                    db, cast(UUID, analysis.id), structured_output
+                )
+            else:
+                # Fallback to simple text result if no structured output
+                _create_result(
+                    db=db,
+                    analysis_id=cast(UUID, analysis.id),
+                    result_type="summary",
+                    title="Excel File Analysis",
+                    description="AI-generated analysis of the Excel file contents",
+                    insight_text=result.get("analysis", "No analysis generated"),
+                    order_index=0,
+                )
+                results_created = 1
 
             logger.info(
                 "Analysis completed successfully",
                 analysis_id=str(analysis.id),
-                result_length=len(result.get("analysis", "")),
+                has_structured_output=bool(structured_output),
+                results_created=results_created,
             )
         else:
             # Update analysis as failed
@@ -150,13 +269,6 @@ def get_analysis_by_id(db: Session, analysis_id: UUID) -> Analysis | None:
         Analysis | None: The analysis if found, None otherwise
     """
     return db.query(Analysis).filter(Analysis.id == analysis_id).first()
-
-
-# TODO: Implement update_analysis_status function
-def update_analysis_status(db: Session, analysis_id: UUID, status: str, **kwargs: Any) -> Analysis:
-    """Update analysis status and related fields."""
-    # TODO: Implement status update logic
-    raise NotImplementedError("update_analysis_status not yet implemented")
 
 
 def get_file_analyses(db: Session, file_id: UUID) -> list[Analysis]:

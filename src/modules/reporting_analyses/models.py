@@ -33,15 +33,6 @@ class AnalysisStatus(str, enum.Enum):
     CANCELLED = "cancelled"
 
 
-class AgentType(str, enum.Enum):
-    """Types of AI agents available."""
-
-    EXCEL_ANALYZER = "excel_analyzer"
-    CHART_RECOMMENDER = "chart_recommender"
-    DATA_CLASSIFIER = "data_classifier"
-    INSIGHT_GENERATOR = "insight_generator"
-
-
 class Analysis(Base):
     """Analysis job tracking and results."""
 
@@ -55,25 +46,18 @@ class Analysis(Base):
     )
 
     # Analysis configuration
-    agent_type = Column(Enum(AgentType), nullable=False)
     agent_version = Column(String, default="1.0.0", nullable=False)
     parameters = Column(JSON, nullable=True)  # Agent-specific parameters
 
     # Processing tracking
     status = Column(Enum(AnalysisStatus), default=AnalysisStatus.PENDING, nullable=False)
-    progress = Column(Float, default=0.0, nullable=False)  # 0.0 to 1.0
-    progress_message = Column(String, nullable=True)
 
     # Results and errors
     error_message = Column(Text, nullable=True)
-    error_details = Column(JSON, nullable=True)
 
     # Performance metrics
     tokens_used = Column(Integer, nullable=True)
     processing_time_seconds = Column(Float, nullable=True)
-
-    # Background job tracking
-    celery_task_id = Column(String, nullable=True, unique=True)
 
     # Timestamps
     created_at = Column(DateTime, nullable=False, default=lambda: datetime.now(UTC))
@@ -85,4 +69,4 @@ class Analysis(Base):
     results = relationship("Result", back_populates="analysis", cascade="all, delete-orphan")
 
     def __repr__(self) -> str:
-        return f"<Analysis(agent_type='{self.agent_type}', status='{self.status}')>"
+        return f"<Analysis(id='{self.id}', status='{self.status}')>"

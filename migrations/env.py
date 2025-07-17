@@ -19,7 +19,7 @@ from src.core.database.core import Base
 # Import in dependency order to avoid circular import issues
 from src.modules.auth.models import User, Account, Session, VerificationToken
 from src.modules.files.models import File
-from src.modules.reporting.models import Analysis
+from src.modules.reporting_analyses.models import Analysis
 from src.modules.results.models import Result
 
 # this is the Alembic Config object, which provides

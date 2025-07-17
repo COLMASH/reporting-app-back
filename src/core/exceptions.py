@@ -101,11 +101,18 @@ class ConflictError(BaseError):
 class ValidationError(BaseError):
     """Input validation errors."""
 
-    def __init__(self, field: str, reason: str):
+    def __init__(self, detail: str):
         super().__init__(
-            detail=f"Validation error for field '{field}': {reason}",
+            detail=detail,
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         )
+
+
+class NotImplementedError(BaseError):
+    """Feature not yet implemented."""
+
+    def __init__(self, detail: str = "This feature is not yet implemented"):
+        super().__init__(detail=detail, status_code=status.HTTP_501_NOT_IMPLEMENTED)
 
 
 # External Service Errors

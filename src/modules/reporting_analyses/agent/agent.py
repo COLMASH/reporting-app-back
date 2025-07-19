@@ -79,10 +79,14 @@ def _extract_text_from_response(response: Any) -> str:
 
                 # Code execution result blocks
                 elif block_type_str == "code_execution_tool_result":
-                    # Extract stdout from code execution
-                    if "stdout" in block and block["stdout"]:
+                    # Extract text from code execution result
+                    if "text" in block and block["text"]:
+                        code_outputs.append(str(block["text"]))
+                        logger.info(f"Found code output in block {i}", length=len(block["text"]))
+                    # Also check for stdout (different response formats)
+                    elif "stdout" in block and block["stdout"]:
                         code_outputs.append(str(block["stdout"]))
-                        logger.info(f"Found code output in block {i}", length=len(block["stdout"]))
+                        logger.info(f"Found code stdout in block {i}", length=len(block["stdout"]))
                     # Also check for content
                     elif "content" in block:
                         content = block["content"]

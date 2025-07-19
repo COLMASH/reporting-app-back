@@ -52,15 +52,58 @@ def _extract_text_from_response(response: Any) -> str:
 
             # Log block info for debugging
             if i < 3 or i >= len(response.content) - 3:
-                logger.info(
-                    f"Block {i}/{len(response.content)}",
-                    block_type=block_type,
-                    has_type_attr=hasattr(block, "type"),
-                    type_attr=getattr(block, "type", None),
-                )
+                if isinstance(block, dict):
+                    logger.info(
+                        f"Block {i}/{len(response.content)}",
+                        block_type=block_type,
+                        is_dict=True,
+                        dict_type=block.get("type", "no_type"),
+                        dict_keys=list(block.keys()) if len(block) < 10 else f"{len(block)} keys",
+                    )
+                else:
+                    logger.info(
+                        f"Block {i}/{len(response.content)}",
+                        block_type=block_type,
+                        is_dict=False,
+                        has_type_attr=hasattr(block, "type"),
+                        type_attr=getattr(block, "type", None),
+                    )
 
-            # Handle different block types
-            if hasattr(block, "type"):
+            # Handle different block types - blocks come as dicts from LangChain
+            if isinstance(block, dict):
+                block_type_str = block.get("type", "")
+
+                # Text blocks
+                if block_type_str == "text" and "text" in block:
+                    text_parts.append(str(block["text"]))
+
+                # Code execution result blocks
+                elif block_type_str == "code_execution_tool_result":
+                    # Extract stdout from code execution
+                    if "stdout" in block and block["stdout"]:
+                        code_outputs.append(str(block["stdout"]))
+                        logger.info(f"Found code output in block {i}", length=len(block["stdout"]))
+                    # Also check for content
+                    elif "content" in block:
+                        content = block["content"]
+                        if isinstance(content, str):
+                            code_outputs.append(content)
+                        elif isinstance(content, list):
+                            for item in content:
+                                if (
+                                    isinstance(item, dict)
+                                    and item.get("type") == "text"
+                                    and "text" in item
+                                ):
+                                    code_outputs.append(str(item["text"]))
+
+                # Tool use blocks (skip these)
+                elif block_type_str in ["tool_use", "server_tool_use"]:
+                    logger.debug(f"Skipping tool use block {i}")
+                    continue
+
+            # Handle objects with attributes (in case response format varies)
+            elif hasattr(block, "type"):
                 block_type_attr = getattr(block, "type", "")
 
                 # Text blocks
@@ -69,28 +112,9 @@ def _extract_text_from_response(response: Any) -> str:
 
                 # Code execution result blocks
                 elif block_type_attr == "code_execution_tool_result":
-                    # Extract stdout from code execution
                     if hasattr(block, "stdout") and block.stdout:
                         code_outputs.append(str(block.stdout))
                         logger.info(f"Found code output in block {i}", length=len(block.stdout))
-                    # Also check for content attribute
-                    elif hasattr(block, "content"):
-                        if isinstance(block.content, str):
-                            code_outputs.append(block.content)
-                        elif isinstance(block.content, list):
-                            for content_item in block.content:
-                                if hasattr(content_item, "type") and content_item.type == "text":
-                                    if hasattr(content_item, "text"):
-                                        code_outputs.append(str(content_item.text))
-
-            # Fallback for blocks without type attribute
-            elif hasattr(block, "text") and block.text:
-                text_parts.append(str(block.text))
-            elif isinstance(block, dict):
-                if "text" in block and block["text"]:
-                    text_parts.append(str(block["text"]))
-                elif "stdout" in block and block["stdout"]:
-                    code_outputs.append(str(block["stdout"]))
 
         # Combine text and code outputs
         # Code outputs typically contain the JSON result

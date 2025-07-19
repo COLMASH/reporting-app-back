@@ -76,6 +76,7 @@ def _extract_text_from_response(response: Any) -> str:
                 # Text blocks
                 if block_type_str == "text" and "text" in block:
                     text_parts.append(str(block["text"]))
+                    logger.info(f"Found text block {i}", length=len(block["text"]))
 
                 # Code execution result blocks
                 elif block_type_str == "code_execution_tool_result":
@@ -89,34 +90,35 @@ def _extract_text_from_response(response: Any) -> str:
                     )
                     
                     # Extract text from code execution result
-                    if "text" in block and block["text"]:
+                    # The content is in block["content"]["stdout"]
+                    if "content" in block and isinstance(block["content"], dict):
+                        content_dict = block["content"]
+                        
+                        # Extract stdout if present
+                        if "stdout" in content_dict and content_dict["stdout"]:
+                            code_outputs.append(str(content_dict["stdout"]))
+                            logger.info(f"Found stdout in block {i}", length=len(content_dict["stdout"]))
+                        
+                        # Log stderr for debugging (but don't include in outputs)
+                        if "stderr" in content_dict and content_dict["stderr"]:
+                            logger.warning(f"Code execution error in block {i}", stderr=content_dict["stderr"][:200])
+                    
+                    # Fallback checks for other formats
+                    elif "text" in block and block["text"]:
                         code_outputs.append(str(block["text"]))
-                        logger.info(f"Found code output in block {i}", length=len(block["text"]))
-                    # Also check for stdout (different response formats)
+                        logger.info(f"Found text in block {i}", length=len(block["text"]))
                     elif "stdout" in block and block["stdout"]:
                         code_outputs.append(str(block["stdout"]))
-                        logger.info(f"Found code stdout in block {i}", length=len(block["stdout"]))
-                    # Also check for content
-                    elif "content" in block:
-                        content = block["content"]
-                        if isinstance(content, str) and content:
-                            code_outputs.append(content)
-                            logger.info(f"Found code content string in block {i}", length=len(content))
-                        elif isinstance(content, list):
-                            for idx, item in enumerate(content):
-                                if (
-                                    isinstance(item, dict)
-                                    and item.get("type") == "text"
-                                    and "text" in item
-                                    and item["text"]
-                                ):
-                                    code_outputs.append(str(item["text"]))
-                                    logger.info(f"Found text in content[{idx}] of block {i}", length=len(item["text"]))
+                        logger.info(f"Found direct stdout in block {i}", length=len(block["stdout"]))
 
                 # Tool use blocks (skip these)
                 elif block_type_str in ["tool_use", "server_tool_use"]:
                     logger.debug(f"Skipping tool use block {i}")
                     continue
+                
+                # Log unknown block types
+                else:
+                    logger.warning(f"Unknown block type in {i}", block_type=block_type_str, keys=list(block.keys()))
 
             # Handle objects with attributes (in case response format varies)
             elif hasattr(block, "type"):
@@ -133,8 +135,15 @@ def _extract_text_from_response(response: Any) -> str:
                         logger.info(f"Found code output in block {i}", length=len(block.stdout))
 
         # Combine text and code outputs
-        # Code outputs typically contain the JSON result
-        all_text = "".join(text_parts) + "".join(code_outputs)
+        # Look for JSON in code outputs first (preferred), then in text parts
+        all_text = "".join(code_outputs) + "".join(text_parts)
+        
+        # If we still have no text, check if the last block might be the JSON
+        if not all_text and response.content:
+            logger.info("No text found, checking last block for JSON")
+            last_block = response.content[-1]
+            if isinstance(last_block, dict) and "text" in last_block:
+                all_text = str(last_block["text"])
 
         logger.info(
             "Text extraction summary",

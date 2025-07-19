@@ -79,6 +79,15 @@ def _extract_text_from_response(response: Any) -> str:
 
                 # Code execution result blocks
                 elif block_type_str == "code_execution_tool_result":
+                    # Log the full block structure for debugging
+                    logger.info(
+                        f"Code execution block {i} structure",
+                        text_value=block.get("text", "NO_TEXT"),
+                        text_empty=block.get("text") == "",
+                        content_type=type(block.get("content")).__name__,
+                        content_value=str(block.get("content"))[:200] if block.get("content") else "NO_CONTENT",
+                    )
+                    
                     # Extract text from code execution result
                     if "text" in block and block["text"]:
                         code_outputs.append(str(block["text"]))
@@ -90,16 +99,19 @@ def _extract_text_from_response(response: Any) -> str:
                     # Also check for content
                     elif "content" in block:
                         content = block["content"]
-                        if isinstance(content, str):
+                        if isinstance(content, str) and content:
                             code_outputs.append(content)
+                            logger.info(f"Found code content string in block {i}", length=len(content))
                         elif isinstance(content, list):
-                            for item in content:
+                            for idx, item in enumerate(content):
                                 if (
                                     isinstance(item, dict)
                                     and item.get("type") == "text"
                                     and "text" in item
+                                    and item["text"]
                                 ):
                                     code_outputs.append(str(item["text"]))
+                                    logger.info(f"Found text in content[{idx}] of block {i}", length=len(item["text"]))
 
                 # Tool use blocks (skip these)
                 elif block_type_str in ["tool_use", "server_tool_use"]:

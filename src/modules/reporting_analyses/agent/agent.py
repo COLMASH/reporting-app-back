@@ -250,7 +250,20 @@ def create_excel_analyzer_agent() -> Any:
             ]
 
             # Get analysis from model with code execution
+            # Force the model to continue if it hasn't produced JSON
             response = model.invoke(messages)
+            
+            # Quick check if response contains JSON
+            response_text = _extract_text_from_response(response)
+            if response_text and "{" not in response_text:
+                # Model didn't produce JSON, ask for it explicitly
+                logger.warning("No JSON found in initial response, requesting JSON output")
+                follow_up = HumanMessage(
+                    content="Please now provide the final JSON output as instructed. Send ONLY the JSON object, no other text."
+                )
+                messages.append(response)
+                messages.append(follow_up)
+                response = model.invoke(messages)
 
             # Log response for debugging
             logger.info(

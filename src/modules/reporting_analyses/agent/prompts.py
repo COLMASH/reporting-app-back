@@ -128,6 +128,16 @@ Ensure:
 - Each visualization provides unique value
 - Insights are specific and actionable
 - Focus on what C-level executives care about: revenue, costs, efficiency, growth
+
+EXAMPLE OF YOUR FINAL OUTPUT:
+After all code execution, your LAST message should look exactly like this (but with real data):
+{{
+    "summary": "Portfolio analysis reveals...",
+    "key_metrics": [...],
+    "visualizations": [...6 chart configs...],
+    "data_quality": {{...}},
+    "recommendations": [...]
+}}
 """
 
 
@@ -140,10 +150,18 @@ def get_user_prompt() -> str:
 3. Calculate business metrics from the available data
 4. Design exactly {MAX_VISUALIZATIONS} Chart.js visualizations
 
-FINAL OUTPUT REQUIREMENT:
-After ALL code execution is complete, you MUST send a final text message that contains ONLY the JSON output. This is mandatory - even if you encountered errors, produce the JSON with whatever data you could extract.
+MANDATORY FINAL STEP - DO NOT SKIP:
+After ALL code execution blocks are complete, you MUST send ONE FINAL TEXT MESSAGE.
+This final message must contain ONLY the complete JSON object - nothing else.
 
-The JSON should be the ONLY content in your final message - no explanations, no additional text."""
+Even if you encountered errors or couldn't extract all data, you MUST still output the JSON with:
+- Summary based on what you found
+- At least 3 key metrics (use placeholder values if needed)
+- Exactly {MAX_VISUALIZATIONS} visualizations (create from any data available)
+- Data quality assessment
+- At least 3 recommendations
+
+REMEMBER: Your analysis is NOT complete until you send the final JSON text block!"""
 
 
 # Required keys for structured output validation

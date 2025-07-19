@@ -8,7 +8,7 @@ used by the Excel analyzer agent for better maintainability.
 # Configuration constants
 MAX_VISUALIZATIONS = 6  # Optimal number for C-level dashboards
 ANALYSIS_TIMEOUT = 900.0  # 15 minutes
-MAX_TOKENS = 15000  # For detailed JSON output
+MAX_TOKENS = 150000  # For detailed JSON output
 
 # Chart type selection guide
 CHART_SELECTION_GUIDE = """

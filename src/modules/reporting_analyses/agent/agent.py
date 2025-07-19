@@ -37,6 +37,7 @@ class GraphState(TypedDict):
 def _extract_text_from_response(response: Any) -> str:
     """Extract text content from Claude's response."""
     if not hasattr(response, "content"):
+        logger.warning("Response has no content attribute")
         return ""
 
     if isinstance(response.content, str):
@@ -44,13 +45,36 @@ def _extract_text_from_response(response: Any) -> str:
 
     if isinstance(response.content, list):
         text_parts = []
-        for block in response.content:
+        for i, block in enumerate(response.content):
+            block_info = {
+                "block_type": type(block).__name__,
+                "has_text": hasattr(block, "text"),
+                "has_type": hasattr(block, "type"),
+                "block_type_attr": getattr(block, "type", None) if hasattr(block, "type") else None,
+            }
+
+            # Only log first few blocks and last few blocks to avoid spam
+            if i < 3 or i >= len(response.content) - 3:
+                logger.debug(f"Processing block {i}/{len(response.content)}", **block_info)
+            # Handle text blocks
             if hasattr(block, "text") and block.text is not None:
                 text_parts.append(str(block.text))
             elif isinstance(block, dict) and "text" in block and block["text"] is not None:
                 text_parts.append(str(block["text"]))
+            # Skip tool use blocks - they don't contain the final output
+            elif hasattr(block, "type") and getattr(block, "type", None) in [
+                "tool_use",
+                "server_tool_use",
+            ]:
+                logger.debug(f"Skipping tool use block {i}")
+                continue
         return "".join(text_parts)
 
+    # Log the actual content type for debugging
+    logger.warning(
+        "Response content is not string or list",
+        content_type=type(response.content).__name__,
+    )
     return ""
 
 
@@ -139,10 +163,29 @@ def create_excel_analyzer_agent() -> Any:
                 "Claude response received",
                 response_type=type(response).__name__,
                 content_length=len(str(response.content)) if hasattr(response, "content") else 0,
+                content_type=(
+                    type(response.content).__name__ if hasattr(response, "content") else "none"
+                ),
+                is_list=(
+                    isinstance(response.content, list) if hasattr(response, "content") else False
+                ),
+                num_blocks=(
+                    len(response.content)
+                    if hasattr(response, "content") and isinstance(response.content, list)
+                    else 0
+                ),
             )
 
             # Extract text content from response
             analysis_text = _extract_text_from_response(response)
+
+            # Log extracted text for debugging
+            logger.info(
+                "Extracted text from response",
+                text_length=len(analysis_text),
+                text_preview=analysis_text[:500] if analysis_text else "empty",
+                has_json="{" in analysis_text and "}" in analysis_text,
+            )
 
             # Try to parse structured JSON output
             structured_output = _parse_structured_output(analysis_text)

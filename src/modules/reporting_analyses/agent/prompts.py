@@ -105,8 +105,11 @@ Use the code execution tool to:
 
 {CHART_SELECTION_GUIDE}
 
-IMPORTANT: Your FINAL response must be ONLY a valid JSON object with NO other text before or after.
-The JSON must follow this EXACT structure:
+CRITICAL INSTRUCTIONS:
+1. Even if you encounter errors during code execution, you MUST still produce the final JSON output
+2. Your FINAL message must be a text block containing ONLY the JSON object
+3. Do NOT include any explanatory text before or after the JSON
+4. The JSON must follow this EXACT structure:
 
 {JSON_OUTPUT_STRUCTURE}
 
@@ -123,9 +126,11 @@ def get_user_prompt() -> str:
     """Generate the user prompt for Excel analysis."""
     return f"""Analyze this Excel file comprehensively. Use code exec to:
 1. Read all sheets and understand the data structure
-2. Calculate relevant business metrics
+2. Calculate relevant business metrics (handle any import errors gracefully)
 3. Create exactly {MAX_VISUALIZATIONS} visualizations that best represent the data
-4. Return ONLY the JSON output with no additional text."""
+4. IMPORTANT: After all code execution, you MUST end with a text message containing ONLY the JSON output
+5. The final text block should contain the complete JSON structure with actual data from your analysis
+6. Do not include any explanatory text - just the JSON object"""
 
 
 # Required keys for structured output validation

@@ -144,6 +144,16 @@ def _extract_text_from_response(response: Any) -> str:
             last_block = response.content[-1]
             if isinstance(last_block, dict) and "text" in last_block:
                 all_text = str(last_block["text"])
+        
+        # Debug: Log all text blocks to see if we're missing the JSON
+        if response.content:
+            for i, block in enumerate(response.content):
+                if isinstance(block, dict) and block.get("type") == "text":
+                    logger.info(
+                        f"Text block {i} content",
+                        text_preview=str(block.get("text", ""))[:200],
+                        text_length=len(str(block.get("text", "")))
+                    )
 
         logger.info(
             "Text extraction summary",

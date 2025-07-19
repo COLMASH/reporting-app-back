@@ -3,7 +3,6 @@ Enhanced Excel analyzer agent using LangGraph and Anthropic's Code Execution too
 Returns structured JSON output optimized for Chart.js visualizations.
 """
 
-import json
 from typing import Any, TypedDict, cast
 
 from langchain_anthropic import ChatAnthropic
@@ -16,7 +15,6 @@ from src.core.logging import get_logger
 from src.modules.reporting_analyses.agent.prompts import (
     ANALYSIS_TIMEOUT,
     MAX_TOKENS,
-    REQUIRED_OUTPUT_KEYS,
     get_structured_output_prompt,
     get_system_prompt,
     get_user_prompt,
@@ -90,39 +88,54 @@ def _extract_text_from_response(response: Any) -> str:
                         text_value=block.get("text", "NO_TEXT"),
                         text_empty=block.get("text") == "",
                         content_type=type(block.get("content")).__name__,
-                        content_value=str(block.get("content"))[:200] if block.get("content") else "NO_CONTENT",
+                        content_value=(
+                            str(block.get("content"))[:200]
+                            if block.get("content")
+                            else "NO_CONTENT"
+                        ),
                     )
-                    
+
                     # Extract text from code execution result
                     # The content is in block["content"]["stdout"]
                     if "content" in block and isinstance(block["content"], dict):
                         content_dict = block["content"]
-                        
+
                         # Extract stdout if present
                         if "stdout" in content_dict and content_dict["stdout"]:
                             code_outputs.append(str(content_dict["stdout"]))
-                            logger.info(f"Found stdout in block {i}", length=len(content_dict["stdout"]))
-                        
+                            logger.info(
+                                f"Found stdout in block {i}", length=len(content_dict["stdout"])
+                            )
+
                         # Log stderr for debugging (but don't include in outputs)
                         if "stderr" in content_dict and content_dict["stderr"]:
-                            logger.warning(f"Code execution error in block {i}", stderr=content_dict["stderr"][:200])
-                    
+                            logger.warning(
+                                f"Code execution error in block {i}",
+                                stderr=content_dict["stderr"][:200],
+                            )
+
                     # Fallback checks for other formats
                     elif "text" in block and block["text"]:
                         code_outputs.append(str(block["text"]))
                         logger.info(f"Found text in block {i}", length=len(block["text"]))
                     elif "stdout" in block and block["stdout"]:
                         code_outputs.append(str(block["stdout"]))
-                        logger.info(f"Found direct stdout in block {i}", length=len(block["stdout"]))
+                        logger.info(
+                            f"Found direct stdout in block {i}", length=len(block["stdout"])
+                        )
 
                 # Tool use blocks (skip these)
                 elif block_type_str in ["tool_use", "server_tool_use"]:
                     logger.debug(f"Skipping tool use block {i}")
                     continue
-                
+
                 # Log unknown block types
                 else:
-                    logger.warning(f"Unknown block type in {i}", block_type=block_type_str, keys=list(block.keys()))
+                    logger.warning(
+                        f"Unknown block type in {i}",
+                        block_type=block_type_str,
+                        keys=list(block.keys()),
+                    )
 
             # Handle objects with attributes (in case response format varies)
             elif hasattr(block, "type"):
@@ -141,14 +154,14 @@ def _extract_text_from_response(response: Any) -> str:
         # Combine text and code outputs
         # Look for JSON in code outputs first (preferred), then in text parts
         all_text = "".join(code_outputs) + "".join(text_parts)
-        
+
         # If we still have no text, check if the last block might be the JSON
         if not all_text and response.content:
             logger.info("No text found, checking last block for JSON")
             last_block = response.content[-1]
             if isinstance(last_block, dict) and "text" in last_block:
                 all_text = str(last_block["text"])
-        
+
         # Debug: Log all text blocks to see if we're missing the JSON
         if response.content:
             for i, block in enumerate(response.content):
@@ -156,7 +169,7 @@ def _extract_text_from_response(response: Any) -> str:
                     logger.info(
                         f"Text block {i} content",
                         text_preview=str(block.get("text", ""))[:200],
-                        text_length=len(str(block.get("text", "")))
+                        text_length=len(str(block.get("text", ""))),
                     )
 
         logger.info(
@@ -176,44 +189,6 @@ def _extract_text_from_response(response: Any) -> str:
     return ""
 
 
-def _parse_structured_output(analysis_text: str) -> dict[str, Any] | None:
-    """Parse and validate structured JSON output from analysis."""
-    if not analysis_text:
-        return None
-
-    try:
-        # Find JSON content (in case there's extra text)
-        json_start = analysis_text.find("{")
-        json_end = analysis_text.rfind("}") + 1
-
-        if json_start < 0 or json_end <= json_start:
-            return None
-
-        json_str = analysis_text[json_start:json_end]
-        structured_output = json.loads(json_str)
-
-        # Validate required keys
-        if all(key in structured_output for key in REQUIRED_OUTPUT_KEYS):
-            logger.info(
-                "Successfully parsed structured output",
-                metrics_count=len(structured_output.get("key_metrics", [])),
-                visualizations_count=len(structured_output.get("visualizations", [])),
-            )
-            return cast(dict[str, Any], structured_output)
-        else:
-            missing = REQUIRED_OUTPUT_KEYS - set(structured_output.keys())
-            logger.warning("Structured output missing required keys", missing_keys=missing)
-            return None
-
-    except json.JSONDecodeError as e:
-        logger.error(
-            "Failed to parse JSON",
-            error=str(e),
-            preview=analysis_text[:200] if analysis_text else "empty",
-        )
-        return None
-
-
 def create_excel_analyzer_agent() -> Any:
     """Create an enhanced LangGraph agent for Excel file analysis with structured output."""
 
@@ -223,15 +198,15 @@ def create_excel_analyzer_agent() -> Any:
     base_model = ChatAnthropic(
         model_name="claude-sonnet-4-20250514",
         api_key=SecretStr(settings.anthropic_api_key),
-        temperature=0.3,
+        temperature=0,
         max_tokens_to_sample=MAX_TOKENS,
         timeout=ANALYSIS_TIMEOUT,
         stop=None,
         default_headers={"anthropic-beta": "code-execution-2025-05-22,files-api-2025-04-14"},
     ).bind_tools([{"type": "code_execution_20250522", "name": "code_execution"}])
-    
+
     # Create structured output model
-    structured_model = base_model.with_structured_output(ExcelAnalysisOutput)
+    structured_model = base_model.with_structured_output(ExcelAnalysisOutput)  # type: ignore[attr-defined]
 
     # Create graph
     graph = StateGraph(GraphState)
@@ -260,7 +235,7 @@ def create_excel_analyzer_agent() -> Any:
 
             logger.info("Starting Phase 1: Excel analysis with code execution")
             analysis_response = base_model.invoke(analysis_messages)
-            
+
             # Extract token usage
             if hasattr(analysis_response, "usage_metadata"):
                 input_tokens += getattr(analysis_response.usage_metadata, "input_tokens", 0)
@@ -274,16 +249,21 @@ def create_excel_analyzer_agent() -> Any:
                 phase1_input_tokens=input_tokens,
                 phase1_output_tokens=output_tokens,
             )
-            
+
             # Phase 2: Generate structured output
             structured_messages = [
                 SystemMessage(content=get_structured_output_prompt()),
-                HumanMessage(content=f"Based on my analysis of the Excel file, here's what I found:\n\n{analysis_text}"),
+                HumanMessage(
+                    content=(
+                        f"Based on my analysis of the Excel file, "
+                        f"here's what I found:\n\n{analysis_text}"
+                    )
+                ),
             ]
-            
+
             logger.info("Starting Phase 2: Generating structured output")
             structured_response = structured_model.invoke(structured_messages)
-            
+
             # Extract token usage from phase 2
             phase2_input = 0
             phase2_output = 0
@@ -294,13 +274,19 @@ def create_excel_analyzer_agent() -> Any:
                 output_tokens += phase2_output
 
             # Convert Pydantic model to dict
-            structured_dict = structured_response.model_dump() if hasattr(structured_response, "model_dump") else structured_response
+            structured_dict = (
+                structured_response.model_dump()
+                if hasattr(structured_response, "model_dump")
+                else structured_response
+            )
 
             logger.info(
                 "Analysis completed with structured output",
                 has_structured_output=bool(structured_dict),
                 num_metrics=len(structured_dict.get("key_metrics", [])) if structured_dict else 0,
-                num_visualizations=len(structured_dict.get("visualizations", [])) if structured_dict else 0,
+                num_visualizations=(
+                    len(structured_dict.get("visualizations", [])) if structured_dict else 0
+                ),
                 total_input_tokens=input_tokens,
                 total_output_tokens=output_tokens,
             )

@@ -88,13 +88,14 @@ JSON_OUTPUT_STRUCTURE = """
     ]
 }}
 
-IMPORTANT: Even if data extraction fails, populate the JSON with whatever information you could gather. Use placeholder data if necessary, but ALWAYS return a valid JSON structure.
+IMPORTANT: Even if data extraction fails, populate the JSON with whatever info you could gather.
+Use placeholder data if necessary, but ALWAYS return a valid JSON structure.
 """
 
 
 def get_system_prompt() -> str:
     """Generate the system prompt for Excel analysis phase."""
-    return f"""You are an expert data analyst specializing in BI dashboards.
+    return """You are an expert data analyst specializing in BI dashboards.
 Analyze the provided Excel file using code execution to extract and understand the data.
 
 IMPORTANT: The Excel file is provided as a container upload. To analyze it:
@@ -111,7 +112,8 @@ Code execution tips:
 - Focus on data extraction and calculation, not plotting
 - Print out key findings and metrics as you discover them
 
-Your goal is to thoroughly explore and understand the data, calculating relevant business metrics."""
+Your goal is to thoroughly explore and understand the data, calculating relevant business metrics.
+"""
 
 
 def get_user_prompt() -> str:

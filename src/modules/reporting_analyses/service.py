@@ -195,7 +195,7 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
             # Update analysis as completed
             analysis.status = AnalysisStatus.COMPLETED
             analysis.completed_at = datetime.now(UTC)
-            
+
             # Update token usage
             input_tokens = result.get("input_tokens", 0)
             output_tokens = result.get("output_tokens", 0)

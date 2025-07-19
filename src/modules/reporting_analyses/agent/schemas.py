@@ -3,7 +3,7 @@ Pydantic schemas for structured output from the Excel analyzer agent.
 Ensures compatibility with Chart.js data structures.
 """
 
-from typing import Any, Literal, Optional
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -45,7 +45,7 @@ class ChartData(BaseModel):
     """Data structure for Chart.js - matches Chart.js data object."""
 
     labels: list[str] = Field(description="Labels for data points (x-axis)")
-    datasets: list[ChartDataset] = Field(description="One or more datasets", min_items=1)
+    datasets: list[ChartDataset] = Field(description="One or more datasets")
 
 
 class ChartPlugins(BaseModel):
@@ -82,14 +82,10 @@ class ChartOptions(BaseModel):
     """Chart.js options configuration - matches Chart.js options object."""
 
     responsive: bool = Field(default=True, description="Resize chart on container resize")
-    maintainAspectRatio: bool = Field(
-        default=False, description="Maintain original aspect ratio"
-    )
+    maintainAspectRatio: bool = Field(default=False, description="Maintain original aspect ratio")
     aspectRatio: float = Field(default=2, description="Canvas aspect ratio")
-    plugins: ChartPlugins = Field(
-        default_factory=ChartPlugins, description="Plugin configurations"
-    )
-    scales: Optional[ChartScales] = Field(
+    plugins: ChartPlugins = Field(default_factory=ChartPlugins, description="Plugin configurations")
+    scales: ChartScales | None = Field(
         default=None, description="Scales configuration (not used for pie/doughnut)"
     )
     animation: dict[str, Any] = Field(
@@ -118,9 +114,7 @@ class Visualization(BaseModel):
     description: str = Field(description="What this chart shows and why it's valuable")
     data: ChartData = Field(description="Chart data configuration")
     options: ChartOptions = Field(description="Chart display options")
-    insights: list[str] = Field(
-        description="Key insights from this visualization", min_items=1, max_items=5
-    )
+    insights: list[str] = Field(description="Key insights from this visualization (1-5 insights)")
 
     def model_post_init(self, __context: Any) -> None:
         """Adjust options based on chart type."""
@@ -129,9 +123,9 @@ class Visualization(BaseModel):
             self.options.scales = None
         # For horizontal bar, we'd set indexAxis: 'y' in options
         elif self.chart_type == "bar" and "horizontal" in self.title.lower():
-            if self.options.scales:
-                self.options.scales.x.dict()["position"] = "bottom"
-                self.options.scales.y.dict()["position"] = "left"
+            if self.options.scales and isinstance(self.options.scales, ChartScales):
+                # Note: In Chart.js v3+, use indexAxis: 'y' instead
+                pass
 
 
 class DataQuality(BaseModel):
@@ -143,9 +137,7 @@ class DataQuality(BaseModel):
     missing_values: dict[str, int] = Field(
         description="Count of missing values per column", default_factory=dict
     )
-    data_types: dict[str, str] = Field(
-        description="Data type per column", default_factory=dict
-    )
+    data_types: dict[str, str] = Field(description="Data type per column", default_factory=dict)
     quality_score: Literal["high", "medium", "low"] = Field(
         description="Overall data quality assessment"
     )
@@ -161,14 +153,12 @@ class ExcelAnalysisOutput(BaseModel):
         max_length=500,
     )
     key_metrics: list[KeyMetric] = Field(
-        description="Important KPIs extracted from data", min_items=3, max_items=10
+        description="Important KPIs extracted from data (3-10 metrics)"
     )
     visualizations: list[Visualization] = Field(
-        description="Chart.js visualization configurations",
-        min_items=6,
-        max_items=6,
+        description="Chart.js visualization configurations (exactly 6)"
     )
     data_quality: DataQuality = Field(description="Data quality assessment")
     recommendations: list[str] = Field(
-        description="Actionable business recommendations", min_items=3, max_items=5
+        description="Actionable business recommendations (3-5 recommendations)"
     )

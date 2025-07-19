@@ -17,9 +17,11 @@ from src.modules.reporting_analyses.agent.prompts import (
     ANALYSIS_TIMEOUT,
     MAX_TOKENS,
     REQUIRED_OUTPUT_KEYS,
+    get_structured_output_prompt,
     get_system_prompt,
     get_user_prompt,
 )
+from src.modules.reporting_analyses.agent.schemas import ExcelAnalysisOutput
 
 logger = get_logger(__name__)
 
@@ -32,6 +34,8 @@ class GraphState(TypedDict):
     structured_output: dict[str, Any] | None
     success: bool
     error: str
+    input_tokens: int
+    output_tokens: int
 
 
 def _extract_text_from_response(response: Any) -> str:
@@ -215,8 +219,8 @@ def create_excel_analyzer_agent() -> Any:
 
     settings = get_settings()
 
-    # Initialize Anthropic model with Code Execution tool
-    model = ChatAnthropic(
+    # Initialize Anthropic model with Code Execution tool AND structured output
+    base_model = ChatAnthropic(
         model_name="claude-sonnet-4-20250514",
         api_key=SecretStr(settings.anthropic_api_key),
         temperature=0.3,
@@ -225,18 +229,23 @@ def create_excel_analyzer_agent() -> Any:
         stop=None,
         default_headers={"anthropic-beta": "code-execution-2025-05-22,files-api-2025-04-14"},
     ).bind_tools([{"type": "code_execution_20250522", "name": "code_execution"}])
+    
+    # Create structured output model
+    structured_model = base_model.with_structured_output(ExcelAnalysisOutput)
 
     # Create graph
     graph = StateGraph(GraphState)
 
     # Define the analysis function
     def analyze_excel(state: GraphState) -> dict[str, Any]:
-        """Analyze Excel file using Anthropic's Code Execution tool."""
+        """Analyze Excel file using two-phase approach: analysis + structured output."""
         anthropic_file_id = state["anthropic_file_id"]
+        input_tokens = 0
+        output_tokens = 0
 
         try:
-            # Create message with file reference
-            messages = [
+            # Phase 1: Analysis with code execution
+            analysis_messages = [
                 SystemMessage(content=get_system_prompt()),
                 HumanMessage(
                     content=[
@@ -249,74 +258,60 @@ def create_excel_analyzer_agent() -> Any:
                 ),
             ]
 
-            # Get analysis from model with code execution
-            # Force the model to continue if it hasn't produced JSON
-            response = model.invoke(messages)
+            logger.info("Starting Phase 1: Excel analysis with code execution")
+            analysis_response = base_model.invoke(analysis_messages)
             
-            # Quick check if response contains JSON
-            response_text = _extract_text_from_response(response)
-            if response_text and "{" not in response_text:
-                # Model didn't produce JSON, ask for it explicitly
-                logger.warning("No JSON found in initial response, requesting JSON output")
-                follow_up = HumanMessage(
-                    content="Please now provide the final JSON output as instructed. Send ONLY the JSON object, no other text."
-                )
-                messages.append(response)
-                messages.append(follow_up)
-                response = model.invoke(messages)
+            # Extract token usage
+            if hasattr(analysis_response, "usage_metadata"):
+                input_tokens += getattr(analysis_response.usage_metadata, "input_tokens", 0)
+                output_tokens += getattr(analysis_response.usage_metadata, "output_tokens", 0)
 
-            # Log response for debugging
+            # Extract analysis text
+            analysis_text = _extract_text_from_response(analysis_response)
             logger.info(
-                "Claude response received",
-                response_type=type(response).__name__,
-                content_length=len(str(response.content)) if hasattr(response, "content") else 0,
-                content_type=(
-                    type(response.content).__name__ if hasattr(response, "content") else "none"
-                ),
-                is_list=(
-                    isinstance(response.content, list) if hasattr(response, "content") else False
-                ),
-                num_blocks=(
-                    len(response.content)
-                    if hasattr(response, "content") and isinstance(response.content, list)
-                    else 0
-                ),
+                "Phase 1 complete",
+                analysis_length=len(analysis_text) if analysis_text else 0,
+                phase1_input_tokens=input_tokens,
+                phase1_output_tokens=output_tokens,
             )
+            
+            # Phase 2: Generate structured output
+            structured_messages = [
+                SystemMessage(content=get_structured_output_prompt()),
+                HumanMessage(content=f"Based on my analysis of the Excel file, here's what I found:\n\n{analysis_text}"),
+            ]
+            
+            logger.info("Starting Phase 2: Generating structured output")
+            structured_response = structured_model.invoke(structured_messages)
+            
+            # Extract token usage from phase 2
+            phase2_input = 0
+            phase2_output = 0
+            if hasattr(structured_response, "usage_metadata"):
+                phase2_input = getattr(structured_response.usage_metadata, "input_tokens", 0)
+                phase2_output = getattr(structured_response.usage_metadata, "output_tokens", 0)
+                input_tokens += phase2_input
+                output_tokens += phase2_output
 
-            # Extract text content from response
-            analysis_text = _extract_text_from_response(response)
+            # Convert Pydantic model to dict
+            structured_dict = structured_response.model_dump() if hasattr(structured_response, "model_dump") else structured_response
 
-            # If no text was extracted, log detailed block information
-            if (
-                not analysis_text
-                and hasattr(response, "content")
-                and isinstance(response.content, list)
-            ):
-                logger.warning(
-                    "No text extracted from response blocks",
-                    total_blocks=len(response.content),
-                    block_types=[
-                        getattr(block, "type", type(block).__name__)
-                        for block in response.content[:5]
-                    ],
-                )
-
-            # Log extracted text for debugging
             logger.info(
-                "Extracted text from response",
-                text_length=len(analysis_text),
-                text_preview=analysis_text[:500] if analysis_text else "empty",
-                has_json="{" in analysis_text and "}" in analysis_text,
+                "Analysis completed with structured output",
+                has_structured_output=bool(structured_dict),
+                num_metrics=len(structured_dict.get("key_metrics", [])) if structured_dict else 0,
+                num_visualizations=len(structured_dict.get("visualizations", [])) if structured_dict else 0,
+                total_input_tokens=input_tokens,
+                total_output_tokens=output_tokens,
             )
-
-            # Try to parse structured JSON output
-            structured_output = _parse_structured_output(analysis_text)
 
             return {
-                "analysis": analysis_text.strip(),
-                "structured_output": structured_output,
+                "analysis": analysis_text.strip() if analysis_text else "Analysis completed",
+                "structured_output": structured_dict,
                 "success": True,
                 "error": "",
+                "input_tokens": input_tokens,
+                "output_tokens": output_tokens,
             }
 
         except Exception as e:
@@ -326,6 +321,8 @@ def create_excel_analyzer_agent() -> Any:
                 "success": False,
                 "analysis": "",
                 "structured_output": None,
+                "input_tokens": input_tokens,
+                "output_tokens": output_tokens,
             }
 
     # Add node to graph
@@ -358,6 +355,8 @@ async def analyze_excel_file(anthropic_file_id: str) -> dict[str, Any]:
             "structured_output": None,
             "success": False,
             "error": "",
+            "input_tokens": 0,
+            "output_tokens": 0,
         }
     )
 

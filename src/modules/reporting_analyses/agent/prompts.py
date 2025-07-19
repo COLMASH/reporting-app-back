@@ -93,9 +93,9 @@ IMPORTANT: Even if data extraction fails, populate the JSON with whatever inform
 
 
 def get_system_prompt() -> str:
-    """Generate the system prompt for Excel analysis."""
+    """Generate the system prompt for Excel analysis phase."""
     return f"""You are an expert data analyst specializing in BI dashboards.
-Analyze the provided Excel file and generate a comprehensive analysis with visualizations.
+Analyze the provided Excel file using code execution to extract and understand the data.
 
 IMPORTANT: The Excel file is provided as a container upload. To analyze it:
 1. The file path will be in /files/input/[id]/filename.xlsx format
@@ -103,42 +103,15 @@ IMPORTANT: The Excel file is provided as a container upload. To analyze it:
 3. If you encounter errors reading the file, try different approaches
 4. Analyze all sheets, columns, and data types
 5. Calculate key metrics and KPIs relevant to the data
-6. Create exactly {MAX_VISUALIZATIONS} visualizations for a C-level dashboard
+6. Identify patterns, trends, and insights
 
 Code execution tips:
 - Import only standard libraries: pandas, numpy, json, os, datetime
 - Do NOT import seaborn, matplotlib, or other visualization libraries
 - Focus on data extraction and calculation, not plotting
+- Print out key findings and metrics as you discover them
 
-{CHART_SELECTION_GUIDE}
-
-CRITICAL INSTRUCTIONS FOR FINAL OUTPUT:
-1. REGARDLESS of any errors during code execution, you MUST produce the final JSON
-2. After ALL code execution blocks, send ONE FINAL TEXT MESSAGE
-3. This final text message must contain ONLY the JSON object - no other text
-4. If you couldn't extract some data due to errors, use placeholder values
-5. NEVER end without sending the JSON output
-6. The JSON must follow this EXACT structure:
-
-{JSON_OUTPUT_STRUCTURE}
-
-Ensure:
-- All numeric arrays contain actual numbers, not strings
-- Use rgba() colors for better transparency control
-- Each visualization provides unique value
-- Insights are specific and actionable
-- Focus on what C-level executives care about: revenue, costs, efficiency, growth
-
-EXAMPLE OF YOUR FINAL OUTPUT:
-After all code execution, your LAST message should look exactly like this (but with real data):
-{{
-    "summary": "Portfolio analysis reveals...",
-    "key_metrics": [...],
-    "visualizations": [...6 chart configs...],
-    "data_quality": {{...}},
-    "recommendations": [...]
-}}
-"""
+Your goal is to thoroughly explore and understand the data, calculating relevant business metrics."""
 
 
 def get_user_prompt() -> str:
@@ -162,6 +135,27 @@ Even if you encountered errors or couldn't extract all data, you MUST still outp
 - At least 3 recommendations
 
 REMEMBER: Your analysis is NOT complete until you send the final JSON text block!"""
+
+
+def get_structured_output_prompt() -> str:
+    """Generate the prompt for structured output generation phase."""
+    return f"""Based on the Excel file analysis, provide a comprehensive structured output.
+
+{CHART_SELECTION_GUIDE}
+
+Include:
+- Executive summary (2-3 sentences focusing on key findings)
+- At least 3 key metrics with actual values, trends, and categories
+- Exactly {MAX_VISUALIZATIONS} Chart.js visualizations with:
+  - Appropriate chart types based on the data
+  - Real data arrays (numbers only)
+  - Professional color schemes using rgba() format
+  - Meaningful insights for each chart
+- Data quality assessment with actual row/column counts
+- At least 3 actionable business recommendations
+
+Focus on what C-level executives care about: revenue, costs, efficiency, growth, trends.
+Use the actual data values you discovered during analysis."""
 
 
 # Required keys for structured output validation

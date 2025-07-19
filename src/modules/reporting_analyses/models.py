@@ -56,7 +56,9 @@ class Analysis(Base):
     error_message = Column(Text, nullable=True)
 
     # Performance metrics
-    tokens_used = Column(Integer, nullable=True)
+    tokens_used = Column(Integer, nullable=True)  # Total tokens (input + output)
+    input_tokens = Column(Integer, nullable=True)  # Input tokens only
+    output_tokens = Column(Integer, nullable=True)  # Output tokens only
     processing_time_seconds = Column(Float, nullable=True)
 
     # Timestamps

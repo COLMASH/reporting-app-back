@@ -195,6 +195,13 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
             # Update analysis as completed
             analysis.status = AnalysisStatus.COMPLETED
             analysis.completed_at = datetime.now(UTC)
+            
+            # Update token usage
+            input_tokens = result.get("input_tokens", 0)
+            output_tokens = result.get("output_tokens", 0)
+            analysis.input_tokens = input_tokens
+            analysis.output_tokens = output_tokens
+            analysis.tokens_used = input_tokens + output_tokens
 
             # Get structured output if available
             structured_output = result.get("structured_output")
@@ -221,6 +228,9 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
                 analysis_id=str(analysis.id),
                 has_structured_output=bool(structured_output),
                 results_created=results_created,
+                input_tokens=input_tokens,
+                output_tokens=output_tokens,
+                total_tokens=analysis.tokens_used,
             )
         else:
             # Update analysis as failed

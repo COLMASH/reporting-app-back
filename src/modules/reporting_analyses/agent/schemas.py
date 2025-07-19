@@ -1,0 +1,174 @@
+"""
+Pydantic schemas for structured output from the Excel analyzer agent.
+Ensures compatibility with Chart.js data structures.
+"""
+
+from typing import Any, Literal, Optional
+
+from pydantic import BaseModel, Field
+
+
+class KeyMetric(BaseModel):
+    """Individual key metric from the analysis."""
+
+    name: str = Field(description="Metric name")
+    value: str = Field(description="Formatted value with units")
+    trend: Literal["up", "down", "stable"] = Field(description="Trend direction")
+    trend_value: str = Field(description="Percentage or absolute change")
+    category: Literal["revenue", "cost", "performance", "other"] = Field(
+        description="Metric category"
+    )
+
+
+class ChartDataset(BaseModel):
+    """Dataset for Chart.js visualization - matches Chart.js dataset structure."""
+
+    label: str = Field(description="Dataset name")
+    data: list[float | int] = Field(description="Numeric data points")
+    backgroundColor: str | list[str] = Field(
+        default="rgba(75, 192, 192, 0.6)",
+        description="Color or array of colors for bars/segments",
+    )
+    borderColor: str | list[str] = Field(
+        default="rgba(75, 192, 192, 1)",
+        description="Border color or array of colors",
+    )
+    borderWidth: int = Field(default=1, description="Border width in pixels")
+    # Additional Chart.js dataset properties
+    fill: bool = Field(default=False, description="Fill area under line")
+    tension: float = Field(default=0.1, description="Bezier curve tension (0 for straight lines)")
+    pointRadius: int = Field(default=3, description="Radius of point markers")
+    pointHoverRadius: int = Field(default=5, description="Radius of point markers on hover")
+
+
+class ChartData(BaseModel):
+    """Data structure for Chart.js - matches Chart.js data object."""
+
+    labels: list[str] = Field(description="Labels for data points (x-axis)")
+    datasets: list[ChartDataset] = Field(description="One or more datasets", min_items=1)
+
+
+class ChartPlugins(BaseModel):
+    """Chart.js plugins configuration."""
+
+    legend: dict[str, Any] = Field(
+        default={"position": "top", "display": True},
+        description="Legend configuration",
+    )
+    title: dict[str, Any] = Field(
+        default={"display": True, "text": "Chart Title"},
+        description="Title configuration",
+    )
+    tooltip: dict[str, Any] = Field(
+        default={"enabled": True, "mode": "index", "intersect": False},
+        description="Tooltip configuration",
+    )
+
+
+class ChartScales(BaseModel):
+    """Chart.js scales configuration."""
+
+    x: dict[str, Any] = Field(
+        default={"display": True, "grid": {"display": True}},
+        description="X-axis configuration",
+    )
+    y: dict[str, Any] = Field(
+        default={"display": True, "beginAtZero": True, "grid": {"display": True}},
+        description="Y-axis configuration",
+    )
+
+
+class ChartOptions(BaseModel):
+    """Chart.js options configuration - matches Chart.js options object."""
+
+    responsive: bool = Field(default=True, description="Resize chart on container resize")
+    maintainAspectRatio: bool = Field(
+        default=False, description="Maintain original aspect ratio"
+    )
+    aspectRatio: float = Field(default=2, description="Canvas aspect ratio")
+    plugins: ChartPlugins = Field(
+        default_factory=ChartPlugins, description="Plugin configurations"
+    )
+    scales: Optional[ChartScales] = Field(
+        default=None, description="Scales configuration (not used for pie/doughnut)"
+    )
+    animation: dict[str, Any] = Field(
+        default={"duration": 1000}, description="Animation configuration"
+    )
+    interaction: dict[str, Any] = Field(
+        default={"mode": "nearest", "intersect": True},
+        description="Interaction configuration",
+    )
+
+
+class Visualization(BaseModel):
+    """Individual visualization configuration for Chart.js."""
+
+    chart_type: Literal[
+        "bar",
+        "line",
+        "pie",
+        "doughnut",
+        "radar",
+        "polarArea",
+        "bubble",
+        "scatter",
+    ] = Field(description="Type of chart (note: horizontalBar is now bar with indexAxis)")
+    title: str = Field(description="Clear, descriptive chart title")
+    description: str = Field(description="What this chart shows and why it's valuable")
+    data: ChartData = Field(description="Chart data configuration")
+    options: ChartOptions = Field(description="Chart display options")
+    insights: list[str] = Field(
+        description="Key insights from this visualization", min_items=1, max_items=5
+    )
+
+    def model_post_init(self, __context: Any) -> None:
+        """Adjust options based on chart type."""
+        # Pie and doughnut charts don't use scales
+        if self.chart_type in ["pie", "doughnut", "polarArea"]:
+            self.options.scales = None
+        # For horizontal bar, we'd set indexAxis: 'y' in options
+        elif self.chart_type == "bar" and "horizontal" in self.title.lower():
+            if self.options.scales:
+                self.options.scales.x.dict()["position"] = "bottom"
+                self.options.scales.y.dict()["position"] = "left"
+
+
+class DataQuality(BaseModel):
+    """Data quality assessment results."""
+
+    total_rows: int = Field(description="Total number of rows analyzed")
+    total_columns: int = Field(description="Total number of columns analyzed")
+    sheets_analyzed: list[str] = Field(description="Names of sheets analyzed")
+    missing_values: dict[str, int] = Field(
+        description="Count of missing values per column", default_factory=dict
+    )
+    data_types: dict[str, str] = Field(
+        description="Data type per column", default_factory=dict
+    )
+    quality_score: Literal["high", "medium", "low"] = Field(
+        description="Overall data quality assessment"
+    )
+    issues: list[str] = Field(description="Data quality issues found", default_factory=list)
+
+
+class ExcelAnalysisOutput(BaseModel):
+    """Complete structured output from Excel analysis."""
+
+    summary: str = Field(
+        description="Executive summary of findings (2-3 sentences)",
+        min_length=50,
+        max_length=500,
+    )
+    key_metrics: list[KeyMetric] = Field(
+        description="Important KPIs extracted from data", min_items=3, max_items=10
+    )
+    visualizations: list[Visualization] = Field(
+        description="Chart.js visualization configurations",
+        min_items=6,
+        max_items=6,
+    )
+    data_quality: DataQuality = Field(description="Data quality assessment")
+    recommendations: list[str] = Field(
+        description="Actionable business recommendations", min_items=3, max_items=5
+    )

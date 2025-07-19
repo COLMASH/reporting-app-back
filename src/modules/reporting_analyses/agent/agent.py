@@ -35,7 +35,7 @@ class GraphState(TypedDict):
 
 
 def _extract_text_from_response(response: Any) -> str:
-    """Extract text content from Claude's response."""
+    """Extract text content from Claude's response, including code execution results."""
     if not hasattr(response, "content"):
         logger.warning("Response has no content attribute")
         return ""
@@ -45,30 +45,65 @@ def _extract_text_from_response(response: Any) -> str:
 
     if isinstance(response.content, list):
         text_parts = []
-        for i, block in enumerate(response.content):
-            block_info = {
-                "block_type": type(block).__name__,
-                "has_text": hasattr(block, "text"),
-                "has_type": hasattr(block, "type"),
-                "block_type_attr": getattr(block, "type", None) if hasattr(block, "type") else None,
-            }
+        code_outputs = []  # Collect code execution outputs
 
-            # Only log first few blocks and last few blocks to avoid spam
+        for i, block in enumerate(response.content):
+            block_type = type(block).__name__
+
+            # Log block info for debugging
             if i < 3 or i >= len(response.content) - 3:
-                logger.debug(f"Processing block {i}/{len(response.content)}", **block_info)
-            # Handle text blocks
-            if hasattr(block, "text") and block.text is not None:
+                logger.info(
+                    f"Block {i}/{len(response.content)}",
+                    block_type=block_type,
+                    has_type_attr=hasattr(block, "type"),
+                    type_attr=getattr(block, "type", None),
+                )
+
+            # Handle different block types
+            if hasattr(block, "type"):
+                block_type_attr = getattr(block, "type", "")
+
+                # Text blocks
+                if block_type_attr == "text" and hasattr(block, "text"):
+                    text_parts.append(str(block.text))
+
+                # Code execution result blocks
+                elif block_type_attr == "code_execution_tool_result":
+                    # Extract stdout from code execution
+                    if hasattr(block, "stdout") and block.stdout:
+                        code_outputs.append(str(block.stdout))
+                        logger.info(f"Found code output in block {i}", length=len(block.stdout))
+                    # Also check for content attribute
+                    elif hasattr(block, "content"):
+                        if isinstance(block.content, str):
+                            code_outputs.append(block.content)
+                        elif isinstance(block.content, list):
+                            for content_item in block.content:
+                                if hasattr(content_item, "type") and content_item.type == "text":
+                                    if hasattr(content_item, "text"):
+                                        code_outputs.append(str(content_item.text))
+
+            # Fallback for blocks without type attribute
+            elif hasattr(block, "text") and block.text:
                 text_parts.append(str(block.text))
-            elif isinstance(block, dict) and "text" in block and block["text"] is not None:
-                text_parts.append(str(block["text"]))
-            # Skip tool use blocks - they don't contain the final output
-            elif hasattr(block, "type") and getattr(block, "type", None) in [
-                "tool_use",
-                "server_tool_use",
-            ]:
-                logger.debug(f"Skipping tool use block {i}")
-                continue
-        return "".join(text_parts)
+            elif isinstance(block, dict):
+                if "text" in block and block["text"]:
+                    text_parts.append(str(block["text"]))
+                elif "stdout" in block and block["stdout"]:
+                    code_outputs.append(str(block["stdout"]))
+
+        # Combine text and code outputs
+        # Code outputs typically contain the JSON result
+        all_text = "".join(text_parts) + "".join(code_outputs)
+
+        logger.info(
+            "Text extraction summary",
+            text_parts_count=len(text_parts),
+            code_outputs_count=len(code_outputs),
+            total_length=len(all_text),
+        )
+
+        return all_text
 
     # Log the actual content type for debugging
     logger.warning(
@@ -178,6 +213,21 @@ def create_excel_analyzer_agent() -> Any:
 
             # Extract text content from response
             analysis_text = _extract_text_from_response(response)
+
+            # If no text was extracted, log detailed block information
+            if (
+                not analysis_text
+                and hasattr(response, "content")
+                and isinstance(response.content, list)
+            ):
+                logger.warning(
+                    "No text extracted from response blocks",
+                    total_blocks=len(response.content),
+                    block_types=[
+                        getattr(block, "type", type(block).__name__)
+                        for block in response.content[:5]
+                    ],
+                )
 
             # Log extracted text for debugging
             logger.info(

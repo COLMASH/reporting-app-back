@@ -87,6 +87,8 @@ JSON_OUTPUT_STRUCTURE = """
         "Actionable business recommendation 3"
     ]
 }}
+
+IMPORTANT: Even if data extraction fails, populate the JSON with whatever information you could gather. Use placeholder data if necessary, but ALWAYS return a valid JSON structure.
 """
 
 
@@ -95,21 +97,28 @@ def get_system_prompt() -> str:
     return f"""You are an expert data analyst specializing in BI dashboards.
 Analyze the provided Excel file and generate a comprehensive analysis with visualizations.
 
-Use the code execution tool to:
-1. Load and thoroughly examine the Excel file (all sheets, columns, data types)
-2. Handle multiple sheets if present - analyze each sheet's purpose
-3. Calculate key metrics and KPIs relevant to the data
-4. Clean data if needed (handle missing values, outliers)
-5. Identify patterns, trends, correlations, and anomalies
-6. Determine the {MAX_VISUALIZATIONS} most valuable visualizations for a C-level dashboard
+IMPORTANT: The Excel file is provided as a container upload. To analyze it:
+1. The file path will be in /files/input/[id]/filename.xlsx format
+2. Use pandas to read the Excel file: pd.read_excel(file_path)
+3. If you encounter errors reading the file, try different approaches
+4. Analyze all sheets, columns, and data types
+5. Calculate key metrics and KPIs relevant to the data
+6. Create exactly {MAX_VISUALIZATIONS} visualizations for a C-level dashboard
+
+Code execution tips:
+- Import only standard libraries: pandas, numpy, json, os, datetime
+- Do NOT import seaborn, matplotlib, or other visualization libraries
+- Focus on data extraction and calculation, not plotting
 
 {CHART_SELECTION_GUIDE}
 
-CRITICAL INSTRUCTIONS:
-1. Even if you encounter errors during code execution, you MUST still produce the final JSON output
-2. Your FINAL message must be a text block containing ONLY the JSON object
-3. Do NOT include any explanatory text before or after the JSON
-4. The JSON must follow this EXACT structure:
+CRITICAL INSTRUCTIONS FOR FINAL OUTPUT:
+1. REGARDLESS of any errors during code execution, you MUST produce the final JSON
+2. After ALL code execution blocks, send ONE FINAL TEXT MESSAGE
+3. This final text message must contain ONLY the JSON object - no other text
+4. If you couldn't extract some data due to errors, use placeholder values
+5. NEVER end without sending the JSON output
+6. The JSON must follow this EXACT structure:
 
 {JSON_OUTPUT_STRUCTURE}
 
@@ -124,13 +133,17 @@ Ensure:
 
 def get_user_prompt() -> str:
     """Generate the user prompt for Excel analysis."""
-    return f"""Analyze this Excel file comprehensively. Use code exec to:
-1. Read all sheets and understand the data structure
-2. Calculate relevant business metrics (handle any import errors gracefully)
-3. Create exactly {MAX_VISUALIZATIONS} visualizations that best represent the data
-4. IMPORTANT: After all code execution, you MUST end with a text message containing ONLY the JSON output
-5. The final text block should contain the complete JSON structure with actual data from your analysis
-6. Do not include any explanatory text - just the JSON object"""
+    return f"""Analyze this Excel file comprehensively. Follow these steps:
+
+1. Use code execution to explore the Excel file structure
+2. Extract data from all sheets (handle errors gracefully)
+3. Calculate business metrics from the available data
+4. Design exactly {MAX_VISUALIZATIONS} Chart.js visualizations
+
+FINAL OUTPUT REQUIREMENT:
+After ALL code execution is complete, you MUST send a final text message that contains ONLY the JSON output. This is mandatory - even if you encountered errors, produce the JSON with whatever data you could extract.
+
+The JSON should be the ONLY content in your final message - no explanations, no additional text."""
 
 
 # Required keys for structured output validation

@@ -20,9 +20,7 @@ class LoggingMiddleware(BaseHTTPMiddleware):
     Similar to NestJS's built-in request logging.
     """
 
-    async def dispatch(
-        self, request: Request, call_next: Callable[[Request], Awaitable[Response]]
-    ) -> Response:
+    async def dispatch(self, request: Request, call_next: Callable[[Request], Awaitable[Response]]) -> Response:
         # Generate unique request ID
         request_id = str(uuid.uuid4())
 

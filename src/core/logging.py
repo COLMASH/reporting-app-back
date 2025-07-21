@@ -33,9 +33,7 @@ def configure_logging(level: str | None = None) -> None:
     log_level = level or settings.log_level
 
     # Configure standard logging
-    logging.basicConfig(
-        format="%(message)s", stream=sys.stdout, level=getattr(logging, log_level.upper())
-    )
+    logging.basicConfig(format="%(message)s", stream=sys.stdout, level=getattr(logging, log_level.upper()))
 
     # Configure structlog
     processors: list[Any] = [

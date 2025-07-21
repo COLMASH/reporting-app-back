@@ -88,11 +88,7 @@ def _extract_text_from_response(response: Any) -> str:
                         text_value=block.get("text", "NO_TEXT"),
                         text_empty=block.get("text") == "",
                         content_type=type(block.get("content")).__name__,
-                        content_value=(
-                            str(block.get("content"))[:200]
-                            if block.get("content")
-                            else "NO_CONTENT"
-                        ),
+                        content_value=(str(block.get("content"))[:200] if block.get("content") else "NO_CONTENT"),
                     )
 
                     # Extract text from code execution result
@@ -103,9 +99,7 @@ def _extract_text_from_response(response: Any) -> str:
                         # Extract stdout if present
                         if "stdout" in content_dict and content_dict["stdout"]:
                             code_outputs.append(str(content_dict["stdout"]))
-                            logger.info(
-                                f"Found stdout in block {i}", length=len(content_dict["stdout"])
-                            )
+                            logger.info(f"Found stdout in block {i}", length=len(content_dict["stdout"]))
 
                         # Log stderr for debugging (but don't include in outputs)
                         if "stderr" in content_dict and content_dict["stderr"]:
@@ -120,9 +114,7 @@ def _extract_text_from_response(response: Any) -> str:
                         logger.info(f"Found text in block {i}", length=len(block["text"]))
                     elif "stdout" in block and block["stdout"]:
                         code_outputs.append(str(block["stdout"]))
-                        logger.info(
-                            f"Found direct stdout in block {i}", length=len(block["stdout"])
-                        )
+                        logger.info(f"Found direct stdout in block {i}", length=len(block["stdout"]))
 
                 # Tool use blocks (skip these)
                 elif block_type_str in ["tool_use", "server_tool_use"]:
@@ -243,9 +235,7 @@ def create_excel_analyzer_agent() -> Any:
                 has_usage_metadata=hasattr(analysis_response, "usage_metadata"),
                 has_response_metadata=hasattr(analysis_response, "response_metadata"),
                 has_usage=hasattr(analysis_response, "usage"),
-                dir_attrs=[attr for attr in dir(analysis_response) if not attr.startswith("_")][
-                    :20
-                ],
+                dir_attrs=[attr for attr in dir(analysis_response) if not attr.startswith("_")][:20],
             )
 
             # Extract token usage - try multiple possible locations
@@ -295,10 +285,7 @@ def create_excel_analyzer_agent() -> Any:
             structured_messages = [
                 SystemMessage(content=get_structured_output_prompt()),
                 HumanMessage(
-                    content=(
-                        f"Based on my analysis of the Excel file, "
-                        f"here's what I found:\n\n{analysis_text}"
-                    )
+                    content=(f"Based on my analysis of the Excel file, " f"here's what I found:\n\n{analysis_text}")
                 ),
             ]
 
@@ -356,18 +343,14 @@ def create_excel_analyzer_agent() -> Any:
 
             # Convert Pydantic model to dict
             structured_dict = (
-                structured_response.model_dump()
-                if hasattr(structured_response, "model_dump")
-                else structured_response
+                structured_response.model_dump() if hasattr(structured_response, "model_dump") else structured_response
             )
 
             logger.info(
                 "Analysis completed with structured output",
                 has_structured_output=bool(structured_dict),
                 num_metrics=len(structured_dict.get("key_metrics", [])) if structured_dict else 0,
-                num_visualizations=(
-                    len(structured_dict.get("visualizations", [])) if structured_dict else 0
-                ),
+                num_visualizations=(len(structured_dict.get("visualizations", [])) if structured_dict else 0),
                 total_input_tokens=input_tokens,
                 total_output_tokens=output_tokens,
             )

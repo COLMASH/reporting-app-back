@@ -128,9 +128,7 @@ def _create_results_from_structured_output(
 
     # Create recommendations result
     if structured_output.get("recommendations"):
-        recommendations_text = "\n".join(
-            [f"• {rec}" for rec in structured_output["recommendations"]]
-        )
+        recommendations_text = "\n".join([f"• {rec}" for rec in structured_output["recommendations"]])
         _create_result(
             db=db,
             analysis_id=analysis_id,
@@ -207,9 +205,7 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
             structured_output = result.get("structured_output")
 
             if structured_output:
-                results_created = _create_results_from_structured_output(
-                    db, cast(UUID, analysis.id), structured_output
-                )
+                results_created = _create_results_from_structured_output(db, cast(UUID, analysis.id), structured_output)
             else:
                 # Fallback to simple text result if no structured output
                 _create_result(
@@ -292,12 +288,7 @@ def get_file_analyses(db: Session, file_id: UUID) -> list[Analysis]:
     Returns:
         list[Analysis]: List of analyses ordered by creation date (newest first)
     """
-    return (
-        db.query(Analysis)
-        .filter(Analysis.file_id == file_id)
-        .order_by(Analysis.created_at.desc())
-        .all()
-    )
+    return db.query(Analysis).filter(Analysis.file_id == file_id).order_by(Analysis.created_at.desc()).all()
 
 
 def get_user_analyses(db: Session, user_id: UUID) -> list[Analysis]:
@@ -311,13 +302,7 @@ def get_user_analyses(db: Session, user_id: UUID) -> list[Analysis]:
     Returns:
         list[Analysis]: List of analyses ordered by creation date (newest first)
     """
-    return (
-        db.query(Analysis)
-        .join(File)
-        .filter(File.user_id == user_id)
-        .order_by(Analysis.created_at.desc())
-        .all()
-    )
+    return db.query(Analysis).join(File).filter(File.user_id == user_id).order_by(Analysis.created_at.desc()).all()
 
 
 # TODO: Implement cancel_analysis function

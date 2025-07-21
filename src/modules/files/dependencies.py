@@ -22,10 +22,7 @@ def validate_file_upload(file: UploadFile) -> UploadFile:
         if f".{extension}" not in settings.allowed_extensions:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=(
-                    f"Invalid file type. Allowed extensions: "
-                    f"{', '.join(settings.allowed_extensions)}"
-                ),
+                detail=(f"Invalid file type. Allowed extensions: " f"{', '.join(settings.allowed_extensions)}"),
             )
 
     # Check file size (if content_length is available)
@@ -46,9 +43,7 @@ async def verify_file_ownership(file_id: UUID, current_user: CurrentUser, db: Db
     file = db.query(File).filter(File.id == file_id, File.user_id == current_user.id).first()
 
     if not file:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="File not found or access denied"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="File not found or access denied")
 
     return file
 

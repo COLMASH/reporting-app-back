@@ -84,9 +84,7 @@ async def upload_file(
         return file_metadata
 
     except Exception as e:
-        logger.error(
-            "File upload failed", user_id=str(current_user.id), filename=file.filename, error=str(e)
-        )
+        logger.error("File upload failed", user_id=str(current_user.id), filename=file.filename, error=str(e))
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to upload file: {str(e)}",

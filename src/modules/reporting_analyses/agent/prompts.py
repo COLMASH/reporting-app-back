@@ -14,14 +14,26 @@ MAX_TOKENS = 64000  # For detailed JSON output
 CHART_SELECTION_GUIDE = """
 Chart Type Selection Guide:
 - **Bar Chart**: Compare discrete categories, show rankings, display counts
+  - Data format: Simple numbers array [10, 20, 30]
+  - Requires: labels array
 - **Line Chart**: Show trends over time, display continuous data changes
+  - Data format: Simple numbers array [10, 20, 30]
+  - Requires: labels array
 - **Pie/Doughnut**: Show composition/parts of a whole (limit to 5-7 segments)
+  - Data format: Simple numbers array [10, 20, 30]
+  - Requires: labels array
 - **Radar Chart**: Compare multiple variables across categories
+  - Data format: Simple numbers array [10, 20, 30]
+  - Requires: labels array
 - **Polar Area**: Similar to pie but emphasize differences in values
+  - Data format: Simple numbers array [10, 20, 30]
+  - Requires: labels array
 - **Bubble Chart**: Show relationships between 3 variables (x, y, size)
+  - Data format: Objects array [{x: 10, y: 20, r: 5}, {x: 15, y: 25, r: 10}]
+  - Labels: Not required (set to null)
 - **Scatter Plot**: Show correlations between two variables
-- **Horizontal Bar**: Better for long category names or rankings
-- **Mixed Charts**: Combine bar and line for different metrics on same view
+  - Data format: Objects array [{x: 10, y: 20}, {x: 15, y: 25}]
+  - Labels: Not required (set to null)
 
 Color Palette (Professional Dashboard):
 - Primary: ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b"]
@@ -47,11 +59,13 @@ JSON_OUTPUT_STRUCTURE = """
             "title": "Clear, descriptive chart title",
             "description": "What this chart shows and why it's valuable",
             "data": {{
-                "labels": ["Label1", "Label2", ...],
+                "labels": ["Label1", "Label2", ...],  // null for scatter/bubble charts
                 "datasets": [
                     {{
                         "label": "Dataset name",
-                        "data": [value1, value2, ...],
+                        "data": [10, 20, 30],  // For bar/line/pie/etc
+                        // OR for bubble: [{{"x": 10, "y": 20, "r": 5}}, {{"x": 15, "y": 25, "r": 10}}]
+                        // OR for scatter: [{{"x": 10, "y": 20}}, {{"x": 15, "y": 25}}]
                         "backgroundColor": "rgba(75, 192, 192, 0.6)",
                         "borderColor": "rgba(75, 192, 192, 1)",
                         "borderWidth": 1

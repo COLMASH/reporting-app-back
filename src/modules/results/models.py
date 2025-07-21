@@ -26,9 +26,7 @@ class Result(Base):
     __tablename__ = "results"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    analysis_id = Column(
-        UUID(as_uuid=True), ForeignKey("reporting_analyses.id", ondelete="CASCADE"), nullable=False
-    )
+    analysis_id = Column(UUID(as_uuid=True), ForeignKey("reporting_analyses.id", ondelete="CASCADE"), nullable=False)
 
     # Result metadata
     # Result types: "visualization", "metrics", "summary", "data_quality", "recommendations"

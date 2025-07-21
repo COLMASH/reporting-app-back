@@ -38,9 +38,7 @@ class FileNotFoundError(FileError):
     """File not found error."""
 
     def __init__(self, file_id: str):
-        super().__init__(
-            detail=f"File with id {file_id} not found", status_code=status.HTTP_404_NOT_FOUND
-        )
+        super().__init__(detail=f"File with id {file_id} not found", status_code=status.HTTP_404_NOT_FOUND)
 
 
 class InvalidFileTypeError(FileError):
@@ -84,9 +82,7 @@ class AnalysisFailedError(AnalysisError):
     """Analysis processing failed error."""
 
     def __init__(self, reason: str):
-        super().__init__(
-            detail=f"Analysis failed: {reason}", status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
-        )
+        super().__init__(detail=f"Analysis failed: {reason}", status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # Resource Errors
@@ -120,9 +116,7 @@ class ExternalServiceError(BaseError):
     """External service integration errors."""
 
     def __init__(self, service: str, reason: str):
-        super().__init__(
-            detail=f"{service} error: {reason}", status_code=status.HTTP_503_SERVICE_UNAVAILABLE
-        )
+        super().__init__(detail=f"{service} error: {reason}", status_code=status.HTTP_503_SERVICE_UNAVAILABLE)
 
 
 class SupabaseError(ExternalServiceError):

@@ -23,9 +23,7 @@ async def create_result(
 ) -> schemas.ResultResponse:
     """Create a new result for an analysis."""
     # TODO: Implement result creation endpoint
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Result creation not yet implemented"
-    )
+    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Result creation not yet implemented")
 
 
 # TODO: Implement GET /results/{result_id} endpoint
@@ -37,9 +35,7 @@ async def get_result(
 ) -> schemas.ResultResponse:
     """Get result details."""
     # TODO: Implement result retrieval endpoint
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Result retrieval not yet implemented"
-    )
+    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Result retrieval not yet implemented")
 
 
 # TODO: Implement GET /results/analysis/{analysis_id} endpoint
@@ -66,6 +62,4 @@ async def delete_result(
 ) -> None:
     """Delete a result."""
     # TODO: Implement result deletion endpoint
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Result deletion not yet implemented"
-    )
+    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Result deletion not yet implemented")

@@ -173,9 +173,7 @@ class StorageClient:
             directory = "/".join(file_path.split("/")[:-1])
             filename = file_path.split("/")[-1]
 
-            response = self.client.storage.from_(self.bucket_name).list(
-                path=directory, options={"limit": 100}
-            )
+            response = self.client.storage.from_(self.bucket_name).list(path=directory, options={"limit": 100})
 
             # Check if our file is in the list
             return any(file["name"] == filename for file in response)

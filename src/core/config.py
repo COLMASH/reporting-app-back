@@ -13,9 +13,7 @@ class Settings(BaseSettings):
 
     # Application
     app_name: str = Field(default="Reporting Backend", description="Application name")
-    environment: str = Field(
-        default="development", description="Environment (development, staging, production)"
-    )
+    environment: str = Field(default="development", description="Environment (development, staging, production)")
     debug: bool = Field(default=False, description="Debug mode", alias="APP_DEBUG")
     log_level: str = Field(default="INFO", description="Logging level")
 
@@ -26,48 +24,36 @@ class Settings(BaseSettings):
     )
 
     # Supabase
-    supabase_url: str = Field(
-        default="https://placeholder.supabase.co", description="Supabase project URL"
-    )
+    supabase_url: str = Field(default="https://placeholder.supabase.co", description="Supabase project URL")
     supabase_anon_key: str = Field(default="placeholder-key", description="Supabase anonymous key")
     supabase_bucket_name: str = Field(
         default="excel-files", description="Supabase storage bucket name for file uploads"
     )
 
     # Authentication
-    jwt_secret: str = Field(
-        default="development-secret-key-change-in-production", description="JWT secret key"
-    )
+    jwt_secret: str = Field(default="development-secret-key-change-in-production", description="JWT secret key")
     jwt_algorithm: str = Field(default="HS256", description="JWT algorithm")
     jwt_expiration_minutes: int = Field(default=30, description="JWT token expiration in minutes")
 
     # CORS
-    backend_cors_origins: list[str] = Field(
-        default=["http://localhost:3000"], description="Allowed CORS origins"
-    )
+    backend_cors_origins: list[str] = Field(default=["http://localhost:3000"], description="Allowed CORS origins")
 
     # Redis
     redis_url: str = Field(default="redis://localhost:6379", description="Redis connection URL")
 
     # AI/LLM
     openai_api_key: str = Field(default="", description="OpenAI API key for LLM operations")
-    anthropic_api_key: str = Field(
-        default="", description="Anthropic API key for Claude operations"
-    )
+    anthropic_api_key: str = Field(default="", description="Anthropic API key for Claude operations")
 
     # File Upload
     max_upload_size_mb: int = Field(default=50, description="Maximum file upload size in MB")
-    allowed_extensions: list[str] = Field(
-        default=[".xlsx", ".xls"], description="Allowed file extensions"
-    )
+    allowed_extensions: list[str] = Field(default=[".xlsx", ".xls"], description="Allowed file extensions")
 
     # Rate Limiting
     rate_limit_requests: int = Field(default=100, description="Rate limit requests per period")
     rate_limit_period: int = Field(default=60, description="Rate limit period in seconds")
 
-    model_config = SettingsConfigDict(
-        env_file=".env", env_file_encoding="utf-8", case_sensitive=False, extra="ignore"
-    )
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", case_sensitive=False, extra="ignore")
 
     @field_validator("backend_cors_origins", mode="before")
     @classmethod

@@ -5,7 +5,7 @@ Ensures compatibility with Chart.js data structures.
 
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 class KeyMetric(BaseModel):
@@ -15,16 +15,24 @@ class KeyMetric(BaseModel):
     value: str = Field(description="Formatted value with units")
     trend: Literal["up", "down", "stable"] = Field(description="Trend direction")
     trend_value: str = Field(description="Percentage or absolute change")
-    category: Literal["revenue", "cost", "performance", "other"] = Field(
-        description="Metric category"
-    )
+    category: Literal["revenue", "cost", "performance", "other"] = Field(description="Metric category")
+
+
+class BubbleDataPoint(BaseModel):
+    """Data point for bubble/scatter charts."""
+
+    x: float | int = Field(description="X coordinate")
+    y: float | int = Field(description="Y coordinate")
+    r: float | int | None = Field(default=None, description="Radius (for bubble charts)")
 
 
 class ChartDataset(BaseModel):
     """Dataset for Chart.js visualization - matches Chart.js dataset structure."""
 
     label: str = Field(description="Dataset name")
-    data: list[float | int] = Field(description="Numeric data points")
+    data: list[float | int | BubbleDataPoint | dict[str, Any]] = Field(
+        description="Data points - numbers for most charts, objects for bubble/scatter"
+    )
     backgroundColor: str | list[str] = Field(
         default="rgba(75, 192, 192, 0.6)",
         description="Color or array of colors for bars/segments",
@@ -44,8 +52,19 @@ class ChartDataset(BaseModel):
 class ChartData(BaseModel):
     """Data structure for Chart.js - matches Chart.js data object."""
 
-    labels: list[str] = Field(description="Labels for data points (x-axis)")
+    labels: list[str] | None = Field(
+        default=None,
+        description="Labels for data points (x-axis) - optional for scatter/bubble charts",
+    )
     datasets: list[ChartDataset] = Field(description="One or more datasets")
+
+    @field_validator("labels")
+    @classmethod
+    def validate_labels(cls, v: list[str] | None) -> list[str] | None:
+        """Ensure labels is either None or a non-empty list."""
+        if v is not None and len(v) == 0:
+            return None
+        return v
 
 
 class ChartPlugins(BaseModel):
@@ -85,12 +104,8 @@ class ChartOptions(BaseModel):
     maintainAspectRatio: bool = Field(default=False, description="Maintain original aspect ratio")
     aspectRatio: float = Field(default=2, description="Canvas aspect ratio")
     plugins: ChartPlugins = Field(default_factory=ChartPlugins, description="Plugin configurations")
-    scales: ChartScales | None = Field(
-        default=None, description="Scales configuration (not used for pie/doughnut)"
-    )
-    animation: dict[str, Any] = Field(
-        default={"duration": 1000}, description="Animation configuration"
-    )
+    scales: ChartScales | None = Field(default=None, description="Scales configuration (not used for pie/doughnut)")
+    animation: dict[str, Any] = Field(default={"duration": 1000}, description="Animation configuration")
     interaction: dict[str, Any] = Field(
         default={"mode": "nearest", "intersect": True},
         description="Interaction configuration",
@@ -134,13 +149,9 @@ class DataQuality(BaseModel):
     total_rows: int = Field(description="Total number of rows analyzed")
     total_columns: int = Field(description="Total number of columns analyzed")
     sheets_analyzed: list[str] = Field(description="Names of sheets analyzed")
-    missing_values: dict[str, int] = Field(
-        description="Count of missing values per column", default_factory=dict
-    )
+    missing_values: dict[str, int] = Field(description="Count of missing values per column", default_factory=dict)
     data_types: dict[str, str] = Field(description="Data type per column", default_factory=dict)
-    quality_score: Literal["high", "medium", "low"] = Field(
-        description="Overall data quality assessment"
-    )
+    quality_score: Literal["high", "medium", "low"] = Field(description="Overall data quality assessment")
     issues: list[str] = Field(description="Data quality issues found", default_factory=list)
 
 
@@ -152,13 +163,7 @@ class ExcelAnalysisOutput(BaseModel):
         min_length=50,
         max_length=500,
     )
-    key_metrics: list[KeyMetric] = Field(
-        description="Important KPIs extracted from data (3-10 metrics)"
-    )
-    visualizations: list[Visualization] = Field(
-        description="Chart.js visualization configurations (exactly 6)"
-    )
+    key_metrics: list[KeyMetric] = Field(description="Important KPIs extracted from data (3-10 metrics)")
+    visualizations: list[Visualization] = Field(description="Chart.js visualization configurations (exactly 6)")
     data_quality: DataQuality = Field(description="Data quality assessment")
-    recommendations: list[str] = Field(
-        description="Actionable business recommendations (3-5 recommendations)"
-    )
+    recommendations: list[str] = Field(description="Actionable business recommendations (3-5 recommendations)")

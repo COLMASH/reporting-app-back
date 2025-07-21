@@ -236,10 +236,51 @@ def create_excel_analyzer_agent() -> Any:
             logger.info("Starting Phase 1: Excel analysis with code execution")
             analysis_response = base_model.invoke(analysis_messages)
 
-            # Extract token usage
+            # Debug: Log all response attributes
+            logger.info(
+                "Analysis response attributes",
+                response_type=type(analysis_response).__name__,
+                has_usage_metadata=hasattr(analysis_response, "usage_metadata"),
+                has_response_metadata=hasattr(analysis_response, "response_metadata"),
+                has_usage=hasattr(analysis_response, "usage"),
+                dir_attrs=[attr for attr in dir(analysis_response) if not attr.startswith("_")][
+                    :20
+                ],
+            )
+
+            # Extract token usage - try multiple possible locations
             if hasattr(analysis_response, "usage_metadata"):
-                input_tokens += getattr(analysis_response.usage_metadata, "input_tokens", 0)
-                output_tokens += getattr(analysis_response.usage_metadata, "output_tokens", 0)
+                usage_meta = analysis_response.usage_metadata
+                input_tokens += getattr(usage_meta, "input_tokens", 0)
+                output_tokens += getattr(usage_meta, "output_tokens", 0)
+                logger.info(
+                    "Found usage_metadata",
+                    input_tokens=getattr(usage_meta, "input_tokens", 0),
+                    output_tokens=getattr(usage_meta, "output_tokens", 0),
+                )
+            elif hasattr(analysis_response, "response_metadata"):
+                # Check if token info is in response_metadata
+                resp_meta = analysis_response.response_metadata
+                if isinstance(resp_meta, dict):
+                    usage = resp_meta.get("usage", {})
+                    if usage:
+                        input_tokens += usage.get("input_tokens", 0)
+                        output_tokens += usage.get("output_tokens", 0)
+                        logger.info(
+                            "Found usage in response_metadata",
+                            input_tokens=usage.get("input_tokens", 0),
+                            output_tokens=usage.get("output_tokens", 0),
+                        )
+                    # Also check token_usage key
+                    token_usage = resp_meta.get("token_usage", {})
+                    if token_usage:
+                        input_tokens += token_usage.get("input_tokens", 0)
+                        output_tokens += token_usage.get("output_tokens", 0)
+                        logger.info(
+                            "Found token_usage in response_metadata",
+                            input_tokens=token_usage.get("input_tokens", 0),
+                            output_tokens=token_usage.get("output_tokens", 0),
+                        )
 
             # Extract analysis text
             analysis_text = _extract_text_from_response(analysis_response)
@@ -267,11 +308,51 @@ def create_excel_analyzer_agent() -> Any:
             # Extract token usage from phase 2
             phase2_input = 0
             phase2_output = 0
+
+            # Debug: Log structured response attributes
+            logger.info(
+                "Structured response attributes",
+                response_type=type(structured_response).__name__,
+                has_usage_metadata=hasattr(structured_response, "usage_metadata"),
+                has_response_metadata=hasattr(structured_response, "response_metadata"),
+                has_usage=hasattr(structured_response, "usage"),
+            )
+
             if hasattr(structured_response, "usage_metadata"):
-                phase2_input = getattr(structured_response.usage_metadata, "input_tokens", 0)
-                phase2_output = getattr(structured_response.usage_metadata, "output_tokens", 0)
-                input_tokens += phase2_input
-                output_tokens += phase2_output
+                usage_meta = structured_response.usage_metadata
+                phase2_input = getattr(usage_meta, "input_tokens", 0)
+                phase2_output = getattr(usage_meta, "output_tokens", 0)
+                logger.info(
+                    "Phase 2: Found usage_metadata",
+                    input_tokens=phase2_input,
+                    output_tokens=phase2_output,
+                )
+            elif hasattr(structured_response, "response_metadata"):
+                # Check if token info is in response_metadata
+                resp_meta = structured_response.response_metadata
+                if isinstance(resp_meta, dict):
+                    usage = resp_meta.get("usage", {})
+                    if usage:
+                        phase2_input = usage.get("input_tokens", 0)
+                        phase2_output = usage.get("output_tokens", 0)
+                        logger.info(
+                            "Phase 2: Found usage in response_metadata",
+                            input_tokens=phase2_input,
+                            output_tokens=phase2_output,
+                        )
+                    # Also check token_usage key
+                    token_usage = resp_meta.get("token_usage", {})
+                    if token_usage:
+                        phase2_input = token_usage.get("input_tokens", 0)
+                        phase2_output = token_usage.get("output_tokens", 0)
+                        logger.info(
+                            "Phase 2: Found token_usage in response_metadata",
+                            input_tokens=phase2_input,
+                            output_tokens=phase2_output,
+                        )
+
+            input_tokens += phase2_input
+            output_tokens += phase2_output
 
             # Convert Pydantic model to dict
             structured_dict = (

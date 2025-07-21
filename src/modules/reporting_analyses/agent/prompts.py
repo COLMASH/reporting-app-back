@@ -123,7 +123,7 @@ def get_user_prompt() -> str:
 1. Use code execution to explore the Excel file structure
 2. Extract data from all sheets (handle errors gracefully)
 3. Calculate business metrics from the available data
-4. Design exactly {MAX_VISUALIZATIONS} Chart.js visualizations
+4. Design minimum {MAX_VISUALIZATIONS} Chart.js visualizations
 
 MANDATORY FINAL STEP - DO NOT SKIP:
 After ALL code execution blocks are complete, you MUST send ONE FINAL TEXT MESSAGE.
@@ -132,7 +132,7 @@ This final message must contain ONLY the complete JSON object - nothing else.
 Even if you encountered errors or couldn't extract all data, you MUST still output the JSON with:
 - Summary based on what you found
 - At least 3 key metrics (use placeholder values if needed)
-- Exactly {MAX_VISUALIZATIONS} visualizations (create from any data available)
+- Minimum {MAX_VISUALIZATIONS} visualizations (create from any data available)
 - Data quality assessment
 - At least 3 recommendations
 
@@ -148,7 +148,7 @@ def get_structured_output_prompt() -> str:
 Include:
 - Executive summary (2-3 sentences focusing on key findings)
 - At least 3 key metrics with actual values, trends, and categories
-- Exactly {MAX_VISUALIZATIONS} Chart.js visualizations with:
+- Minimum {MAX_VISUALIZATIONS} Chart.js visualizations with:
   - Appropriate chart types based on the data
   - Real data arrays (numbers only)
   - Professional color schemes using rgba() format

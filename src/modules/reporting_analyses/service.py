@@ -173,7 +173,7 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
         file_id=file_id,
         parameters=parameters,
         status=AnalysisStatus.IN_PROGRESS,
-        started_at=datetime.now(UTC),
+        started_at=datetime.now(UTC),  # Ensure timezone-aware
     )
     db.add(analysis)
     db.commit()
@@ -195,8 +195,15 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
             analysis.completed_at = datetime.now(UTC)
 
             # Calculate processing time
-            if analysis.started_at:
-                time_diff = analysis.completed_at - analysis.started_at
+            if analysis.started_at and analysis.completed_at:
+                # Ensure both timestamps are timezone-aware for comparison
+                started = (
+                    analysis.started_at.replace(tzinfo=UTC)
+                    if analysis.started_at.tzinfo is None
+                    else analysis.started_at
+                )
+                completed = analysis.completed_at
+                time_diff = completed - started
                 analysis.processing_time_seconds = time_diff.total_seconds()
 
             # Update token usage
@@ -241,8 +248,15 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
             analysis.completed_at = datetime.now(UTC)
 
             # Calculate processing time even for failed analyses
-            if analysis.started_at:
-                time_diff = analysis.completed_at - analysis.started_at
+            if analysis.started_at and analysis.completed_at:
+                # Ensure both timestamps are timezone-aware for comparison
+                started = (
+                    analysis.started_at.replace(tzinfo=UTC)
+                    if analysis.started_at.tzinfo is None
+                    else analysis.started_at
+                )
+                completed = analysis.completed_at
+                time_diff = completed - started
                 analysis.processing_time_seconds = time_diff.total_seconds()
 
             logger.error(
@@ -258,8 +272,13 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
         analysis.completed_at = datetime.now(UTC)
 
         # Calculate processing time even for exceptions
-        if analysis.started_at:
-            time_diff = analysis.completed_at - analysis.started_at
+        if analysis.started_at and analysis.completed_at:
+            # Ensure both timestamps are timezone-aware for comparison
+            started = (
+                analysis.started_at.replace(tzinfo=UTC) if analysis.started_at.tzinfo is None else analysis.started_at
+            )
+            completed = analysis.completed_at
+            time_diff = completed - started
             analysis.processing_time_seconds = time_diff.total_seconds()
 
         logger.error(

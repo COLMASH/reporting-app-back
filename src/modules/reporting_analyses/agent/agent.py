@@ -32,8 +32,6 @@ class GraphState(TypedDict):
     structured_output: dict[str, Any] | None
     success: bool
     error: str
-    input_tokens: int
-    output_tokens: int
 
 
 def _extract_text_from_response(response: Any) -> str:
@@ -207,8 +205,6 @@ def create_excel_analyzer_agent() -> Any:
     def analyze_excel(state: GraphState) -> dict[str, Any]:
         """Analyze Excel file using two-phase approach: analysis + structured output."""
         anthropic_file_id = state["anthropic_file_id"]
-        input_tokens = 0
-        output_tokens = 0
 
         try:
             # Phase 1: Analysis with code execution
@@ -228,57 +224,11 @@ def create_excel_analyzer_agent() -> Any:
             logger.info("Starting Phase 1: Excel analysis with code execution")
             analysis_response = base_model.invoke(analysis_messages)
 
-            # Debug: Log all response attributes
-            logger.info(
-                "Analysis response attributes",
-                response_type=type(analysis_response).__name__,
-                has_usage_metadata=hasattr(analysis_response, "usage_metadata"),
-                has_response_metadata=hasattr(analysis_response, "response_metadata"),
-                has_usage=hasattr(analysis_response, "usage"),
-                dir_attrs=[attr for attr in dir(analysis_response) if not attr.startswith("_")][:20],
-            )
-
-            # Extract token usage - try multiple possible locations
-            if hasattr(analysis_response, "usage_metadata"):
-                usage_meta = analysis_response.usage_metadata
-                input_tokens += getattr(usage_meta, "input_tokens", 0)
-                output_tokens += getattr(usage_meta, "output_tokens", 0)
-                logger.info(
-                    "Found usage_metadata",
-                    input_tokens=getattr(usage_meta, "input_tokens", 0),
-                    output_tokens=getattr(usage_meta, "output_tokens", 0),
-                )
-            elif hasattr(analysis_response, "response_metadata"):
-                # Check if token info is in response_metadata
-                resp_meta = analysis_response.response_metadata
-                if isinstance(resp_meta, dict):
-                    usage = resp_meta.get("usage", {})
-                    if usage:
-                        input_tokens += usage.get("input_tokens", 0)
-                        output_tokens += usage.get("output_tokens", 0)
-                        logger.info(
-                            "Found usage in response_metadata",
-                            input_tokens=usage.get("input_tokens", 0),
-                            output_tokens=usage.get("output_tokens", 0),
-                        )
-                    # Also check token_usage key
-                    token_usage = resp_meta.get("token_usage", {})
-                    if token_usage:
-                        input_tokens += token_usage.get("input_tokens", 0)
-                        output_tokens += token_usage.get("output_tokens", 0)
-                        logger.info(
-                            "Found token_usage in response_metadata",
-                            input_tokens=token_usage.get("input_tokens", 0),
-                            output_tokens=token_usage.get("output_tokens", 0),
-                        )
-
             # Extract analysis text
             analysis_text = _extract_text_from_response(analysis_response)
             logger.info(
                 "Phase 1 complete",
                 analysis_length=len(analysis_text) if analysis_text else 0,
-                phase1_input_tokens=input_tokens,
-                phase1_output_tokens=output_tokens,
             )
 
             # Phase 2: Generate structured output
@@ -292,55 +242,6 @@ def create_excel_analyzer_agent() -> Any:
             logger.info("Starting Phase 2: Generating structured output")
             structured_response = structured_model.invoke(structured_messages)
 
-            # Extract token usage from phase 2
-            phase2_input = 0
-            phase2_output = 0
-
-            # Debug: Log structured response attributes
-            logger.info(
-                "Structured response attributes",
-                response_type=type(structured_response).__name__,
-                has_usage_metadata=hasattr(structured_response, "usage_metadata"),
-                has_response_metadata=hasattr(structured_response, "response_metadata"),
-                has_usage=hasattr(structured_response, "usage"),
-            )
-
-            if hasattr(structured_response, "usage_metadata"):
-                usage_meta = structured_response.usage_metadata
-                phase2_input = getattr(usage_meta, "input_tokens", 0)
-                phase2_output = getattr(usage_meta, "output_tokens", 0)
-                logger.info(
-                    "Phase 2: Found usage_metadata",
-                    input_tokens=phase2_input,
-                    output_tokens=phase2_output,
-                )
-            elif hasattr(structured_response, "response_metadata"):
-                # Check if token info is in response_metadata
-                resp_meta = structured_response.response_metadata
-                if isinstance(resp_meta, dict):
-                    usage = resp_meta.get("usage", {})
-                    if usage:
-                        phase2_input = usage.get("input_tokens", 0)
-                        phase2_output = usage.get("output_tokens", 0)
-                        logger.info(
-                            "Phase 2: Found usage in response_metadata",
-                            input_tokens=phase2_input,
-                            output_tokens=phase2_output,
-                        )
-                    # Also check token_usage key
-                    token_usage = resp_meta.get("token_usage", {})
-                    if token_usage:
-                        phase2_input = token_usage.get("input_tokens", 0)
-                        phase2_output = token_usage.get("output_tokens", 0)
-                        logger.info(
-                            "Phase 2: Found token_usage in response_metadata",
-                            input_tokens=phase2_input,
-                            output_tokens=phase2_output,
-                        )
-
-            input_tokens += phase2_input
-            output_tokens += phase2_output
-
             # Convert Pydantic model to dict
             structured_dict = (
                 structured_response.model_dump() if hasattr(structured_response, "model_dump") else structured_response
@@ -351,8 +252,6 @@ def create_excel_analyzer_agent() -> Any:
                 has_structured_output=bool(structured_dict),
                 num_metrics=len(structured_dict.get("key_metrics", [])) if structured_dict else 0,
                 num_visualizations=(len(structured_dict.get("visualizations", [])) if structured_dict else 0),
-                total_input_tokens=input_tokens,
-                total_output_tokens=output_tokens,
             )
 
             return {
@@ -360,8 +259,8 @@ def create_excel_analyzer_agent() -> Any:
                 "structured_output": structured_dict,
                 "success": True,
                 "error": "",
-                "input_tokens": input_tokens,
-                "output_tokens": output_tokens,
+                "input_tokens": 0,  # Not tracking tokens for now
+                "output_tokens": 0,  # Not tracking tokens for now
             }
 
         except Exception as e:
@@ -371,8 +270,8 @@ def create_excel_analyzer_agent() -> Any:
                 "success": False,
                 "analysis": "",
                 "structured_output": None,
-                "input_tokens": input_tokens,
-                "output_tokens": output_tokens,
+                "input_tokens": 0,  # Not tracking tokens for now
+                "output_tokens": 0,  # Not tracking tokens for now
             }
 
     # Add node to graph
@@ -405,8 +304,6 @@ async def analyze_excel_file(anthropic_file_id: str) -> dict[str, Any]:
             "structured_output": None,
             "success": False,
             "error": "",
-            "input_tokens": 0,
-            "output_tokens": 0,
         }
     )
 

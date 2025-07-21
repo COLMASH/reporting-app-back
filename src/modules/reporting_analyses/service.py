@@ -194,6 +194,11 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
             analysis.status = AnalysisStatus.COMPLETED
             analysis.completed_at = datetime.now(UTC)
 
+            # Calculate processing time
+            if analysis.started_at:
+                time_diff = analysis.completed_at - analysis.started_at
+                analysis.processing_time_seconds = time_diff.total_seconds()
+
             # Update token usage
             input_tokens = result.get("input_tokens", 0)
             output_tokens = result.get("output_tokens", 0)
@@ -235,6 +240,11 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
             analysis.error_message = error_msg
             analysis.completed_at = datetime.now(UTC)
 
+            # Calculate processing time even for failed analyses
+            if analysis.started_at:
+                time_diff = analysis.completed_at - analysis.started_at
+                analysis.processing_time_seconds = time_diff.total_seconds()
+
             logger.error(
                 "Analysis failed - agent returned error",
                 analysis_id=str(analysis.id),
@@ -246,6 +256,11 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
         analysis.status = AnalysisStatus.FAILED
         analysis.error_message = str(e)
         analysis.completed_at = datetime.now(UTC)
+
+        # Calculate processing time even for exceptions
+        if analysis.started_at:
+            time_diff = analysis.completed_at - analysis.started_at
+            analysis.processing_time_seconds = time_diff.total_seconds()
 
         logger.error(
             "Analysis failed - exception occurred",

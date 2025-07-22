@@ -8,50 +8,28 @@ from uuid import UUID
 from pydantic import BaseModel, ConfigDict, Field
 
 
-# Request schemas
-class ResultCreateRequest(BaseModel):
-    """Request to create a new result."""
-
-    analysis_id: UUID
-    result_type: str = Field(
-        ...,
-        description="Type: visualization, metrics, summary, data_quality, recommendations",
-    )
-    title: str
-    description: str | None = None
-
-    # Content fields
-    insight_text: str | None = Field(None, description="Text content for summary/recommendations")
-    insight_data: dict | None = Field(
-        None,
-        description="Structured data for metrics/visualizations/data_quality",
-    )
-
-    order_index: int = 0
-
-
 # Response schemas
 class ResultResponse(BaseModel):
-    """Response with result information."""
+    """Individual result information."""
 
-    id: UUID
-    analysis_id: UUID
-    result_type: str
-    title: str
-    description: str | None
+    id: UUID = Field(..., description="Unique identifier for the result")
+    analysis_id: UUID = Field(..., description="Parent analysis ID")
+    result_type: str = Field(..., description="Type: visualization, metrics, summary, data_quality, or recommendations")
+    title: str = Field(..., description="Display title")
+    description: str | None = Field(None, description="Optional description")
 
     # Content fields
-    insight_text: str | None
-    insight_data: dict | None
+    insight_text: str | None = Field(None, description="Text content (for summary/recommendations)")
+    insight_data: dict | None = Field(None, description="Structured data (for visualizations/metrics)")
 
-    order_index: int
-    created_at: datetime
+    order_index: int = Field(..., description="Display order within analysis")
+    created_at: datetime = Field(..., description="Creation timestamp")
 
     model_config = ConfigDict(from_attributes=True)
 
 
 class ResultListResponse(BaseModel):
-    """Response with list of results."""
+    """Paginated list of results."""
 
-    results: list[ResultResponse]
-    total: int
+    results: list[ResultResponse] = Field(..., description="List of result objects")
+    total: int = Field(..., description="Total count of results (for pagination)")

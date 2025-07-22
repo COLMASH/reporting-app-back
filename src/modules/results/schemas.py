@@ -20,7 +20,7 @@ class ResultResponse(BaseModel):
 
     # Content fields
     insight_text: str | None = Field(None, description="Text content (for summary/recommendations)")
-    insight_data: dict | None = Field(None, description="Structured data (for visualizations/metrics)")
+    insight_data: dict | list | None = Field(None, description="Structured data (for visualizations/metrics)")
 
     order_index: int = Field(..., description="Display order within analysis")
     created_at: datetime = Field(..., description="Creation timestamp")

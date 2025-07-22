@@ -31,25 +31,7 @@ from src.modules.results.service import (
 router = APIRouter(prefix="/results", tags=["results"])
 
 
-@router.get("/{result_id}", response_model=schemas.ResultResponse)
-@log_endpoint
-async def get_result(
-    request: Request,
-    result_id: UUID,
-    current_user: CurrentUser,
-    db: DbSession,
-) -> schemas.ResultResponse:
-    """
-    Get result details by ID.
-
-    Access Control:
-    - User must own the file associated with the result
-    - Admin users can access all results
-    """
-    result = get_result_by_id(db, result_id, current_user)
-    return schemas.ResultResponse.model_validate(result)
-
-
+# IMPORTANT: Specific routes must come before parameterized routes
 @router.get("/analysis/{analysis_id}", response_model=schemas.ResultListResponse)
 @log_endpoint
 async def get_results_by_analysis(
@@ -149,6 +131,26 @@ async def get_my_statistics(
     - by_type: Count of results by type
     """
     return get_result_statistics(db, current_user)
+
+
+# Parameterized routes come after specific routes
+@router.get("/{result_id}", response_model=schemas.ResultResponse)
+@log_endpoint
+async def get_result(
+    request: Request,
+    result_id: UUID,
+    current_user: CurrentUser,
+    db: DbSession,
+) -> schemas.ResultResponse:
+    """
+    Get result details by ID.
+
+    Access Control:
+    - User must own the file associated with the result
+    - Admin users can access all results
+    """
+    result = get_result_by_id(db, result_id, current_user)
+    return schemas.ResultResponse.model_validate(result)
 
 
 @router.delete("/{result_id}", status_code=status.HTTP_204_NO_CONTENT)

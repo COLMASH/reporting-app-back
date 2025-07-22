@@ -40,7 +40,7 @@ async def upload_file(
         # Generate unique filename
         file_extension = os.path.splitext(file.filename)[1] if file.filename else ""
         unique_filename = f"{uuid4()}{file_extension}"
-        supabase_path = f"user_{current_user.id}/{unique_filename}"
+        supabase_path = f"{current_user.id}/{unique_filename}"
 
         # Read file content
         content = await file.read()

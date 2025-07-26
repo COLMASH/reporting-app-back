@@ -28,6 +28,7 @@ class GraphState(TypedDict):
     """State for the graph."""
 
     anthropic_file_id: str
+    parameters: dict | None
     analysis: str
     structured_output: dict[str, Any] | None
     success: bool
@@ -205,6 +206,12 @@ def create_excel_analyzer_agent() -> Any:
     def analyze_excel(state: GraphState) -> dict[str, Any]:
         """Analyze Excel file using two-phase approach: analysis + structured output."""
         anthropic_file_id = state["anthropic_file_id"]
+        parameters = state.get("parameters")
+
+        # Extract user instructions from parameters if available
+        user_instructions = None
+        if parameters and isinstance(parameters, dict):
+            user_instructions = parameters.get("focus")
 
         try:
             # Phase 1: Analysis with code execution
@@ -214,7 +221,7 @@ def create_excel_analyzer_agent() -> Any:
                     content=[
                         {
                             "type": "text",
-                            "text": get_user_prompt(),
+                            "text": get_user_prompt(user_instructions),
                         },
                         {"type": "container_upload", "file_id": anthropic_file_id},
                     ]
@@ -284,12 +291,13 @@ def create_excel_analyzer_agent() -> Any:
     return graph.compile()
 
 
-async def analyze_excel_file(anthropic_file_id: str) -> dict[str, Any]:
+async def analyze_excel_file(anthropic_file_id: str, parameters: dict | None = None) -> dict[str, Any]:
     """
     Analyze an Excel file using Claude's Code Execution tool.
 
     Args:
         anthropic_file_id: Anthropic file ID from the File record in database
+        parameters: Optional parameters for the analysis (e.g., {"focus": "financial_data"})
 
     Returns:
         Dictionary with analysis results including structured output for Chart.js
@@ -300,6 +308,7 @@ async def analyze_excel_file(anthropic_file_id: str) -> dict[str, Any]:
     result = await agent.ainvoke(
         {
             "anthropic_file_id": anthropic_file_id,
+            "parameters": parameters,
             "analysis": "",
             "structured_output": None,
             "success": False,

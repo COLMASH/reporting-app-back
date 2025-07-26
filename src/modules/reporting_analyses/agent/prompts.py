@@ -130,16 +130,31 @@ Your goal is to thoroughly explore and understand the data, calculating relevant
 """
 
 
-def get_user_prompt() -> str:
-    """Generate the user prompt for Excel analysis."""
-    return f"""Analyze this Excel file comprehensively. Follow these steps:
+def get_user_prompt(user_instructions: str | None = None) -> str:
+    """Generate the user prompt for Excel analysis.
+
+    Args:
+        user_instructions: Optional custom instructions from the user for the analysis
+    """
+    base_prompt = f"""Analyze this Excel file comprehensively. Follow these steps:
 
 1. Use code execution to explore the Excel file structure
 2. Extract data from all sheets (handle errors gracefully)
 3. Calculate business metrics from the available data
 4. Design minimum {MAX_VISUALIZATIONS} Chart.js visualizations
 
-MANDATORY FINAL STEP - DO NOT SKIP:
+"""
+
+    # Add user-provided instructions if available
+    if user_instructions:
+        base_prompt += f"""ADDITIONAL USER INSTRUCTIONS:
+{user_instructions}
+
+Please incorporate these instructions into your analysis approach.
+
+"""
+
+    base_prompt += f"""MANDATORY FINAL STEP - DO NOT SKIP:
 After ALL code execution blocks are complete, you MUST send ONE FINAL TEXT MESSAGE.
 This final message must contain ONLY the complete JSON object - nothing else.
 
@@ -151,6 +166,8 @@ Even if you encountered errors or couldn't extract all data, you MUST still outp
 - At least 3 recommendations
 
 REMEMBER: Your analysis is NOT complete until you send the final JSON text block!"""
+
+    return base_prompt
 
 
 def get_structured_output_prompt() -> str:

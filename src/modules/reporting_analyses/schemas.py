@@ -31,15 +31,29 @@ class AnalysisCreateRequest(BaseModel):
     )
     parameters: dict | None = Field(
         None,
-        description="Optional parameters for the analysis agent",
-        examples=[{"focus": "financial_data", "detail_level": "high"}],
+        description="Optional parameters for the analysis agent. Use 'focus' to provide custom instructions.",
+        examples=[
+            {
+                "focus": (
+                    "Please analyze the financial data and focus on revenue trends, "
+                    "profit margins, and year-over-year growth. Also identify any "
+                    "seasonal patterns in the sales data."
+                )
+            }
+        ],
     )
 
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
                 "file_id": "550e8400-e29b-41d4-a716-446655440000",
-                "parameters": {"focus": "financial_data"},
+                "parameters": {
+                    "focus": (
+                        "Please analyze the financial data and focus on revenue trends, "
+                        "profit margins, and year-over-year growth. Also identify any "
+                        "seasonal patterns in the sales data."
+                    )
+                },
             }
         }
     )
@@ -67,7 +81,15 @@ class AnalysisResponse(BaseModel):
     parameters: dict | None = Field(
         None,
         description="Parameters used for the analysis",
-        examples=[{"focus": "financial_data"}],
+        examples=[
+            {
+                "focus": (
+                    "Please analyze the financial data and focus on revenue trends, "
+                    "profit margins, and year-over-year growth. Also identify any "
+                    "seasonal patterns in the sales data."
+                )
+            }
+        ],
     )
     status: AnalysisStatus = Field(
         ...,

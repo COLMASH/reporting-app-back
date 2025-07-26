@@ -187,7 +187,7 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
             file_id=str(file_id),
             anthropic_file_id=file.anthropic_file_id,
         )
-        result = await analyze_excel_file(str(file.anthropic_file_id))
+        result = await analyze_excel_file(str(file.anthropic_file_id), parameters)
 
         if result.get("success"):
             # Update analysis as completed

@@ -240,7 +240,7 @@ def create_excel_analyzer_agent() -> Any:
 
             # Phase 2: Generate structured output
             structured_messages = [
-                SystemMessage(content=get_structured_output_prompt()),
+                SystemMessage(content=get_structured_output_prompt(user_instructions)),
                 HumanMessage(
                     content=(f"Based on my analysis of the Excel file, " f"here's what I found:\n\n{analysis_text}")
                 ),

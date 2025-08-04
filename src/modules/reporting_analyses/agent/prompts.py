@@ -136,25 +136,27 @@ def get_user_prompt(user_instructions: str | None = None) -> str:
     Args:
         user_instructions: Optional custom instructions from the user for the analysis
     """
-    base_prompt = f"""Analyze this Excel file comprehensively. Follow these steps:
+    # Start with user instructions if provided - they guide the analysis focus
+    if user_instructions:
+        base_prompt = f"""USER ANALYSIS REQUIREMENTS:
+{user_instructions}
+
+IMPORTANT: Apply these requirements to guide your analysis focus, content choices, and insights.
+These requirements affect WHAT you analyze and HOW you describe it, but you must still
+follow the structured output format below.
+
+"""
+    else:
+        base_prompt = ""
+
+    base_prompt += f"""Analyze this Excel file comprehensively. Follow these steps:
 
 1. Use code execution to explore the Excel file structure
 2. Extract data from all sheets (handle errors gracefully)
 3. Calculate business metrics from the available data
-4. Design minimum {MAX_VISUALIZATIONS} Chart.js visualizations
+4. Design minimum {MAX_VISUALIZATIONS} Chart.js visualizations (considering any user preferences above)
 
-"""
-
-    # Add user-provided instructions if available
-    if user_instructions:
-        base_prompt += f"""ADDITIONAL USER INSTRUCTIONS:
-{user_instructions}
-
-Please incorporate these instructions into your analysis approach.
-
-"""
-
-    base_prompt += f"""MANDATORY FINAL STEP - DO NOT SKIP:
+MANDATORY FINAL STEP - DO NOT SKIP:
 After ALL code execution blocks are complete, you MUST send ONE FINAL TEXT MESSAGE.
 This final message must contain ONLY the complete JSON object - nothing else.
 
@@ -170,9 +172,29 @@ REMEMBER: Your analysis is NOT complete until you send the final JSON text block
     return base_prompt
 
 
-def get_structured_output_prompt() -> str:
-    """Generate the prompt for structured output generation phase."""
-    return f"""Based on the Excel file analysis, provide a comprehensive structured output.
+def get_structured_output_prompt(user_instructions: str | None = None) -> str:
+    """Generate the prompt for structured output generation phase.
+
+    Args:
+        user_instructions: Optional custom instructions from the user for the analysis
+    """
+    # Start with user instructions if provided - they guide content but not structure
+    if user_instructions:
+        prompt = f"""USER CONTENT REQUIREMENTS:
+{user_instructions}
+
+IMPORTANT: Incorporate these requirements into your analysis content:
+- If specific words/phrases are requested for the summary, include them naturally
+- If specific chart types are preferred, prioritize those (but ensure they match the data format requirements)
+- If specific metrics or insights are requested, emphasize those
+
+NOTE: You MUST still provide valid JSON matching the required structure below.
+
+"""
+    else:
+        prompt = ""
+
+    prompt += f"""Based on the Excel file analysis, provide a comprehensive structured output.
 
 {CHART_SELECTION_GUIDE}
 
@@ -188,7 +210,12 @@ Include:
 - At least 3 actionable business recommendations
 
 Focus on what C-level executives care about: revenue, costs, efficiency, growth, trends.
-Use the actual data values you discovered during analysis."""
+Use the actual data values you discovered during analysis.
+
+CRITICAL: The output MUST be valid JSON matching the structure shown above.
+If user requirements were provided, incorporate them into the CONTENT while maintaining the STRUCTURE."""
+
+    return prompt
 
 
 # Required keys for structured output validation

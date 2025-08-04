@@ -17,7 +17,7 @@ Chart Type Selection Guide:
   - Data format: Simple numbers array [10, 20, 30]
   - Requires: labels array
 - **Line Chart**: Show trends over time, display continuous data changes
-  - Data format: Simple numbers array [10, 20, 30]
+  - Data format: Simple numbers array [10, 20, 30] - NEVER use None or null values
   - Requires: labels array
 - **Pie/Doughnut**: Show composition/parts of a whole (limit to 5-7 segments)
   - Data format: Simple numbers array [10, 20, 30]
@@ -83,7 +83,12 @@ JSON_OUTPUT_STRUCTURE = """
                     "y": {{"beginAtZero": true}}
                 }}
             }},
-            "insights": ["Key insight 1", "Key insight 2", "Key insight 3"]
+            "insights": [
+                "Key insight 1",
+                "Key insight 2",
+                "Key insight 3",
+                "Note: Add here if placeholder data was used"
+            ]
         }}
     ],
     "data_quality": {{
@@ -188,6 +193,14 @@ IMPORTANT: Incorporate these requirements into your analysis content:
 - If specific chart types are preferred, prioritize those (but ensure they match the data format requirements)
 - If specific metrics or insights are requested, emphasize those
 
+CRITICAL DATA REQUIREMENTS:
+- NEVER use None, null, or empty values in data arrays
+- Each data point must be a valid number (for line/bar/pie charts) or object (for bubble/scatter)
+- If you lack data for a visualization, use placeholder numbers like [10, 20, 30] rather than None
+- Line charts specifically require arrays of numbers only, never None values
+- IMPORTANT: If you use placeholder data, you MUST add an insight like:
+  "Note: Placeholder data used due to insufficient information for this visualization"
+
 NOTE: You MUST still provide valid JSON matching the required structure below.
 
 """
@@ -213,7 +226,14 @@ Focus on what C-level executives care about: revenue, costs, efficiency, growth,
 Use the actual data values you discovered during analysis.
 
 CRITICAL: The output MUST be valid JSON matching the structure shown above.
-If user requirements were provided, incorporate them into the CONTENT while maintaining the STRUCTURE."""
+If user requirements were provided, incorporate them into the CONTENT while maintaining the STRUCTURE.
+
+DATA VALIDATION RULES:
+- All chart data arrays must contain valid numbers, never None or null
+- For line charts: data must be arrays of numbers like [10, 20, 30]
+- If adapting other chart types to line charts per user request, ensure data remains valid numbers
+- When in doubt, use reasonable placeholder values rather than None
+- TRANSPARENCY: Always inform users via insights when placeholder data is used"""
 
     return prompt
 

@@ -161,7 +161,7 @@ class ExcelAnalysisOutput(BaseModel):
     summary: str = Field(
         description="Executive summary of findings (2-3 sentences)",
         min_length=50,
-        max_length=500,
+        max_length=2000,
     )
     key_metrics: list[KeyMetric] = Field(description="Important KPIs extracted from data (3-10 metrics)")
     visualizations: list[Visualization] = Field(description="Chart.js visualization configurations (exactly 6)")

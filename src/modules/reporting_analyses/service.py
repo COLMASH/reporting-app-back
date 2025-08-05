@@ -15,13 +15,12 @@ Error Handling:
 """
 
 from datetime import UTC, datetime
-from typing import Any, cast
+from typing import Any
 from uuid import UUID
 
 from sqlalchemy.orm import Session
 
 from src.core.exceptions import (
-    AIServiceError,
     NotFoundError,
     ValidationError,
 )
@@ -177,9 +176,9 @@ def _create_results_from_structured_output(
     return results_created
 
 
-async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = None) -> Analysis:
+def create_analysis_record(db: Session, file_id: UUID, parameters: dict | None = None) -> Analysis:
     """
-    Create a new analysis job and run the agent.
+    Create a new analysis record in PENDING status.
 
     Args:
         db: Database session
@@ -187,12 +186,11 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
         parameters: Optional parameters for the analysis agent
 
     Returns:
-        Analysis: The created analysis with results
+        Analysis: The created analysis record
 
     Raises:
         NotFoundError: If file doesn't exist
         ValidationError: If file has no Anthropic file ID
-        AIServiceError: If AI service fails
     """
     # Get the file to ensure it exists and get anthropic_file_id
     file = db.query(File).filter(File.id == file_id).first()
@@ -202,26 +200,70 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
     if not file.anthropic_file_id:
         raise ValidationError(f"File {file_id} has no Anthropic file ID")
 
-    # Create analysis record
+    # Create analysis record in PENDING status
     analysis = Analysis(
         file_id=file_id,
         parameters=parameters,
-        status=AnalysisStatus.IN_PROGRESS,
-        started_at=datetime.now(UTC),  # Ensure timezone-aware
+        status=AnalysisStatus.PENDING,
+        started_at=datetime.now(UTC),
     )
     db.add(analysis)
     db.commit()
     db.refresh(analysis)
 
+    logger.info(
+        "Analysis record created",
+        analysis_id=str(analysis.id),
+        file_id=str(file_id),
+        status="PENDING",
+    )
+
+    return analysis
+
+
+async def process_analysis_background(
+    analysis_id: UUID,
+    anthropic_file_id: str,
+    parameters: dict | None = None,
+) -> None:
+    """
+    Process analysis in the background. This is the actual work function.
+
+    Args:
+        analysis_id: UUID of the analysis to process
+        anthropic_file_id: Anthropic file ID for the analysis
+        parameters: Optional parameters for the analysis agent
+
+    Note:
+        This function manages its own database session and commits.
+        All exceptions are caught and logged to ensure the analysis
+        status is always updated.
+    """
+    from src.core.database.core import SessionLocal
+
+    # Create a new database session for the background task
+    db = SessionLocal()
+
     try:
-        # Run the agent
+        # Get the analysis record
+        analysis = db.query(Analysis).filter(Analysis.id == analysis_id).first()
+        if not analysis:
+            logger.error("Analysis not found in background task", analysis_id=str(analysis_id))
+            return
+
+        # Update status to IN_PROGRESS
+        analysis.status = AnalysisStatus.IN_PROGRESS
+        analysis.started_at = datetime.now(UTC)
+        db.commit()
+
         logger.info(
             "Starting analysis execution",
-            analysis_id=str(analysis.id),
-            file_id=str(file_id),
-            anthropic_file_id=file.anthropic_file_id,
+            analysis_id=str(analysis_id),
+            anthropic_file_id=anthropic_file_id,
         )
-        result = await analyze_excel_file(str(file.anthropic_file_id), parameters)
+
+        # Run the agent
+        result = await analyze_excel_file(anthropic_file_id, parameters)
 
         if result.get("success"):
             # Update analysis as completed
@@ -230,7 +272,6 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
 
             # Calculate processing time
             if analysis.started_at and analysis.completed_at:
-                # Ensure both timestamps are timezone-aware for comparison
                 started = (
                     analysis.started_at.replace(tzinfo=UTC)
                     if analysis.started_at.tzinfo is None
@@ -251,12 +292,12 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
             structured_output = result.get("structured_output")
 
             if structured_output:
-                results_created = _create_results_from_structured_output(db, cast(UUID, analysis.id), structured_output)
+                results_created = _create_results_from_structured_output(db, analysis_id, structured_output)
             else:
                 # Fallback to simple text result if no structured output
                 _create_result(
                     db=db,
-                    analysis_id=cast(UUID, analysis.id),
+                    analysis_id=analysis_id,
                     result_type="summary",
                     title="Excel File Analysis",
                     description="AI-generated analysis of the Excel file contents",
@@ -267,7 +308,7 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
 
             logger.info(
                 "Analysis completed successfully",
-                analysis_id=str(analysis.id),
+                analysis_id=str(analysis_id),
                 has_structured_output=bool(structured_output),
                 results_created=results_created,
                 input_tokens=input_tokens,
@@ -281,9 +322,7 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
             analysis.error_message = error_msg
             analysis.completed_at = datetime.now(UTC)
 
-            # Calculate processing time even for failed analyses
             if analysis.started_at and analysis.completed_at:
-                # Ensure both timestamps are timezone-aware for comparison
                 started = (
                     analysis.started_at.replace(tzinfo=UTC)
                     if analysis.started_at.tzinfo is None
@@ -295,40 +334,49 @@ async def create_analysis(db: Session, file_id: UUID, parameters: dict | None = 
 
             logger.error(
                 "Analysis failed - agent returned error",
-                analysis_id=str(analysis.id),
+                analysis_id=str(analysis_id),
                 error=error_msg,
             )
 
     except Exception as e:
         # Update analysis as failed
-        analysis.status = AnalysisStatus.FAILED
-        analysis.error_message = str(e)
-        analysis.completed_at = datetime.now(UTC)
+        try:
+            analysis = db.query(Analysis).filter(Analysis.id == analysis_id).first()
+            if analysis:
+                analysis.status = AnalysisStatus.FAILED
+                analysis.error_message = str(e)
+                analysis.completed_at = datetime.now(UTC)
 
-        # Calculate processing time even for exceptions
-        if analysis.started_at and analysis.completed_at:
-            # Ensure both timestamps are timezone-aware for comparison
-            started = (
-                analysis.started_at.replace(tzinfo=UTC) if analysis.started_at.tzinfo is None else analysis.started_at
+                if analysis.started_at and analysis.completed_at:
+                    started = (
+                        analysis.started_at.replace(tzinfo=UTC)
+                        if analysis.started_at.tzinfo is None
+                        else analysis.started_at
+                    )
+                    completed = analysis.completed_at
+                    time_diff = completed - started
+                    analysis.processing_time_seconds = time_diff.total_seconds()
+
+                db.commit()
+        except Exception as db_error:
+            logger.error(
+                "Failed to update analysis status after error",
+                analysis_id=str(analysis_id),
+                original_error=str(e),
+                db_error=str(db_error),
             )
-            completed = analysis.completed_at
-            time_diff = completed - started
-            analysis.processing_time_seconds = time_diff.total_seconds()
 
         logger.error(
             "Analysis failed - exception occurred",
-            analysis_id=str(analysis.id),
-            file_id=str(file_id),
+            analysis_id=str(analysis_id),
             error=str(e),
+            exc_info=True,
         )
 
-        # Re-raise as AIServiceError for better error handling
-        raise AIServiceError(f"Analysis execution failed: {str(e)}") from e
-
-    db.commit()
-    db.refresh(analysis)
-
-    return analysis
+    finally:
+        # Always close the database session
+        db.commit()
+        db.close()
 
 
 def get_analysis_by_id(db: Session, analysis_id: UUID) -> Analysis | None:

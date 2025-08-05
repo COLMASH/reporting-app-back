@@ -15,7 +15,7 @@ Dependencies:
 
 from uuid import UUID
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, BackgroundTasks, Request
 
 from src.core.decorators import log_endpoint
 from src.core.exceptions import NotFoundError, ValidationError
@@ -43,6 +43,7 @@ router = APIRouter(
 @log_endpoint
 async def create_analysis(
     request: schemas.AnalysisCreateRequest,
+    background_tasks: BackgroundTasks,
     req: Request,
     current_user: CurrentUser,
     db: DbSession,
@@ -51,27 +52,39 @@ async def create_analysis(
     Create a new analysis for a file.
 
     The user must own the file to create an analysis.
-    Analysis runs immediately using the configured AI agent.
+    Analysis is queued and processed asynchronously in the background.
+    Returns immediately with PENDING status.
     """
-    # Verify user owns the file
+    # Verify user owns the file and get the file object
     try:
-        get_file_by_id(db, request.file_id, current_user.id)
+        file = get_file_by_id(db, request.file_id, current_user.id)
     except NotFoundError:
         raise NotFoundError(f"File {request.file_id} not found") from None
 
-    # Create and run analysis
+    # Create analysis record (in PENDING status)
     try:
-        analysis = await reporting_service.create_analysis(
+        analysis = reporting_service.create_analysis_record(
             db=db,
             file_id=request.file_id,
             parameters=request.parameters,
         )
+
+        # Queue the background task for processing
+        background_tasks.add_task(
+            reporting_service.process_analysis_background,
+            analysis.id,
+            file.anthropic_file_id,
+            request.parameters,
+        )
+
         logger.info(
-            "Analysis created successfully",
+            "Analysis queued successfully",
             analysis_id=str(analysis.id),
             file_id=str(request.file_id),
             user_id=str(current_user.id),
+            status="PENDING",
         )
+
         return analysis
     except ValueError as e:
         raise ValidationError(str(e)) from e

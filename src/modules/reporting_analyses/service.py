@@ -34,6 +34,37 @@ from src.modules.results.models import Result
 logger = get_logger(__name__)
 
 
+def _sanitize_chart_config(viz: dict[str, Any]) -> dict[str, Any]:
+    """
+    Sanitize chart configuration to remove any callback functions.
+
+    The AI agent sometimes generates tooltip callback functions as strings,
+    which can't be executed by Chart.js and pose security risks.
+    We remove these and let the frontend use Chart.js default formatters.
+    """
+    import copy
+
+    sanitized = copy.deepcopy(viz)
+
+    # Remove tooltip callbacks if present
+    options = sanitized.get("options", {})
+    if isinstance(options, dict):
+        plugins = options.get("plugins", {})
+        if isinstance(plugins, dict):
+            tooltip = plugins.get("tooltip", {})
+            if isinstance(tooltip, dict) and "callbacks" in tooltip:
+                logger.warning(
+                    "Removing tooltip callbacks from chart configuration",
+                    chart_title=viz.get("title", "Unknown"),
+                    callbacks_found=(
+                        list(tooltip["callbacks"].keys()) if isinstance(tooltip["callbacks"], dict) else "non-dict"
+                    ),
+                )
+                del tooltip["callbacks"]
+
+    return sanitized
+
+
 def _create_result(
     db: Session,
     analysis_id: UUID,
@@ -100,13 +131,16 @@ def _create_results_from_structured_output(
     # Create visualization results
     if structured_output.get("visualizations"):
         for idx, viz in enumerate(structured_output["visualizations"]):
+            # Sanitize the visualization to remove any callback functions
+            sanitized_viz = _sanitize_chart_config(viz)
+
             _create_result(
                 db=db,
                 analysis_id=analysis_id,
                 result_type="visualization",
-                title=viz.get("title", f"Visualization {idx + 1}"),
-                description=viz.get("description", ""),
-                insight_data=viz,
+                title=sanitized_viz.get("title", f"Visualization {idx + 1}"),
+                description=sanitized_viz.get("description", ""),
+                insight_data=sanitized_viz,
                 order_index=order_index,
             )
             results_created += 1

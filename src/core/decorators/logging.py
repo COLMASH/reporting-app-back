@@ -43,9 +43,7 @@ def log_endpoint(func: Callable) -> Callable:
 
         for _arg_name, arg_value in bound_args.arguments.items():
             # Check if it's a FastAPI Request or has a state attribute with request_id
-            if isinstance(arg_value, Request) or (
-                hasattr(arg_value, "state") and hasattr(arg_value.state, "request_id")
-            ):
+            if isinstance(arg_value, Request) or (hasattr(arg_value, "state") and hasattr(arg_value.state, "request_id")):
                 request = arg_value
                 request_id = getattr(request.state, "request_id", "unknown")
                 break

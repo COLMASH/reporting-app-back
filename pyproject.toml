@@ -77,7 +77,7 @@ test = "scripts.build_scripts:test"
 build = "scripts.build_scripts:build"
 
 [tool.ruff]
-line-length = 120
+line-length = 180
 target-version = "py312"
 
 [tool.ruff.lint]
@@ -92,7 +92,7 @@ select = [
 ]
 
 [tool.black]
-line-length = 120
+line-length = 180
 target-version = ['py312']
 
 [tool.pytest.ini_options]

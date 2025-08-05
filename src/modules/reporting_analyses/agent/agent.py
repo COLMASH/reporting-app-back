@@ -241,18 +241,14 @@ def create_excel_analyzer_agent() -> Any:
             # Phase 2: Generate structured output
             structured_messages = [
                 SystemMessage(content=get_structured_output_prompt(user_instructions)),
-                HumanMessage(
-                    content=(f"Based on my analysis of the Excel file, " f"here's what I found:\n\n{analysis_text}")
-                ),
+                HumanMessage(content=(f"Based on my analysis of the Excel file, " f"here's what I found:\n\n{analysis_text}")),
             ]
 
             logger.info("Starting Phase 2: Generating structured output")
             structured_response = structured_model.invoke(structured_messages)
 
             # Convert Pydantic model to dict
-            structured_dict = (
-                structured_response.model_dump() if hasattr(structured_response, "model_dump") else structured_response
-            )
+            structured_dict = structured_response.model_dump() if hasattr(structured_response, "model_dump") else structured_response
 
             logger.info(
                 "Analysis completed with structured output",

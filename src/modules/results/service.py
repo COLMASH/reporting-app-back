@@ -227,13 +227,7 @@ def get_file_results(db: Session, file_id: UUID, user: User) -> list[Result]:
         raise PermissionError("Access denied")
 
     # Get all results for analyses of this file
-    results = (
-        db.query(Result)
-        .join(Analysis)
-        .filter(Analysis.file_id == file_id)
-        .order_by(desc(Analysis.created_at), Result.order_index)
-        .all()
-    )
+    results = db.query(Result).join(Analysis).filter(Analysis.file_id == file_id).order_by(desc(Analysis.created_at), Result.order_index).all()
 
     logger.info(f"Retrieved {len(results)} results for file {file_id}")
 
@@ -295,12 +289,7 @@ def get_result_statistics(db: Session, user: User) -> dict:
     if user.role == "admin":
         base_query = db.query(Result.result_type, func.count(Result.id))
     else:
-        base_query = (
-            db.query(Result.result_type, func.count(Result.id))
-            .join(Analysis)
-            .join(File)
-            .filter(File.user_id == user.id)
-        )
+        base_query = db.query(Result.result_type, func.count(Result.id)).join(Analysis).join(File).filter(File.user_id == user.id)
 
     # Get counts by type
     type_counts = base_query.group_by(Result.result_type).all()

@@ -26,9 +26,7 @@ class Settings(BaseSettings):
     # Supabase
     supabase_url: str = Field(default="https://placeholder.supabase.co", description="Supabase project URL")
     supabase_anon_key: str = Field(default="placeholder-key", description="Supabase anonymous key")
-    supabase_bucket_name: str = Field(
-        default="excel-files", description="Supabase storage bucket name for file uploads"
-    )
+    supabase_bucket_name: str = Field(default="excel-files", description="Supabase storage bucket name for file uploads")
 
     # Authentication
     jwt_secret: str = Field(default="development-secret-key-change-in-production", description="JWT secret key")

@@ -62,7 +62,7 @@ JSON_OUTPUT_STRUCTURE = """
                 "labels": ["Label1", "Label2", ...],  // null for scatter/bubble charts
                 "datasets": [
                     {{
-                        "label": "Dataset name",
+                        "label": "Dataset name",  // REQUIRED: Always include a descriptive label for the dataset
                         "data": [10, 20, 30],  // For bar/line/pie/etc
                         // OR for bubble: [{{"x": 10, "y": 20, "r": 5}}, {{"x": 15, "y": 25, "r": 10}}]
                         // OR for scatter: [{{"x": 10, "y": 20}}, {{"x": 15, "y": 25}}]
@@ -96,7 +96,7 @@ JSON_OUTPUT_STRUCTURE = """
         "total_columns": number,
         "sheets_analyzed": ["sheet1", "sheet2"],
         "missing_values": {{"column_name": count}},
-        "data_types": {{"column_name": "type"}},
+        "data_types": {{"column_name": "type"}},  // IMPORTANT: Map each column name to its type (e.g., {{"Revenue": "numeric", "Date": "datetime", "Product": "text"}})
         "quality_score": "high|medium|low",
         "issues": ["Issue 1", "Issue 2"]
     }},
@@ -161,6 +161,14 @@ follow the structured output format below.
 3. Calculate business metrics from the available data
 4. Design minimum {MAX_VISUALIZATIONS} Chart.js visualizations (considering any user preferences above)
 
+CRITICAL DATA FORMAT REQUIREMENTS:
+- For data_types: Map actual column names to their types, NOT summary counts
+  ✓ Correct: {{"Revenue": "numeric", "OrderDate": "datetime", "Product": "text"}}
+  ✗ Wrong: {{"numeric_columns": 25, "text_columns": 45}}
+- For chart datasets: ALWAYS include a "label" field for each dataset
+  ✓ Correct: {{"label": "Sales Data", "data": [100, 200, 300]}}
+  ✗ Wrong: {{"data": [100, 200, 300]}}  // Missing label!
+
 MANDATORY FINAL STEP - DO NOT SKIP:
 After ALL code execution blocks are complete, you MUST send ONE FINAL TEXT MESSAGE.
 This final message must contain ONLY the complete JSON object - nothing else.
@@ -198,6 +206,8 @@ CRITICAL DATA REQUIREMENTS:
 - Each data point must be a valid number (for line/bar/pie charts) or object (for bubble/scatter)
 - If you lack data for a visualization, use placeholder numbers like [10, 20, 30] rather than None
 - Line charts specifically require arrays of numbers only, never None values
+- data_types MUST map column names to types: {{"Revenue": "numeric", "Date": "datetime"}} NOT counts
+- EVERY dataset MUST have a "label" field - this is required by the schema
 - IMPORTANT: If you use placeholder data, you MUST add an insight like:
   "Note: Placeholder data used due to insufficient information for this visualization"
 

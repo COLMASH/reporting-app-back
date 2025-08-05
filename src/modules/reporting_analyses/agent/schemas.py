@@ -30,9 +30,7 @@ class ChartDataset(BaseModel):
     """Dataset for Chart.js visualization - matches Chart.js dataset structure."""
 
     label: str = Field(description="Dataset name")
-    data: list[float | int | BubbleDataPoint | dict[str, Any]] = Field(
-        description="Data points - numbers for most charts, objects for bubble/scatter"
-    )
+    data: list[float | int | BubbleDataPoint | dict[str, Any]] = Field(description="Data points - numbers for most charts, objects for bubble/scatter")
     backgroundColor: str | list[str] = Field(
         default="rgba(75, 192, 192, 0.6)",
         description="Color or array of colors for bars/segments",

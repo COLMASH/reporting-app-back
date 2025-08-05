@@ -41,9 +41,7 @@ class PasswordMixin(BaseModel):
         ...,
         min_length=8,
         max_length=100,
-        description=(
-            "Password must contain: 1 lowercase, 1 uppercase, " "1 number, 1 special char (@$!%*?&), min 8 chars"
-        ),
+        description=("Password must contain: 1 lowercase, 1 uppercase, " "1 number, 1 special char (@$!%*?&), min 8 chars"),
     )
 
     @field_validator("password")

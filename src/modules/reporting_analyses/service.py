@@ -55,9 +55,7 @@ def _sanitize_chart_config(viz: dict[str, Any]) -> dict[str, Any]:
                 logger.warning(
                     "Removing tooltip callbacks from chart configuration",
                     chart_title=viz.get("title", "Unknown"),
-                    callbacks_found=(
-                        list(tooltip["callbacks"].keys()) if isinstance(tooltip["callbacks"], dict) else "non-dict"
-                    ),
+                    callbacks_found=(list(tooltip["callbacks"].keys()) if isinstance(tooltip["callbacks"], dict) else "non-dict"),
                 )
                 del tooltip["callbacks"]
 
@@ -272,11 +270,7 @@ async def process_analysis_background(
 
             # Calculate processing time
             if analysis.started_at and analysis.completed_at:
-                started = (
-                    analysis.started_at.replace(tzinfo=UTC)
-                    if analysis.started_at.tzinfo is None
-                    else analysis.started_at
-                )
+                started = analysis.started_at.replace(tzinfo=UTC) if analysis.started_at.tzinfo is None else analysis.started_at
                 completed = analysis.completed_at
                 time_diff = completed - started
                 analysis.processing_time_seconds = time_diff.total_seconds()
@@ -323,11 +317,7 @@ async def process_analysis_background(
             analysis.completed_at = datetime.now(UTC)
 
             if analysis.started_at and analysis.completed_at:
-                started = (
-                    analysis.started_at.replace(tzinfo=UTC)
-                    if analysis.started_at.tzinfo is None
-                    else analysis.started_at
-                )
+                started = analysis.started_at.replace(tzinfo=UTC) if analysis.started_at.tzinfo is None else analysis.started_at
                 completed = analysis.completed_at
                 time_diff = completed - started
                 analysis.processing_time_seconds = time_diff.total_seconds()
@@ -348,11 +338,7 @@ async def process_analysis_background(
                 analysis.completed_at = datetime.now(UTC)
 
                 if analysis.started_at and analysis.completed_at:
-                    started = (
-                        analysis.started_at.replace(tzinfo=UTC)
-                        if analysis.started_at.tzinfo is None
-                        else analysis.started_at
-                    )
+                    started = analysis.started_at.replace(tzinfo=UTC) if analysis.started_at.tzinfo is None else analysis.started_at
                     completed = analysis.completed_at
                     time_diff = completed - started
                     analysis.processing_time_seconds = time_diff.total_seconds()

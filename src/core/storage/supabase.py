@@ -111,10 +111,7 @@ class StorageClient:
 
             # If it's the specific "response" error, provide more context
             if "cannot access local variable 'response'" in error_msg:
-                raise StorageError(
-                    "Upload failed due to Supabase client error. "
-                    "Please check Supabase configuration and bucket permissions."
-                ) from e
+                raise StorageError("Upload failed due to Supabase client error. " "Please check Supabase configuration and bucket permissions.") from e
 
             raise StorageError(f"Failed to upload file: {error_msg}") from e
 

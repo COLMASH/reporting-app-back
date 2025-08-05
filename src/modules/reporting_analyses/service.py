@@ -6,7 +6,7 @@ Main Functions:
 - get_analysis_by_id: Retrieve analysis by ID
 - get_user_analyses: Get all analyses for a user
 - get_file_analyses: Get all analyses for a file
-- cancel_analysis: Cancel analysis execution (TODO)
+- delete_analysis: Delete analysis and associated results
 
 Error Handling:
 - Uses custom exceptions from core.exceptions
@@ -339,8 +339,23 @@ def get_user_analyses(db: Session, user_id: UUID) -> list[Analysis]:
     return db.query(Analysis).join(File).filter(File.user_id == user_id).order_by(Analysis.created_at.desc()).all()
 
 
-# TODO: Implement cancel_analysis function
-def cancel_analysis(db: Session, analysis_id: UUID) -> None:
-    """Cancel a pending or in-progress analysis."""
-    # TODO: Implement analysis cancellation logic
-    raise NotImplementedError("cancel_analysis not yet implemented")
+def delete_analysis(db: Session, analysis_id: UUID) -> None:
+    """
+    Delete an analysis and all its associated results.
+
+    Args:
+        db: Database session
+        analysis_id: UUID of the analysis to delete
+
+    Note:
+        Associated results are automatically deleted due to cascade settings.
+    """
+    analysis = db.query(Analysis).filter(Analysis.id == analysis_id).first()
+    if analysis:
+        db.delete(analysis)
+        db.commit()
+        logger.info(
+            "Analysis deleted successfully",
+            analysis_id=str(analysis_id),
+            status=analysis.status,
+        )

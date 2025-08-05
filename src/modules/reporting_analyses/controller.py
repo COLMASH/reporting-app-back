@@ -6,7 +6,7 @@ Main Functions:
 - get_analysis: Get specific analysis details
 - get_user_analyses: Get all analyses for current user
 - get_file_analyses: Get all analyses for a specific file
-- cancel_analysis: Cancel pending analysis (not implemented)
+- delete_analysis: Delete analysis and associated results
 
 Dependencies:
 - CurrentUser: Authenticated user from JWT token
@@ -18,7 +18,7 @@ from uuid import UUID
 from fastapi import APIRouter, Request
 
 from src.core.decorators import log_endpoint
-from src.core.exceptions import NotFoundError, NotImplementedError, ValidationError
+from src.core.exceptions import NotFoundError, ValidationError
 from src.core.logging import get_logger
 from src.modules.auth.dependencies import CurrentUser, DbSession
 from src.modules.files.service import get_file_by_id
@@ -184,23 +184,39 @@ async def get_file_analyses(
 
 @router.delete("/{reporting_analysis_id}", status_code=204)
 @log_endpoint
-async def cancel_analysis(
+async def delete_analysis(
     reporting_analysis_id: str,
     req: Request,
     current_user: CurrentUser,
     db: DbSession,
 ) -> None:
     """
-    Cancel a pending or in-progress analysis.
+    Delete an analysis and all its associated results.
 
-    Currently not implemented as analyses run immediately.
-    Reserved for future use with background task processing.
+    The user must own the file associated with the analysis.
+    This permanently removes the analysis and all its results.
     """
     try:
-        UUID(reporting_analysis_id)
+        analysis_uuid = UUID(reporting_analysis_id)
     except ValueError:
         raise ValidationError("Invalid analysis ID format") from None
 
-    # For now, we don't support cancellation since analyses run immediately
-    # This endpoint is here for future use with background tasks
-    raise NotImplementedError("Analysis cancellation not yet implemented")
+    # Get the analysis
+    analysis = reporting_service.get_analysis_by_id(db, analysis_uuid)
+    if not analysis:
+        raise NotFoundError(f"Analysis {reporting_analysis_id} not found")
+
+    # Verify user owns the file
+    try:
+        get_file_by_id(db, analysis.file_id, current_user.id)
+    except NotFoundError:
+        raise NotFoundError(f"Analysis {reporting_analysis_id} not found") from None
+
+    # Delete the analysis
+    reporting_service.delete_analysis(db, analysis_uuid)
+
+    logger.info(
+        "Analysis deleted successfully",
+        analysis_id=reporting_analysis_id,
+        user_id=str(current_user.id),
+    )

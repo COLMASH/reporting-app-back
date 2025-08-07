@@ -39,8 +39,9 @@ class StorageClient:
             )
 
             # Ensure bucket exists (this will fail silently if bucket already exists)
+            # Using private bucket for signed URL security
             try:
-                self.client.storage.create_bucket(self.bucket_name, {"public": True})
+                self.client.storage.create_bucket(self.bucket_name, {"public": False})
             except Exception:
                 # Bucket likely already exists, which is fine
                 pass
@@ -115,28 +116,6 @@ class StorageClient:
 
             raise StorageError(f"Failed to upload file: {error_msg}") from e
 
-    async def download_file(self, file_path: str) -> bytes:
-        """
-        Download a file from Supabase storage.
-
-        Args:
-            file_path: Path of the file in the bucket
-
-        Returns:
-            File content as bytes
-
-        Raises:
-            StorageError: If download fails
-        """
-        try:
-            response = self.client.storage.from_(self.bucket_name).download(file_path)
-            logger.info("File downloaded successfully", file_path=file_path)
-            return bytes(response)
-
-        except Exception as e:
-            logger.error("File download failed", file_path=file_path, error=str(e))
-            raise StorageError(f"Failed to download file: {str(e)}") from e
-
     async def delete_file(self, file_path: str) -> None:
         """
         Delete a file from Supabase storage.
@@ -190,6 +169,34 @@ class StorageClient:
             Public URL of the file
         """
         return str(self.client.storage.from_(self.bucket_name).get_public_url(file_path))
+
+    def create_signed_url(self, file_path: str, expires_in: int = 3600) -> dict[str, str | None]:
+        """
+        Create a signed URL for secure, time-limited file access.
+
+        Args:
+            file_path: Path of the file in the bucket
+            expires_in: URL expiration time in seconds (default: 3600 = 1 hour)
+
+        Returns:
+            Dictionary containing signedURL key with the signed URL string
+
+        Raises:
+            StorageError: If signed URL creation fails
+        """
+        try:
+            response = self.client.storage.from_(self.bucket_name).create_signed_url(path=file_path, expires_in=expires_in)
+
+            if response.get("error"):
+                raise StorageError(f"Failed to create signed URL: {response['error']}")
+
+            logger.info("Signed URL created successfully", file_path=file_path, expires_in=expires_in)
+
+            return {"signedURL": response.get("signedURL")}
+
+        except Exception as e:
+            logger.error("Failed to create signed URL", file_path=file_path, expires_in=expires_in, error=str(e))
+            raise StorageError(f"Failed to create signed URL: {str(e)}") from e
 
 
 # Global storage client instance

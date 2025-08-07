@@ -139,3 +139,36 @@ async def delete_file(db: Session, file_id: UUID, user_id: UUID) -> None:
         file_id=str(file_id),
         user_id=str(user_id),
     )
+
+
+def generate_signed_url(db: Session, file_id: UUID, user_id: UUID, expires_in: int = 3600) -> dict[str, str | int]:
+    """
+    Generate a signed URL for secure file download.
+
+    Args:
+        db: Database session
+        file_id: File ID
+        user_id: User ID (for ownership verification)
+        expires_in: URL expiration time in seconds (default: 3600 = 1 hour)
+
+    Returns:
+        Dictionary with signed_url and expires_in
+
+    Raises:
+        NotFoundError: If file not found or user doesn't own it
+        StorageError: If signed URL generation fails
+    """
+    # Verify file exists and user owns it
+    file = get_file_by_id(db, file_id, user_id)
+
+    # Generate signed URL from Supabase
+    storage = get_storage_client()
+    response = storage.create_signed_url(str(file.supabase_path), expires_in)
+
+    logger.info("Signed URL generated", file_id=str(file_id), user_id=str(user_id), expires_in=expires_in)
+
+    signed_url = response.get("signedURL")
+    if not signed_url:
+        raise StorageError("Failed to get signed URL from response")
+
+    return {"signed_url": signed_url, "expires_in": expires_in}

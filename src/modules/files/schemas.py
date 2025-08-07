@@ -46,3 +46,10 @@ class FileListResponse(BaseModel):
     page: int = Field(..., description="Current page number")
     page_size: int = Field(..., description="Number of items per page")
     total_pages: int = Field(..., description="Total number of pages")
+
+
+class SignedUrlResponse(BaseModel):
+    """Response containing a signed URL for secure file access."""
+
+    signed_url: str = Field(..., description="Time-limited signed URL for file download")
+    expires_in: int = Field(..., description="URL expiration time in seconds")

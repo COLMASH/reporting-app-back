@@ -146,3 +146,28 @@ async def delete_file(file_id: str, current_user: CurrentUser, db: DbSessionDep)
         ) from None
 
     await file_service.delete_file(db, file_uuid, current_user.id)
+
+
+@router.get("/{file_id}/download-url", response_model=schemas.SignedUrlResponse)
+async def get_download_url(
+    file_id: str,
+    current_user: CurrentUser,
+    db: DbSession,
+    expires_in: int = Query(3600, ge=60, le=86400, description="URL expiration time in seconds (60s to 24h)"),
+) -> schemas.SignedUrlResponse:
+    """
+    Generate a signed URL for secure file download.
+
+    The URL will expire after the specified time (default: 1 hour).
+    Maximum expiration time is 24 hours (86400 seconds).
+    """
+    try:
+        file_uuid = UUID(file_id)
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid file ID format",
+        ) from None
+
+    result = file_service.generate_signed_url(db, file_uuid, current_user.id, expires_in)
+    return schemas.SignedUrlResponse(**result)

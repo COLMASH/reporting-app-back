@@ -6,7 +6,7 @@ import io
 import os
 from uuid import UUID, uuid4
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, Query, status
 
 from src.core.config import settings
 from src.core.logging import get_logger
@@ -92,13 +92,30 @@ async def upload_file(
 
 
 @router.get("/", response_model=schemas.FileListResponse)
-async def list_files(current_user: CurrentUser, db: DbSession) -> schemas.FileListResponse:
-    """List all files for the current user."""
-    files = file_service.get_user_files(db, current_user.id)
+async def list_files(
+    current_user: CurrentUser,
+    db: DbSession,
+    page: int = Query(1, ge=1, description="Page number"),
+    page_size: int = Query(20, ge=1, le=100, description="Results per page"),
+) -> schemas.FileListResponse:
+    """
+    List all files for the current user with pagination.
+
+    Pagination:
+    - page: Page number (default: 1)
+    - page_size: Results per page (default: 20, max: 100)
+    """
+    files, total = file_service.get_user_files(db, current_user.id, page, page_size)
+
+    # Calculate total pages
+    total_pages = (total + page_size - 1) // page_size if total > 0 else 0
 
     return schemas.FileListResponse(
         files=[schemas.FileResponse.model_validate(f) for f in files],
-        total=len(files),
+        total=total,
+        page=page,
+        page_size=page_size,
+        total_pages=total_pages,
     )
 
 

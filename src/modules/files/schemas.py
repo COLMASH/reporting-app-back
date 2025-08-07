@@ -5,7 +5,7 @@ Pydantic schemas for files module.
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from src.modules.files.models import DataClassification, FileStatus
 
@@ -39,7 +39,10 @@ class FileResponse(BaseModel):
 
 
 class FileListResponse(BaseModel):
-    """Response with list of files."""
+    """Response with paginated list of files."""
 
-    files: list[FileResponse]
-    total: int
+    files: list[FileResponse] = Field(..., description="List of file objects")
+    total: int = Field(..., description="Total count of files (for pagination)")
+    page: int = Field(..., description="Current page number")
+    page_size: int = Field(..., description="Number of items per page")
+    total_pages: int = Field(..., description="Total number of pages")

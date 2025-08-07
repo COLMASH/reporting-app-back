@@ -14,6 +14,10 @@ from src.modules.files.models import File, FileStatus
 
 logger = get_logger(__name__)
 
+# Pagination constants
+DEFAULT_PAGE_SIZE = 20
+MAX_PAGE_SIZE = 100
+
 
 def create_file_metadata(
     db: Session,
@@ -51,10 +55,41 @@ def create_file_metadata(
     return file_upload
 
 
-def get_user_files(db: Session, user_id: UUID) -> list[File]:
-    """Get all files for a user."""
-    files = db.query(File).filter(File.user_id == user_id).order_by(File.created_at.desc()).all()
-    return files
+def get_user_files(
+    db: Session,
+    user_id: UUID,
+    page: int = 1,
+    page_size: int = DEFAULT_PAGE_SIZE,
+) -> tuple[list[File], int]:
+    """
+    Get all files for a user with pagination.
+
+    Args:
+        db: Database session
+        user_id: User ID
+        page: Page number (1-based)
+        page_size: Number of results per page
+
+    Returns:
+        tuple[list[File], int]: Files and total count
+    """
+    # Ensure page size is within limits
+    page_size = min(page_size, MAX_PAGE_SIZE)
+    page = max(1, page)
+
+    # Build query
+    query = db.query(File).filter(File.user_id == user_id)
+
+    # Get total count
+    total_count = query.count()
+
+    # Apply pagination
+    offset = (page - 1) * page_size
+    files = query.order_by(File.created_at.desc()).offset(offset).limit(page_size).all()
+
+    logger.info(f"Retrieved {len(files)} files for user {user_id} " f"(page {page}, total {total_count})")
+
+    return files, total_count
 
 
 def get_file_by_id(db: Session, file_id: UUID, user_id: UUID) -> File:

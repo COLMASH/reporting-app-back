@@ -22,6 +22,11 @@ from src.modules.files.models import File
 from src.modules.reporting_analyses.models import Analysis
 from src.modules.results.models import Result
 
+# Portfolio module models
+from src.modules.portfolio.models import (
+    Asset, StructuredNote, RealEstateAsset
+)
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

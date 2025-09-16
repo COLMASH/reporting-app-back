@@ -23,6 +23,9 @@ from src.modules.auth.models import Account, User, VerificationToken  # noqa: F4
 # Import all entities to ensure they're registered with SQLAlchemy
 # These imports must happen after database setup but before app creation
 from src.modules.files.models import File  # noqa: F401
+
+# Portfolio module models
+from src.modules.portfolio.models import Asset, RealEstateAsset, StructuredNote  # noqa: F401
 from src.modules.reporting_analyses.models import Analysis  # noqa: F401
 from src.modules.results.models import Result  # noqa: F401
 

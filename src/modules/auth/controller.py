@@ -63,7 +63,11 @@ async def login(
     db: DbSession,
 ) -> schemas.TokenResponse:
     """
-    Login with email and password.
-    Only works for users created via signup endpoint.
+    Authenticate user with email and password.
+
+    Returns a JWT token valid for 30 minutes. Include the token in subsequent
+    requests using the Authorization header: `Bearer <token>`
+
+    Note: Only works for users created via the signup endpoint (not external JWT tokens).
     """
     return await login_user(login_request.email, login_request.password, db)

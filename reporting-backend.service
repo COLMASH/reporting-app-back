@@ -1,0 +1,32 @@
+[Unit]
+Description=Reporting Backend FastAPI Application
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=proyecto_ai_ilv
+Group=proyecto_ai_ilv
+WorkingDirectory=/home/proyecto_ai_ilv/reporting-app-back
+Environment="PATH=/home/proyecto_ai_ilv/.local/bin:/usr/local/bin:/usr/bin:/bin"
+
+# Load environment variables from .env file
+EnvironmentFile=/home/proyecto_ai_ilv/reporting-app-back/.env
+
+# Start command with host and port configuration
+ExecStart=/home/proyecto_ai_ilv/.local/bin/uv run uvicorn src.main:app --host 0.0.0.0 --port 8000
+
+# Restart policy
+Restart=always
+RestartSec=10
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=reporting-backend
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

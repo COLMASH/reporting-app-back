@@ -105,13 +105,32 @@ Example: If adding a `Comment` model to `src/modules/reporting_results/models.py
 - Uses single `.env` file for simplicity
 - `APP_DEBUG` instead of `DEBUG` (avoids IDE conflicts)
 - URL-encode special chars in DATABASE_URL (@ → %40)
-- Production values set in Render dashboard
 
-### Deployment
-- Manual Render setup (no render.yaml)
-- Different env vars per branch
-- `build.sh` runs migrations during deployment
-- Swagger disabled in production
+### Deployment (GCP Compute Engine)
+
+**Instance**: `malatesta-dev-server` (Zone: `us-central1-a`)
+**User**: `proyecto_ai_ilv`
+**App Path**: `/home/proyecto_ai_ilv/reporting-app-back`
+**Service**: `reporting-backend` (systemd)
+**Port**: `8000`
+
+**CI/CD**: GitHub Actions auto-deploys `develop` branch
+- Workflow: `.github/workflows/deploy-develop.yml`
+- On push → SSH to GCP → git pull → uv sync → alembic upgrade → systemctl restart
+
+**HTTPS**: ngrok tunnel (free tier - URL changes on restart)
+- Start: `nohup ngrok http 8000 > /tmp/ngrok.log 2>&1 &`
+- Get URL: `curl http://localhost:4040/api/tunnels | jq '.tunnels[0].public_url'`
+- Frontend needs header: `ngrok-skip-browser-warning: true`
+
+**Service Management**:
+- Status: `sudo systemctl status reporting-backend`
+- Logs: `sudo journalctl -u reporting-backend -f`
+- Restart: `sudo systemctl restart reporting-backend`
+
+**Quick Commands**: See `docs/GCP_COMMANDS.md`
+
+**Chosen Over Render/Cloud Run**: Need SSH access and file system for 'Claude Agent SDK' integration which use 'Claude Code' file system tools under the hood
 
 ## Not Yet Implemented
 

@@ -12,7 +12,7 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Any
 
-from sqlalchemy import Column, Date, DateTime, ForeignKey, Index, Numeric, String
+from sqlalchemy import Column, Date, DateTime, ForeignKey, Index, Integer, Numeric, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
@@ -31,31 +31,55 @@ class Asset(Base):
 
     # Essential DB fields
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    display_id = Column(Integer)  # User-friendly sequential ID for display/reference
 
     # Excel columns - kept exact names
     report_date = Column(Date)
     ownership_holding_entity = Column(String(100), nullable=False)
     asset_group = Column(String(100), nullable=False)
-    asset_sub_group = Column(String(100))
+    asset_group_strategy = Column(String(100))  # Renamed from asset_sub_group (kept original size)
     asset_type = Column(String(100), nullable=False)
+    asset_subtype = Column(String(100))  # NEW - first level subtype
+    asset_subtype_2 = Column(String(200))  # NEW - second level subtype
     asset_name = Column(String(500), nullable=False)
-    location = Column(String(200))
+    geographic_focus = Column(String(200))  # Renamed from location (kept original size)
     asset_identifier = Column(String(100))  # ISIN, CUSIP, etc.
     asset_status = Column(String(50), default="Active in portfolio")
     broker_asset_manager = Column(String(200))
-    denomination_currency = Column(String(3), nullable=False)  # EUR, USD, etc.
+    denomination_currency = Column(String(10), nullable=False)  # Expanded from String(3) for flexibility
 
-    # Investment details from Excel
+    # Investment details from Excel - Base Currency
     initial_investment_date = Column(Date)
     number_of_shares = Column(Numeric(20, 6), default=0)
-    avg_purchase_price = Column(Numeric(20, 6), default=0)
-    total_investment_commitment = Column(Numeric(20, 2), default=0)
-    paid_in_capital = Column(Numeric(20, 2), default=0)  # In Excel this is calculated, but we store it
-    asset_level_financing = Column(Numeric(20, 2), default=0)
-    pending_investment = Column(Numeric(20, 2), default=0)  # In Excel this is calculated
+    avg_purchase_price_base_currency = Column(Numeric(20, 6), default=0)  # Renamed from avg_purchase_price
+    total_investment_commitment_base_currency = Column(Numeric(20, 2), default=0)  # Renamed from total_investment_commitment
+    paid_in_capital_base_currency = Column(Numeric(20, 2), default=0)  # Renamed from paid_in_capital
+    asset_level_financing_base_currency = Column(Numeric(20, 2), default=0)  # Renamed from asset_level_financing
+    unfunded_commitment_base_currency = Column(Numeric(20, 2), default=0)  # Renamed from pending_investment
     current_share_price = Column(Numeric(20, 6))
-    estimated_asset_value = Column(Numeric(20, 2))
-    total_asset_return = Column(Numeric(20, 6))  # Store the calculated value
+    estimated_asset_value_base_currency = Column(Numeric(20, 2))  # Renamed from estimated_asset_value
+    total_asset_return_base_currency = Column(Numeric(20, 6))  # Renamed from total_asset_return (kept original precision)
+
+    # FX Rates for multi-currency conversion
+    usd_eur_inception = Column(Numeric(12, 8))  # USD/EUR rate at investment inception
+    usd_eur_current = Column(Numeric(12, 8))  # Current USD/EUR rate
+    usd_cad_current = Column(Numeric(12, 8))  # Current USD/CAD rate
+    usd_chf_current = Column(Numeric(12, 8))  # Current USD/CHF rate
+    usd_hkd_current = Column(Numeric(12, 8))  # Current USD/HKD rate
+
+    # Multi-currency values - USD
+    total_investment_commitment_usd = Column(Numeric(20, 2))
+    paid_in_capital_usd = Column(Numeric(20, 2))
+    unfunded_commitment_usd = Column(Numeric(20, 2))
+    estimated_asset_value_usd = Column(Numeric(20, 2))
+    total_asset_return_usd = Column(Numeric(10, 6))
+
+    # Multi-currency values - EUR
+    total_investment_commitment_eur = Column(Numeric(20, 2))
+    paid_in_capital_eur = Column(Numeric(20, 2))
+    unfunded_commitment_eur = Column(Numeric(20, 2))
+    estimated_asset_value_eur = Column(Numeric(20, 2))
+    total_asset_return_eur = Column(Numeric(10, 6))
 
     # Minimal audit fields
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
@@ -68,26 +92,27 @@ class Asset(Base):
     # Calculated fields matching Excel formulas (for validation/recalculation)
     @hybrid_property
     def calculated_paid_in_capital(self) -> Any:  # Returns Decimal on instance, ColumnElement on class
-        """Excel formula: =M*N (number_of_shares * avg_purchase_price)"""
-        if self.number_of_shares and self.avg_purchase_price:
-            return self.number_of_shares * self.avg_purchase_price
+        """Excel formula: =M*N (number_of_shares * avg_purchase_price_base_currency)"""
+        if self.number_of_shares and self.avg_purchase_price_base_currency:
+            return self.number_of_shares * self.avg_purchase_price_base_currency
         return Decimal(0)
 
     @hybrid_property
-    def calculated_pending_investment(self) -> Any:  # Returns Decimal on instance, ColumnElement on class
-        """Excel formula: =O-P (total_investment_commitment - paid_in_capital)"""
-        if self.total_investment_commitment and self.paid_in_capital:
-            return self.total_investment_commitment - self.paid_in_capital
+    def calculated_unfunded_commitment(self) -> Any:  # Returns Decimal on instance, ColumnElement on class
+        """Excel formula: =O-P (total_investment_commitment_base_currency - paid_in_capital_base_currency)"""
+        if self.total_investment_commitment_base_currency and self.paid_in_capital_base_currency:
+            return self.total_investment_commitment_base_currency - self.paid_in_capital_base_currency
         return Decimal(0)
 
     @hybrid_property
     def calculated_return(self) -> Any:  # Returns Decimal|None on instance, ColumnElement on class
-        """Excel formula: =IFERROR((T/P-1),"-") (estimated_asset_value / paid_in_capital - 1)"""
-        if self.estimated_asset_value and self.paid_in_capital and self.paid_in_capital > 0:
-            return (self.estimated_asset_value / self.paid_in_capital) - 1
+        """Excel formula: =IFERROR((T/P-1),"-") (estimated_asset_value_base_currency / paid_in_capital_base_currency - 1)"""
+        if self.estimated_asset_value_base_currency and self.paid_in_capital_base_currency and self.paid_in_capital_base_currency > 0:
+            return (self.estimated_asset_value_base_currency / self.paid_in_capital_base_currency) - 1
         return None
 
     __table_args__ = (
+        Index("idx_assets_display_id", "display_id"),
         Index("idx_assets_entity", "ownership_holding_entity"),
         Index("idx_assets_group", "asset_group"),
         Index("idx_assets_status", "asset_status"),

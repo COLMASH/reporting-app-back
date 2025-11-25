@@ -90,6 +90,9 @@ select = [
     "C4", # flake8-comprehensions
     "UP", # pyupgrade
 ]
+ignore = [
+    "B008",  # Do not perform function calls in argument defaults - FastAPI Query/Depends pattern
+]
 
 [tool.black]
 line-length = 180

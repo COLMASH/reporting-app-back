@@ -411,7 +411,8 @@ class NavDataPoint(BaseSchema):
     """Single NAV data point for time series."""
 
     date: date
-    value: Decimal
+    value_usd: Decimal
+    value_eur: Decimal
 
 
 class NavSeries(BaseSchema):

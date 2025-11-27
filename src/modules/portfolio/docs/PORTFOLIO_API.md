@@ -552,25 +552,25 @@ GET /api/v1/portfolio/aggregations/historical
     {
       "name": "ILV",
       "data": [
-        { "date": "2024-01-31", "value": 23000000.00 },
-        { "date": "2024-02-29", "value": 24200000.00 },
-        { "date": "2024-03-31", "value": 25000000.00 }
+        { "date": "2024-01-31", "value_usd": 23000000.00, "value_eur": 21160000.00 },
+        { "date": "2024-02-29", "value_usd": 24200000.00, "value_eur": 22264000.00 },
+        { "date": "2024-03-31", "value_usd": 25000000.00, "value_eur": 23000000.00 }
       ]
     },
     {
       "name": "Isis Invest",
       "data": [
-        { "date": "2024-01-31", "value": 16500000.00 },
-        { "date": "2024-02-29", "value": 17200000.00 },
-        { "date": "2024-03-31", "value": 18000000.00 }
+        { "date": "2024-01-31", "value_usd": 16500000.00, "value_eur": 15180000.00 },
+        { "date": "2024-02-29", "value_usd": 17200000.00, "value_eur": 15824000.00 },
+        { "date": "2024-03-31", "value_usd": 18000000.00, "value_eur": 16560000.00 }
       ]
     },
     {
       "name": "Pivert",
       "data": [
-        { "date": "2024-01-31", "value": 8800000.00 },
-        { "date": "2024-02-29", "value": 9100000.00 },
-        { "date": "2024-03-31", "value": 9450000.00 }
+        { "date": "2024-01-31", "value_usd": 8800000.00, "value_eur": 8096000.00 },
+        { "date": "2024-02-29", "value_usd": 9100000.00, "value_eur": 8372000.00 },
+        { "date": "2024-03-31", "value_usd": 9450000.00, "value_eur": 8694000.00 }
       ]
     }
   ]
@@ -585,9 +585,9 @@ GET /api/v1/portfolio/aggregations/historical
     {
       "name": "Total",
       "data": [
-        { "date": "2024-01-31", "value": 48300000.00 },
-        { "date": "2024-02-29", "value": 50500000.00 },
-        { "date": "2024-03-31", "value": 52450000.00 }
+        { "date": "2024-01-31", "value_usd": 48300000.00, "value_eur": 44436000.00 },
+        { "date": "2024-02-29", "value_usd": 50500000.00, "value_eur": 46460000.00 },
+        { "date": "2024-03-31", "value_usd": 52450000.00, "value_eur": 48254000.00 }
       ]
     }
   ]
@@ -599,6 +599,7 @@ GET /api/v1/portfolio/aggregations/historical
 - **Stacked Bar Chart**: Use with `group_by_entity=true` for entity breakdown over time
 - **Line Chart**: Use with `group_by_entity=false` for total portfolio evolution
 - **Area Chart**: Use series data directly with your charting library
+- **Currency Toggle**: Use `value_usd` or `value_eur` based on user preference
 
 ---
 
@@ -804,7 +805,8 @@ interface FlexibleAggregationGroup {
 // Historical NAV
 interface NavDataPoint {
   date: string;
-  value: number;
+  value_usd: number;
+  value_eur: number;
 }
 
 interface NavSeries {

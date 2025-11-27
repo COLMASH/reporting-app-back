@@ -390,13 +390,15 @@ def get_historical_nav(
         query = db.query(
             Asset.report_date,
             Asset.ownership_holding_entity,
-            func.sum(Asset.estimated_asset_value_usd).label("value"),
+            func.sum(Asset.estimated_asset_value_usd).label("value_usd"),
+            func.sum(Asset.estimated_asset_value_eur).label("value_eur"),
         )
     else:
         # Group by date only (single series)
         query = db.query(
             Asset.report_date,
-            func.sum(Asset.estimated_asset_value_usd).label("value"),
+            func.sum(Asset.estimated_asset_value_usd).label("value_usd"),
+            func.sum(Asset.estimated_asset_value_eur).label("value_eur"),
         )
         if entity:
             query = query.filter(Asset.ownership_holding_entity == entity)
@@ -424,7 +426,8 @@ def get_historical_nav(
                 series_by_entity[entity_name] = []
             series_by_entity[entity_name].append({
                 "date": r.report_date,
-                "value": r.value or Decimal(0),
+                "value_usd": r.value_usd or Decimal(0),
+                "value_eur": r.value_eur or Decimal(0),
             })
 
         # Convert to list format
@@ -443,7 +446,11 @@ def get_historical_nav(
             {
                 "name": entity or "Total",
                 "data": [
-                    {"date": r.report_date, "value": r.value or Decimal(0)}
+                    {
+                        "date": r.report_date,
+                        "value_usd": r.value_usd or Decimal(0),
+                        "value_eur": r.value_eur or Decimal(0),
+                    }
                     for r in results
                 ],
             }

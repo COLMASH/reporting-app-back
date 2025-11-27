@@ -209,9 +209,12 @@ def get_portfolio_summary(
 
     query = db.query(
         func.count(Asset.id).label("total_assets"),
-        func.sum(Asset.estimated_asset_value_usd).label("total_value"),
-        func.sum(Asset.paid_in_capital_usd).label("total_paid_in"),
-        func.sum(Asset.unfunded_commitment_usd).label("total_unfunded"),
+        func.sum(Asset.estimated_asset_value_usd).label("total_value_usd"),
+        func.sum(Asset.paid_in_capital_usd).label("total_paid_in_usd"),
+        func.sum(Asset.unfunded_commitment_usd).label("total_unfunded_usd"),
+        func.sum(Asset.estimated_asset_value_eur).label("total_value_eur"),
+        func.sum(Asset.paid_in_capital_eur).label("total_paid_in_eur"),
+        func.sum(Asset.unfunded_commitment_eur).label("total_unfunded_eur"),
         func.avg(Asset.total_asset_return_usd).label("avg_return"),
     )
 
@@ -227,9 +230,12 @@ def get_portfolio_summary(
     return {
         "report_date": report_date,
         "total_assets": result.total_assets or 0,
-        "total_estimated_value_usd": result.total_value or Decimal(0),
-        "total_paid_in_capital_usd": result.total_paid_in or Decimal(0),
-        "total_unfunded_commitment_usd": result.total_unfunded or Decimal(0),
+        "total_estimated_value_usd": result.total_value_usd or Decimal(0),
+        "total_paid_in_capital_usd": result.total_paid_in_usd or Decimal(0),
+        "total_unfunded_commitment_usd": result.total_unfunded_usd or Decimal(0),
+        "total_estimated_value_eur": result.total_value_eur or Decimal(0),
+        "total_paid_in_capital_eur": result.total_paid_in_eur or Decimal(0),
+        "total_unfunded_commitment_eur": result.total_unfunded_eur or Decimal(0),
         "weighted_avg_return": result.avg_return,
     }
 
@@ -252,6 +258,7 @@ def get_aggregation_by_entity(
     query = db.query(
         Asset.ownership_holding_entity.label("name"),
         func.sum(Asset.estimated_asset_value_usd).label("value_usd"),
+        func.sum(Asset.estimated_asset_value_eur).label("value_eur"),
         func.count(Asset.id).label("count"),
     )
 
@@ -263,15 +270,18 @@ def get_aggregation_by_entity(
     results = query.group_by(Asset.ownership_holding_entity).all()
 
     # Calculate totals and percentages
-    total = sum(r.value_usd or Decimal(0) for r in results)
+    total_usd = sum(r.value_usd or Decimal(0) for r in results)
+    total_eur = sum(r.value_eur or Decimal(0) for r in results)
     groups = []
 
     for r in results:
-        value = r.value_usd or Decimal(0)
-        pct = float(value / total * 100) if total > 0 else 0.0
+        value_usd = r.value_usd or Decimal(0)
+        value_eur = r.value_eur or Decimal(0)
+        pct = float(value_usd / total_usd * 100) if total_usd > 0 else 0.0
         groups.append({
             "name": r.name,
-            "value_usd": value,
+            "value_usd": value_usd,
+            "value_eur": value_eur,
             "percentage": round(pct, 2),
             "count": r.count,
         })
@@ -281,7 +291,8 @@ def get_aggregation_by_entity(
 
     return {
         "report_date": report_date,
-        "total_value_usd": total,
+        "total_value_usd": total_usd,
+        "total_value_eur": total_eur,
         "groups": groups,
     }
 
@@ -304,9 +315,12 @@ def get_aggregation_by_asset_type(
     query = db.query(
         Asset.asset_type,
         func.sum(Asset.estimated_asset_value_usd).label("value_usd"),
+        func.sum(Asset.estimated_asset_value_eur).label("value_eur"),
         func.count(Asset.id).label("count"),
-        func.sum(Asset.paid_in_capital_usd).label("paid_in"),
-        func.sum(Asset.unfunded_commitment_usd).label("unfunded"),
+        func.sum(Asset.paid_in_capital_usd).label("paid_in_usd"),
+        func.sum(Asset.paid_in_capital_eur).label("paid_in_eur"),
+        func.sum(Asset.unfunded_commitment_usd).label("unfunded_usd"),
+        func.sum(Asset.unfunded_commitment_eur).label("unfunded_eur"),
     )
 
     if report_date:
@@ -317,19 +331,24 @@ def get_aggregation_by_asset_type(
     results = query.group_by(Asset.asset_type).all()
 
     # Calculate totals and percentages
-    total = sum(r.value_usd or Decimal(0) for r in results)
+    total_usd = sum(r.value_usd or Decimal(0) for r in results)
+    total_eur = sum(r.value_eur or Decimal(0) for r in results)
     groups = []
 
     for r in results:
-        value = r.value_usd or Decimal(0)
-        pct = float(value / total * 100) if total > 0 else 0.0
+        value_usd = r.value_usd or Decimal(0)
+        value_eur = r.value_eur or Decimal(0)
+        pct = float(value_usd / total_usd * 100) if total_usd > 0 else 0.0
         groups.append({
             "asset_type": r.asset_type,
-            "value_usd": value,
+            "value_usd": value_usd,
+            "value_eur": value_eur,
             "percentage": round(pct, 2),
             "count": r.count,
-            "paid_in_capital_usd": r.paid_in or Decimal(0),
-            "unfunded_commitment_usd": r.unfunded or Decimal(0),
+            "paid_in_capital_usd": r.paid_in_usd or Decimal(0),
+            "paid_in_capital_eur": r.paid_in_eur or Decimal(0),
+            "unfunded_commitment_usd": r.unfunded_usd or Decimal(0),
+            "unfunded_commitment_eur": r.unfunded_eur or Decimal(0),
         })
 
     # Sort by value descending
@@ -337,7 +356,8 @@ def get_aggregation_by_asset_type(
 
     return {
         "report_date": report_date,
-        "total_value_usd": total,
+        "total_value_usd": total_usd,
+        "total_value_eur": total_eur,
         "groups": groups,
     }
 

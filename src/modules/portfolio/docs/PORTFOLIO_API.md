@@ -272,6 +272,9 @@ GET /api/v1/portfolio/aggregations/summary
   "total_estimated_value_usd": 52450000.00,
   "total_paid_in_capital_usd": 45000000.00,
   "total_unfunded_commitment_usd": 8500000.00,
+  "total_estimated_value_eur": 48254000.00,
+  "total_paid_in_capital_eur": 41400000.00,
+  "total_unfunded_commitment_eur": 7820000.00,
   "weighted_avg_return": 0.165
 }
 ```
@@ -280,10 +283,12 @@ GET /api/v1/portfolio/aggregations/summary
 
 Display as KPI cards at the top of the dashboard:
 - Total Assets: `total_assets`
-- Portfolio Value: `total_estimated_value_usd`
-- Paid In Capital: `total_paid_in_capital_usd`
-- Unfunded: `total_unfunded_commitment_usd`
+- Portfolio Value: `total_estimated_value_usd` or `total_estimated_value_eur`
+- Paid In Capital: `total_paid_in_capital_usd` or `total_paid_in_capital_eur`
+- Unfunded: `total_unfunded_commitment_usd` or `total_unfunded_commitment_eur`
 - Avg Return: `weighted_avg_return` (format as percentage)
+
+Use currency toggle to switch between USD and EUR values.
 
 ---
 
@@ -308,22 +313,26 @@ GET /api/v1/portfolio/aggregations/by-entity
 {
   "report_date": "2024-03-31",
   "total_value_usd": 52450000.00,
+  "total_value_eur": 48254000.00,
   "groups": [
     {
       "name": "ILV",
       "value_usd": 25000000.00,
+      "value_eur": 23000000.00,
       "percentage": 47.66,
       "count": 45
     },
     {
       "name": "Isis Invest",
       "value_usd": 18000000.00,
+      "value_eur": 16560000.00,
       "percentage": 34.32,
       "count": 42
     },
     {
       "name": "Pivert",
       "value_usd": 9450000.00,
+      "value_eur": 8694000.00,
       "percentage": 18.02,
       "count": 31
     }
@@ -333,8 +342,9 @@ GET /api/v1/portfolio/aggregations/by-entity
 
 #### Frontend Usage
 
-- **Donut/Pie Chart**: `name` as label, `percentage` or `value_usd` as value
+- **Donut/Pie Chart**: `name` as label, `percentage` or `value_usd`/`value_eur` as value
 - **Legend**: Show all groups with their percentages
+- **Currency Toggle**: Use `value_usd` or `value_eur` based on user preference
 
 ---
 
@@ -359,38 +369,51 @@ GET /api/v1/portfolio/aggregations/by-asset-type
 {
   "report_date": "2024-03-31",
   "total_value_usd": 52450000.00,
+  "total_value_eur": 48254000.00,
   "groups": [
     {
       "asset_type": "Equities",
       "value_usd": 22000000.00,
+      "value_eur": 20240000.00,
       "percentage": 41.95,
       "count": 35,
       "paid_in_capital_usd": 18000000.00,
-      "unfunded_commitment_usd": 2000000.00
+      "paid_in_capital_eur": 16560000.00,
+      "unfunded_commitment_usd": 2000000.00,
+      "unfunded_commitment_eur": 1840000.00
     },
     {
       "asset_type": "Bonds",
       "value_usd": 15000000.00,
+      "value_eur": 13800000.00,
       "percentage": 28.60,
       "count": 28,
       "paid_in_capital_usd": 14500000.00,
-      "unfunded_commitment_usd": 500000.00
+      "paid_in_capital_eur": 13340000.00,
+      "unfunded_commitment_usd": 500000.00,
+      "unfunded_commitment_eur": 460000.00
     },
     {
       "asset_type": "Real Estate",
       "value_usd": 10000000.00,
+      "value_eur": 9200000.00,
       "percentage": 19.07,
       "count": 15,
       "paid_in_capital_usd": 8000000.00,
-      "unfunded_commitment_usd": 4000000.00
+      "paid_in_capital_eur": 7360000.00,
+      "unfunded_commitment_usd": 4000000.00,
+      "unfunded_commitment_eur": 3680000.00
     },
     {
       "asset_type": "Structured Notes",
       "value_usd": 5450000.00,
+      "value_eur": 5014000.00,
       "percentage": 10.39,
       "count": 40,
       "paid_in_capital_usd": 4500000.00,
-      "unfunded_commitment_usd": 2000000.00
+      "paid_in_capital_eur": 4140000.00,
+      "unfunded_commitment_usd": 2000000.00,
+      "unfunded_commitment_eur": 1840000.00
     }
   ]
 }
@@ -400,6 +423,7 @@ GET /api/v1/portfolio/aggregations/by-asset-type
 
 - **Donut/Pie Chart**: `asset_type` as label, `percentage` as value
 - **Summary Table**: Show all columns for detailed breakdown
+- **Currency Toggle**: Use `_usd` or `_eur` suffixed fields based on user preference
 
 ---
 
@@ -714,12 +738,55 @@ interface AssetListResponse {
   total_pages: number;
 }
 
-// Aggregation Group
+// Portfolio Summary
+interface PortfolioSummary {
+  report_date: string | null;
+  total_assets: number;
+  total_estimated_value_usd: number;
+  total_paid_in_capital_usd: number;
+  total_unfunded_commitment_usd: number;
+  total_estimated_value_eur: number;
+  total_paid_in_capital_eur: number;
+  total_unfunded_commitment_eur: number;
+  weighted_avg_return: number | null;
+}
+
+// Entity Aggregation Group
 interface AggregationGroup {
   name: string;
   value_usd: number;
+  value_eur: number;
   percentage: number;
   count: number;
+}
+
+// Entity Aggregation Response
+interface EntityAggregationResponse {
+  report_date: string | null;
+  total_value_usd: number;
+  total_value_eur: number;
+  groups: AggregationGroup[];
+}
+
+// Asset Type Aggregation Group
+interface AssetTypeGroup {
+  asset_type: string;
+  value_usd: number;
+  value_eur: number;
+  percentage: number;
+  count: number;
+  paid_in_capital_usd: number;
+  paid_in_capital_eur: number;
+  unfunded_commitment_usd: number;
+  unfunded_commitment_eur: number;
+}
+
+// Asset Type Aggregation Response
+interface AssetTypeAggregationResponse {
+  report_date: string | null;
+  total_value_usd: number;
+  total_value_eur: number;
+  groups: AssetTypeGroup[];
 }
 
 // Flexible Aggregation Group

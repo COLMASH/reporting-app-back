@@ -299,6 +299,10 @@ async def get_aggregation_by_entity(
     request: Request,
     current_user: CurrentUser,
     db: DbSession,
+    entity: str | None = Query(
+        None,
+        description="Filter by entity (returns only this entity at 100%)",
+    ),
     asset_type: str | None = Query(
         None,
         description="Pre-filter by asset_type",
@@ -327,6 +331,7 @@ async def get_aggregation_by_entity(
     """
     result = service.get_aggregation_by_entity(
         db=db,
+        entity=entity,
         asset_type=asset_type,
         asset_group=asset_group,
         asset_group_strategy=asset_group_strategy,
@@ -347,6 +352,10 @@ async def get_aggregation_by_asset_type(
     entity: str | None = Query(
         None,
         description="Pre-filter by entity",
+    ),
+    asset_type: str | None = Query(
+        None,
+        description="Filter by asset_type (returns only this type at 100%)",
     ),
     asset_group: str | None = Query(
         None,
@@ -375,6 +384,7 @@ async def get_aggregation_by_asset_type(
     result = service.get_aggregation_by_asset_type(
         db=db,
         entity=entity,
+        asset_type=asset_type,
         asset_group=asset_group,
         asset_group_strategy=asset_group_strategy,
         report_date=report_date,

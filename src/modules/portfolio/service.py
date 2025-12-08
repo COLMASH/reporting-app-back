@@ -254,6 +254,7 @@ def get_portfolio_summary(
 
 def get_aggregation_by_entity(
     db: Session,
+    entity: str | None = None,
     asset_type: str | None = None,
     asset_group: str | None = None,
     asset_group_strategy: str | None = None,
@@ -278,6 +279,8 @@ def get_aggregation_by_entity(
 
     if report_date:
         query = query.filter(Asset.report_date == report_date)
+    if entity:
+        query = query.filter(Asset.ownership_holding_entity == entity)
     if asset_type:
         query = query.filter(Asset.asset_type == asset_type)
     if asset_group:
@@ -318,6 +321,7 @@ def get_aggregation_by_entity(
 def get_aggregation_by_asset_type(
     db: Session,
     entity: str | None = None,
+    asset_type: str | None = None,
     asset_group: str | None = None,
     asset_group_strategy: str | None = None,
     report_date: date | None = None,
@@ -347,6 +351,8 @@ def get_aggregation_by_asset_type(
         query = query.filter(Asset.report_date == report_date)
     if entity:
         query = query.filter(Asset.ownership_holding_entity == entity)
+    if asset_type:
+        query = query.filter(Asset.asset_type == asset_type)
     if asset_group:
         query = query.filter(Asset.asset_group == asset_group)
     if asset_group_strategy:

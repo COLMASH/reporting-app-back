@@ -1,0 +1,13 @@
+{
+  "symbol": "BTC/USD",
+  "timeframe": "4h",
+  "strategy": {
+    "name": "rsi",
+    "params": {
+      "period": 14,
+      "oversold": 30,
+      "overbought": 70
+    }
+  },
+  "position_size_usd": 100.0
+}

@@ -1,0 +1,14 @@
+{
+  "symbol": "BTC/USD",
+  "timeframe": "4h",
+  "strategy": {
+    "name": "stochastic",
+    "params": {
+      "k_period": 14,
+      "d_period": 3,
+      "oversold": 20,
+      "overbought": 80
+    }
+  },
+  "position_size_usd": 100.0
+}

@@ -1,0 +1,12 @@
+{
+  "symbol": "BTC/USD",
+  "timeframe": "4h",
+  "strategy": {
+    "name": "adx",
+    "params": {
+      "period": 14,
+      "adx_threshold": 25
+    }
+  },
+  "position_size_usd": 100.0
+}

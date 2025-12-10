@@ -1,0 +1,12 @@
+{
+  "symbol": "BTC/USD",
+  "timeframe": "1h",
+  "strategy": {
+    "name": "bollinger",
+    "params": {
+      "period": 20,
+      "std_dev": 2.0
+    }
+  },
+  "position_size_usd": 100.0
+}

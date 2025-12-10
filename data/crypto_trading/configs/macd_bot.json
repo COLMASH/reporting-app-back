@@ -1,0 +1,13 @@
+{
+  "symbol": "BTC/USD",
+  "timeframe": "1h",
+  "strategy": {
+    "name": "macd",
+    "params": {
+      "fast_period": 12,
+      "slow_period": 26,
+      "signal_period": 9
+    }
+  },
+  "position_size_usd": 100.0
+}

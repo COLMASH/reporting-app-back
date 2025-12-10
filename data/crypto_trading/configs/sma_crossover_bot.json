@@ -1,0 +1,13 @@
+{
+  "symbol": "BTC/USD",
+  "timeframe": "1h",
+  "strategy": {
+    "name": "sma_crossover",
+    "params": {
+      "fast_period": 10,
+      "slow_period": 20,
+      "use_ema": false
+    }
+  },
+  "position_size_usd": 100.0
+}

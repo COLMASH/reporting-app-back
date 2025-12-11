@@ -37,9 +37,10 @@ def _build_asset_response(
     asset_dict: dict = {
         "id": asset.id,
         "display_id": asset.display_id,
+        "holding_company": asset.holding_company,  # NEW
         "ownership_holding_entity": asset.ownership_holding_entity,
-        "asset_group": asset.asset_group,
-        "asset_group_strategy": asset.asset_group_strategy,
+        "managing_entity": asset.managing_entity,  # Renamed from asset_group
+        "asset_group": asset.asset_group,  # Renamed from asset_group_strategy
         "asset_type": asset.asset_type,
         "asset_subtype": asset.asset_subtype,
         "asset_subtype_2": asset.asset_subtype_2,
@@ -70,11 +71,13 @@ def _build_asset_response(
         "unfunded_commitment_usd": asset.unfunded_commitment_usd,
         "estimated_asset_value_usd": asset.estimated_asset_value_usd,
         "total_asset_return_usd": asset.total_asset_return_usd,
+        "unrealized_gain_usd": asset.unrealized_gain_usd,  # NEW
         "total_investment_commitment_eur": asset.total_investment_commitment_eur,
         "paid_in_capital_eur": asset.paid_in_capital_eur,
         "unfunded_commitment_eur": asset.unfunded_commitment_eur,
         "estimated_asset_value_eur": asset.estimated_asset_value_eur,
         "total_asset_return_eur": asset.total_asset_return_eur,
+        "unrealized_gain_eur": asset.unrealized_gain_eur,  # NEW
         "created_at": asset.created_at,
         "updated_at": asset.updated_at,
     }
@@ -103,15 +106,25 @@ def _build_asset_response(
             )
         if asset.real_estate:
             asset_dict["real_estate"] = schemas.RealEstateResponse(
-                cost_original_asset=asset.real_estate.cost_original_asset,
-                estimated_capex_budget=asset.real_estate.estimated_capex_budget,
-                pivert_development_fees=asset.real_estate.pivert_development_fees,
-                estimated_total_cost=asset.real_estate.estimated_total_cost,
-                capex_invested=asset.real_estate.capex_invested,
-                total_investment_to_date=asset.real_estate.total_investment_to_date,
-                equity_investment_to_date=asset.real_estate.equity_investment_to_date,
-                pending_equity_investment=asset.real_estate.pending_equity_investment,
-                estimated_capital_gain=asset.real_estate.estimated_capital_gain,
+                real_estate_status=asset.real_estate.real_estate_status,  # NEW
+                # EUR columns (renamed with _eur suffix)
+                cost_original_asset_eur=asset.real_estate.cost_original_asset_eur,
+                estimated_capex_budget_eur=asset.real_estate.estimated_capex_budget_eur,
+                pivert_development_fees_eur=asset.real_estate.pivert_development_fees_eur,
+                estimated_total_cost_eur=asset.real_estate.estimated_total_cost_eur,
+                capex_invested_eur=asset.real_estate.capex_invested_eur,
+                total_investment_to_date_eur=asset.real_estate.total_investment_to_date_eur,
+                equity_investment_to_date_eur=asset.real_estate.equity_investment_to_date_eur,
+                pending_equity_investment_eur=asset.real_estate.pending_equity_investment_eur,
+                estimated_net_asset_value_eur=asset.real_estate.estimated_net_asset_value_eur,  # NEW
+                estimated_capital_gain_eur=asset.real_estate.estimated_capital_gain_eur,
+                # NEW USD columns
+                estimated_total_cost_usd=asset.real_estate.estimated_total_cost_usd,
+                total_investment_to_date_usd=asset.real_estate.total_investment_to_date_usd,
+                equity_investment_to_date_usd=asset.real_estate.equity_investment_to_date_usd,
+                pending_equity_investment_usd=asset.real_estate.pending_equity_investment_usd,
+                estimated_net_asset_value_usd=asset.real_estate.estimated_net_asset_value_usd,
+                estimated_capital_gain_usd=asset.real_estate.estimated_capital_gain_usd,
             )
 
     return schemas.AssetResponse(**asset_dict)

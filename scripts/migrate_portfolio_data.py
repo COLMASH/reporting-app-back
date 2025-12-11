@@ -104,11 +104,12 @@ def import_various_sheet(excel_file: str, db: SessionLocal) -> tuple[dict[int, A
             # Create Asset instance
             asset = Asset(
                 display_id=display_id,
-                # Excel columns
+                # Excel columns - NEW column names
                 report_date=clean_date_value(row.get("report_date")),
+                holding_company=clean_string_value(row.get("holding_company")),  # NEW
                 ownership_holding_entity=clean_string_value(row.get("ownership_holding_entity")) or "Unknown",
-                asset_group=clean_string_value(row.get("asset_group")) or "Unknown",
-                asset_group_strategy=clean_string_value(row.get("asset_group_strategy")),
+                managing_entity=clean_string_value(row.get("managing_entity")) or "Unknown",  # Renamed from asset_group
+                asset_group=clean_string_value(row.get("asset_group")),  # Renamed from asset_group_strategy
                 asset_type=clean_string_value(row.get("asset_type")) or "Unknown",
                 asset_subtype=clean_string_value(row.get("asset_subtype")),
                 asset_subtype_2=clean_string_value(row.get("asset_subtype_2")),
@@ -141,12 +142,14 @@ def import_various_sheet(excel_file: str, db: SessionLocal) -> tuple[dict[int, A
                 unfunded_commitment_usd=clean_numeric_value(row.get("unfunded_commitment_usd")),
                 estimated_asset_value_usd=clean_numeric_value(row.get("estimated_asset_value_usd")),
                 total_asset_return_usd=clean_numeric_value(row.get("total_asset_return_usd")),
+                unrealized_gain_usd=clean_numeric_value(row.get("unrealized_gain_usd")),  # NEW
                 # Multi-currency values - EUR
                 total_investment_commitment_eur=clean_numeric_value(row.get("total_investment_commitment_eur")),
                 paid_in_capital_eur=clean_numeric_value(row.get("paid_in_capital_eur")),
                 unfunded_commitment_eur=clean_numeric_value(row.get("unfunded_commitment_eur")),
                 estimated_asset_value_eur=clean_numeric_value(row.get("estimated_asset_value_eur")),
                 total_asset_return_eur=clean_numeric_value(row.get("total_asset_return_eur")),
+                unrealized_gain_eur=clean_numeric_value(row.get("unrealized_gain_eur")),  # NEW
             )
 
             db.add(asset)
@@ -193,32 +196,48 @@ def import_structured_notes_sheet(excel_file: str, db: SessionLocal, assets_by_i
                 errors.append(f"Row {idx + 2}: Duplicate ID {display_id}")
                 continue
 
-            # Create new Asset from StructuredNotes sheet (using old column names)
+            # Create new Asset from StructuredNotes sheet (using NEW column names)
             asset = Asset(
                 display_id=display_id,
                 report_date=clean_date_value(row.get("report_date")),
+                holding_company=clean_string_value(row.get("holding_company")),  # NEW
                 ownership_holding_entity=clean_string_value(row.get("ownership_holding_entity")) or "Unknown",
-                asset_group=clean_string_value(row.get("asset_group")) or "Unknown",
-                asset_group_strategy=clean_string_value(row.get("asset_sub_group")),  # OLD name
+                managing_entity=clean_string_value(row.get("managing_entity")) or "Unknown",  # Renamed from asset_group
+                asset_group=clean_string_value(row.get("asset_group")),  # Renamed from asset_group_strategy
                 asset_type=clean_string_value(row.get("asset_type")) or "Unknown",
                 asset_subtype=clean_string_value(row.get("asset_subtype")),
                 asset_subtype_2=clean_string_value(row.get("asset_subtype_2")),
                 asset_name=clean_string_value(row.get("asset_name")) or f"Asset {display_id}",
-                geographic_focus=clean_string_value(row.get("location")),  # OLD name
+                geographic_focus=clean_string_value(row.get("geographic_focus")),  # Renamed from location
                 asset_identifier=clean_string_value(row.get("asset_identifier")),
                 asset_status=clean_string_value(row.get("asset_status")) or "Active in portfolio",
                 broker_asset_manager=clean_string_value(row.get("broker_asset_manager")),
                 denomination_currency=clean_string_value(row.get("denomination_currency")) or "USD",
                 initial_investment_date=clean_date_value(row.get("initial_investment_date")),
                 number_of_shares=clean_numeric_value(row.get("number_of_shares")) or Decimal(0),
-                avg_purchase_price_base_currency=clean_numeric_value(row.get("avg_purchase_price")) or Decimal(0),  # OLD name
-                total_investment_commitment_base_currency=clean_numeric_value(row.get("total_investment_commitment")) or Decimal(0),  # OLD name
-                paid_in_capital_base_currency=clean_numeric_value(row.get("paid_in_capital")) or Decimal(0),  # OLD name
-                asset_level_financing_base_currency=clean_numeric_value(row.get("asset_level_financing")) or Decimal(0),  # OLD name
-                unfunded_commitment_base_currency=clean_numeric_value(row.get("pending_investment")) or Decimal(0),  # OLD name
+                avg_purchase_price_base_currency=clean_numeric_value(row.get("avg_purchase_price_base_currency")) or Decimal(0),
+                total_investment_commitment_base_currency=clean_numeric_value(row.get("total_investment_commitment_base_currency")) or Decimal(0),
+                paid_in_capital_base_currency=clean_numeric_value(row.get("paid_in_capital_base_currency")) or Decimal(0),
+                asset_level_financing_base_currency=clean_numeric_value(row.get("asset_level_financing_base_currency")) or Decimal(0),
+                unfunded_commitment_base_currency=clean_numeric_value(row.get("unfunded_commitment_base_currency")) or Decimal(0),
                 current_share_price=clean_numeric_value(row.get("current_share_price")),
-                estimated_asset_value_base_currency=clean_numeric_value(row.get("estimated_asset_value")),  # OLD name
-                total_asset_return_base_currency=clean_numeric_value(row.get("total_asset_return")),  # OLD name
+                estimated_asset_value_base_currency=clean_numeric_value(row.get("estimated_asset_value_base_currency")),
+                total_asset_return_base_currency=clean_numeric_value(row.get("total_asset_return_base_currency")),
+                # FX Rates (NEW for StructuredNotes)
+                usd_eur_inception=clean_numeric_value(row.get("usd_eur_inception")),
+                usd_eur_current=clean_numeric_value(row.get("usd_eur_current")),
+                # Multi-currency values - USD (NEW for StructuredNotes)
+                total_investment_commitment_usd=clean_numeric_value(row.get("total_investment_commitment_usd")),
+                paid_in_capital_usd=clean_numeric_value(row.get("paid_in_capital_usd")),
+                estimated_asset_value_usd=clean_numeric_value(row.get("estimated_asset_value_usd")),
+                total_asset_return_usd=clean_numeric_value(row.get("total_asset_return_usd")),
+                unrealized_gain_usd=clean_numeric_value(row.get("unrealized_gain_usd")),  # NEW
+                # Multi-currency values - EUR (NEW for StructuredNotes)
+                total_investment_commitment_eur=clean_numeric_value(row.get("total_investment_commitment_eur")),
+                paid_in_capital_eur=clean_numeric_value(row.get("paid_in_capital_eur")),
+                estimated_asset_value_eur=clean_numeric_value(row.get("estimated_asset_value_eur")),
+                total_asset_return_eur=clean_numeric_value(row.get("total_asset_return_eur")),
+                unrealized_gain_eur=clean_numeric_value(row.get("unrealized_gain_eur")),  # NEW
             )
 
             db.add(asset)
@@ -293,25 +312,29 @@ def import_real_estate_sheet(excel_file: str, db: SessionLocal, assets_by_id: di
                 errors.append(f"Row {idx + 2}: Duplicate ID {display_id}")
                 continue
 
-            # Create new Asset from RealEstate sheet (using old column names)
+            # Create new Asset from RealEstate sheet (using NEW column names)
             asset = Asset(
                 display_id=display_id,
                 report_date=clean_date_value(row.get("report_date")),
+                holding_company=clean_string_value(row.get("holding_company")),  # NEW
                 ownership_holding_entity=clean_string_value(row.get("ownership_holding_entity")) or "Unknown",
-                asset_group=clean_string_value(row.get("asset_group")) or "Unknown",
-                asset_group_strategy=clean_string_value(row.get("asset_sub_group")),  # OLD name
+                managing_entity=clean_string_value(row.get("managing_entity")) or "Unknown",  # Renamed from asset_group
+                asset_group=clean_string_value(row.get("asset_group")),  # Renamed from asset_group_strategy
                 asset_type=clean_string_value(row.get("asset_type")) or "Unknown",
                 asset_subtype=clean_string_value(row.get("asset_subtype")),
                 asset_subtype_2=clean_string_value(row.get("asset_subtype_2")),
                 asset_name=clean_string_value(row.get("asset_name")) or f"Asset {display_id}",
-                geographic_focus=clean_string_value(row.get("location")),  # OLD name
+                geographic_focus=clean_string_value(row.get("geographic_focus")),  # Renamed from location
                 asset_identifier=clean_string_value(row.get("asset_identifier")),
                 asset_status=clean_string_value(row.get("asset_status")) or "Active in portfolio",
                 broker_asset_manager=clean_string_value(row.get("broker_asset_manager")),
                 denomination_currency=clean_string_value(row.get("denomination_currency")) or "USD",
                 initial_investment_date=clean_date_value(row.get("initial_investment_date")),
-                asset_level_financing_base_currency=clean_numeric_value(row.get("asset_level_financing")) or Decimal(0),  # OLD name
-                estimated_asset_value_base_currency=clean_numeric_value(row.get("estimated_asset_value")),  # OLD name
+                asset_level_financing_base_currency=clean_numeric_value(row.get("asset_level_financing_eur")) or Decimal(0),  # Renamed
+                estimated_asset_value_base_currency=clean_numeric_value(row.get("estimated_asset_value_eur")),
+                # FX Rates (NEW for RealEstate)
+                usd_eur_inception=clean_numeric_value(row.get("usd_eur_inception")),
+                usd_eur_current=clean_numeric_value(row.get("usd_eur_current")),
             )
 
             db.add(asset)
@@ -319,18 +342,28 @@ def import_real_estate_sheet(excel_file: str, db: SessionLocal, assets_by_id: di
             assets_by_id[display_id] = asset
             assets_created += 1
 
-            # Create RealEstateAsset extension
+            # Create RealEstateAsset extension (using NEW column names)
             real_estate = RealEstateAsset(
                 asset_id=asset.id,
-                cost_original_asset=clean_numeric_value(row.get("cost_original_asset")) or Decimal(0),
-                estimated_capex_budget=clean_numeric_value(row.get("estimated_capex_budget")) or Decimal(0),
-                pivert_development_fees=clean_numeric_value(row.get("pivert_development_fees")) or Decimal(0),
-                estimated_total_cost=clean_numeric_value(row.get("estimated_total_cost")) or Decimal(0),
-                capex_invested=clean_numeric_value(row.get("capex_invested")) or Decimal(0),
-                total_investment_to_date=clean_numeric_value(row.get("total_investment_to_date")) or Decimal(0),
-                equity_investment_to_date=clean_numeric_value(row.get("equity_investment_to_date")) or Decimal(0),
-                pending_equity_investment=clean_numeric_value(row.get("pending_equity_investment")) or Decimal(0),
-                estimated_capital_gain=clean_numeric_value(row.get("estimated_capital_gain")),
+                real_estate_status=clean_string_value(row.get("real_estate_status")),  # NEW
+                # EUR columns (renamed with _eur suffix)
+                cost_original_asset_eur=clean_numeric_value(row.get("cost_original_asset_eur")) or Decimal(0),
+                estimated_capex_budget_eur=clean_numeric_value(row.get("estimated_capex_budget_eur")) or Decimal(0),
+                pivert_development_fees_eur=clean_numeric_value(row.get("pivert_development_fees_eur")) or Decimal(0),
+                estimated_total_cost_eur=clean_numeric_value(row.get("estimated_total_cost_eur")) or Decimal(0),
+                capex_invested_eur=clean_numeric_value(row.get("capex_invested_eur")) or Decimal(0),
+                total_investment_to_date_eur=clean_numeric_value(row.get("total_investment_to_date_eur")) or Decimal(0),
+                equity_investment_to_date_eur=clean_numeric_value(row.get("equity_investment_to_date_eur")) or Decimal(0),
+                pending_equity_investment_eur=clean_numeric_value(row.get("pending_equity_investment_eur")) or Decimal(0),
+                estimated_net_asset_value_eur=clean_numeric_value(row.get("estimated_net_asset_value_eur")),  # NEW
+                estimated_capital_gain_eur=clean_numeric_value(row.get("estimated_capital_gain_eur")),
+                # NEW USD columns
+                estimated_total_cost_usd=clean_numeric_value(row.get("estimated_total_cost_usd")),
+                total_investment_to_date_usd=clean_numeric_value(row.get("total_investment_to_date_usd")),
+                equity_investment_to_date_usd=clean_numeric_value(row.get("equity_investment_to_date_usd")),
+                pending_equity_investment_usd=clean_numeric_value(row.get("pending_equity_investment_usd")),
+                estimated_net_asset_value_usd=clean_numeric_value(row.get("estimated_net_asset_value_usd")),
+                estimated_capital_gain_usd=clean_numeric_value(row.get("estimated_capital_gain_usd")),
             )
 
             db.add(real_estate)

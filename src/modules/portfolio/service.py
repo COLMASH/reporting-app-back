@@ -22,8 +22,10 @@ MAX_PAGE_SIZE = 100
 ALLOWED_SORT_COLUMNS = {
     "asset_name",
     "ownership_holding_entity",
+    "holding_company",  # NEW
+    "managing_entity",  # Renamed from asset_group
     "asset_type",
-    "asset_group",
+    "asset_group",  # Renamed from asset_group_strategy
     "denomination_currency",
     "report_date",
     "initial_investment_date",
@@ -32,6 +34,8 @@ ALLOWED_SORT_COLUMNS = {
     "paid_in_capital_usd",
     "unfunded_commitment_usd",
     "total_asset_return_usd",
+    "unrealized_gain_usd",  # NEW
+    "unrealized_gain_eur",  # NEW
     "created_at",
     "display_id",
 }

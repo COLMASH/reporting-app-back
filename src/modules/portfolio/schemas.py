@@ -20,9 +20,10 @@ class GroupByField(str, Enum):
     """Valid fields for flexible aggregation grouping."""
 
     OWNERSHIP_HOLDING_ENTITY = "ownership_holding_entity"
+    HOLDING_COMPANY = "holding_company"  # NEW
+    MANAGING_ENTITY = "managing_entity"  # Renamed from ASSET_GROUP
     ASSET_TYPE = "asset_type"
-    ASSET_GROUP = "asset_group"
-    ASSET_GROUP_STRATEGY = "asset_group_strategy"
+    ASSET_GROUP = "asset_group"  # Renamed from ASSET_GROUP_STRATEGY
     GEOGRAPHIC_FOCUS = "geographic_focus"
     DENOMINATION_CURRENCY = "denomination_currency"
     ASSET_STATUS = "asset_status"
@@ -182,16 +183,28 @@ class StructuredNote(StructuredNoteBase):
 class RealEstateAssetBase(BaseSchema):
     """Real estate fields matching Excel columns."""
 
-    # Excel columns specific to real estate
-    cost_original_asset: Decimal | None = None
-    estimated_capex_budget: Decimal | None = None
-    pivert_development_fees: Decimal | None = None
-    estimated_total_cost: Decimal | None = None
-    capex_invested: Decimal | None = None
-    total_investment_to_date: Decimal | None = None
-    equity_investment_to_date: Decimal | None = None
-    pending_equity_investment: Decimal | None = None
-    estimated_capital_gain: Decimal | None = None
+    # NEW column
+    real_estate_status: str | None = None
+
+    # EUR columns (renamed with _eur suffix)
+    cost_original_asset_eur: Decimal | None = None
+    estimated_capex_budget_eur: Decimal | None = None
+    pivert_development_fees_eur: Decimal | None = None
+    estimated_total_cost_eur: Decimal | None = None
+    capex_invested_eur: Decimal | None = None
+    total_investment_to_date_eur: Decimal | None = None
+    equity_investment_to_date_eur: Decimal | None = None
+    pending_equity_investment_eur: Decimal | None = None
+    estimated_net_asset_value_eur: Decimal | None = None  # NEW
+    estimated_capital_gain_eur: Decimal | None = None
+
+    # NEW USD columns
+    estimated_total_cost_usd: Decimal | None = None
+    total_investment_to_date_usd: Decimal | None = None
+    equity_investment_to_date_usd: Decimal | None = None
+    pending_equity_investment_usd: Decimal | None = None
+    estimated_net_asset_value_usd: Decimal | None = None
+    estimated_capital_gain_usd: Decimal | None = None
 
 
 class RealEstateAssetCreate(RealEstateAssetBase):
@@ -260,15 +273,28 @@ class StructuredNoteResponse(BaseSchema):
 class RealEstateResponse(BaseSchema):
     """Real estate extension data for API responses."""
 
-    cost_original_asset: Decimal | None = None
-    estimated_capex_budget: Decimal | None = None
-    pivert_development_fees: Decimal | None = None
-    estimated_total_cost: Decimal | None = None
-    capex_invested: Decimal | None = None
-    total_investment_to_date: Decimal | None = None
-    equity_investment_to_date: Decimal | None = None
-    pending_equity_investment: Decimal | None = None
-    estimated_capital_gain: Decimal | None = None
+    # NEW column
+    real_estate_status: str | None = None
+
+    # EUR columns (renamed with _eur suffix)
+    cost_original_asset_eur: Decimal | None = None
+    estimated_capex_budget_eur: Decimal | None = None
+    pivert_development_fees_eur: Decimal | None = None
+    estimated_total_cost_eur: Decimal | None = None
+    capex_invested_eur: Decimal | None = None
+    total_investment_to_date_eur: Decimal | None = None
+    equity_investment_to_date_eur: Decimal | None = None
+    pending_equity_investment_eur: Decimal | None = None
+    estimated_net_asset_value_eur: Decimal | None = None  # NEW
+    estimated_capital_gain_eur: Decimal | None = None
+
+    # NEW USD columns
+    estimated_total_cost_usd: Decimal | None = None
+    total_investment_to_date_usd: Decimal | None = None
+    equity_investment_to_date_usd: Decimal | None = None
+    pending_equity_investment_usd: Decimal | None = None
+    estimated_net_asset_value_usd: Decimal | None = None
+    estimated_capital_gain_usd: Decimal | None = None
 
 
 class AssetResponse(BaseSchema):
@@ -279,9 +305,10 @@ class AssetResponse(BaseSchema):
     display_id: int | None = None
 
     # Classification
+    holding_company: str | None = None  # NEW
     ownership_holding_entity: str
-    asset_group: str
-    asset_group_strategy: str | None = None
+    managing_entity: str  # Renamed from asset_group
+    asset_group: str | None = None  # Renamed from asset_group_strategy
     asset_type: str
     asset_subtype: str | None = None
     asset_subtype_2: str | None = None
@@ -324,6 +351,7 @@ class AssetResponse(BaseSchema):
     unfunded_commitment_usd: Decimal | None = None
     estimated_asset_value_usd: Decimal | None = None
     total_asset_return_usd: Decimal | None = None
+    unrealized_gain_usd: Decimal | None = None  # NEW
 
     # Financial - EUR
     total_investment_commitment_eur: Decimal | None = None
@@ -331,6 +359,7 @@ class AssetResponse(BaseSchema):
     unfunded_commitment_eur: Decimal | None = None
     estimated_asset_value_eur: Decimal | None = None
     total_asset_return_eur: Decimal | None = None
+    unrealized_gain_eur: Decimal | None = None  # NEW
 
     # Timestamps
     created_at: datetime

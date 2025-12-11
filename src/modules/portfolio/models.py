@@ -35,9 +35,10 @@ class Asset(Base):
 
     # Excel columns - kept exact names
     report_date = Column(Date)
+    holding_company = Column(String(100))  # NEW - parent holding company
     ownership_holding_entity = Column(String(100), nullable=False)
-    asset_group = Column(String(100), nullable=False)
-    asset_group_strategy = Column(String(100))  # Renamed from asset_sub_group (kept original size)
+    managing_entity = Column(String(100), nullable=False)  # Renamed from asset_group
+    asset_group = Column(String(100))  # Renamed from asset_group_strategy
     asset_type = Column(String(100), nullable=False)
     asset_subtype = Column(String(100))  # NEW - first level subtype
     asset_subtype_2 = Column(String(200))  # NEW - second level subtype
@@ -81,6 +82,10 @@ class Asset(Base):
     estimated_asset_value_eur = Column(Numeric(20, 2))
     total_asset_return_eur = Column(Numeric(10, 6))
 
+    # Unrealized gain columns (NEW)
+    unrealized_gain_usd = Column(Numeric(20, 2))
+    unrealized_gain_eur = Column(Numeric(20, 2))
+
     # Minimal audit fields
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -114,6 +119,7 @@ class Asset(Base):
     __table_args__ = (
         Index("idx_assets_display_id", "display_id"),
         Index("idx_assets_entity", "ownership_holding_entity"),
+        Index("idx_assets_managing_entity", "managing_entity"),
         Index("idx_assets_group", "asset_group"),
         Index("idx_assets_status", "asset_status"),
         Index("idx_assets_name", "asset_name"),
@@ -176,18 +182,30 @@ class RealEstateAsset(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     asset_id = Column(UUID(as_uuid=True), ForeignKey("assets.id", ondelete="CASCADE"), nullable=False, unique=True)
 
-    # Columns from RealEstate Excel sheet
-    cost_original_asset = Column(Numeric(20, 2), default=0)
-    estimated_capex_budget = Column(Numeric(20, 2), default=0)
-    pivert_development_fees = Column(Numeric(20, 2), default=0)
-    estimated_total_cost = Column(Numeric(20, 2), default=0)  # Calculated in Excel
-    capex_invested = Column(Numeric(20, 2), default=0)
-    total_investment_to_date = Column(Numeric(20, 2), default=0)  # Calculated in Excel
+    # NEW column - real estate status
+    real_estate_status = Column(String(100))  # e.g., "Under development", "Completed"
+
+    # Columns from RealEstate Excel sheet - EUR values (renamed with _eur suffix)
+    cost_original_asset_eur = Column(Numeric(20, 2), default=0)
+    estimated_capex_budget_eur = Column(Numeric(20, 2), default=0)
+    pivert_development_fees_eur = Column(Numeric(20, 2), default=0)
+    estimated_total_cost_eur = Column(Numeric(20, 2), default=0)  # Calculated in Excel
+    capex_invested_eur = Column(Numeric(20, 2), default=0)
+    total_investment_to_date_eur = Column(Numeric(20, 2), default=0)  # Calculated in Excel
     # asset_level_financing is in main assets table
-    equity_investment_to_date = Column(Numeric(20, 2), default=0)  # Calculated in Excel
-    pending_equity_investment = Column(Numeric(20, 2), default=0)  # Calculated in Excel
+    equity_investment_to_date_eur = Column(Numeric(20, 2), default=0)  # Calculated in Excel
+    pending_equity_investment_eur = Column(Numeric(20, 2), default=0)  # Calculated in Excel
     # estimated_asset_value is in main assets table
-    estimated_capital_gain = Column(Numeric(20, 2))  # Calculated in Excel
+    estimated_net_asset_value_eur = Column(Numeric(20, 2))  # NEW
+    estimated_capital_gain_eur = Column(Numeric(20, 2))  # Calculated in Excel
+
+    # NEW USD columns for multi-currency support
+    estimated_total_cost_usd = Column(Numeric(20, 2))
+    total_investment_to_date_usd = Column(Numeric(20, 2))
+    equity_investment_to_date_usd = Column(Numeric(20, 2))
+    pending_equity_investment_usd = Column(Numeric(20, 2))
+    estimated_net_asset_value_usd = Column(Numeric(20, 2))
+    estimated_capital_gain_usd = Column(Numeric(20, 2))
 
     # Relationship
     asset = relationship("Asset", back_populates="real_estate")
@@ -196,11 +214,11 @@ class RealEstateAsset(Base):
     @hybrid_property
     def calculated_total_cost(self) -> Any:  # Returns Decimal on instance, ColumnElement on class
         """Excel formula: =M+N+O"""
-        return (self.cost_original_asset or Decimal(0)) + (self.estimated_capex_budget or Decimal(0)) + (self.pivert_development_fees or Decimal(0))
+        return (self.cost_original_asset_eur or Decimal(0)) + (self.estimated_capex_budget_eur or Decimal(0)) + (self.pivert_development_fees_eur or Decimal(0))
 
     @hybrid_property
     def calculated_investment_to_date(self) -> Any:  # Returns Decimal on instance, ColumnElement on class
         """Excel formula: =M+Q+O"""
-        return (self.cost_original_asset or Decimal(0)) + (self.capex_invested or Decimal(0)) + (self.pivert_development_fees or Decimal(0))
+        return (self.cost_original_asset_eur or Decimal(0)) + (self.capex_invested_eur or Decimal(0)) + (self.pivert_development_fees_eur or Decimal(0))
 
     __table_args__ = (Index("idx_real_estate_asset", "asset_id"),)

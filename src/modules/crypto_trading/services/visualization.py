@@ -3,7 +3,6 @@
 Creates charts with candlesticks, buy/sell signals, and performance metrics.
 """
 
-
 import matplotlib.dates as mdates
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
@@ -62,14 +61,8 @@ def _plot_sma_indicators(ax: plt.Axes, df: pd.DataFrame, params: dict) -> None:
         slow_ma = calculate_sma(close, slow_period)
         ma_type = "SMA"
 
-    ax.plot(
-        df.index, fast_ma, color="#FF9800", linewidth=1.5,
-        label=f"Fast {ma_type}({fast_period})", alpha=0.9
-    )
-    ax.plot(
-        df.index, slow_ma, color="#9C27B0", linewidth=1.5,
-        label=f"Slow {ma_type}({slow_period})", alpha=0.9
-    )
+    ax.plot(df.index, fast_ma, color="#FF9800", linewidth=1.5, label=f"Fast {ma_type}({fast_period})", alpha=0.9)
+    ax.plot(df.index, slow_ma, color="#9C27B0", linewidth=1.5, label=f"Slow {ma_type}({slow_period})", alpha=0.9)
 
 
 def _plot_bollinger_indicators(ax: plt.Axes, df: pd.DataFrame, params: dict) -> None:
@@ -81,18 +74,9 @@ def _plot_bollinger_indicators(ax: plt.Axes, df: pd.DataFrame, params: dict) -> 
     upper, middle, lower = calculate_bollinger_bands(close, period, std_dev)
 
     # Plot bands
-    ax.plot(
-        df.index, upper, color="#78909C", linewidth=1, linestyle="--",
-        label=f"Upper Band ({std_dev}σ)", alpha=0.7
-    )
-    ax.plot(
-        df.index, middle, color="#78909C", linewidth=1.5,
-        label=f"SMA({period})", alpha=0.9
-    )
-    ax.plot(
-        df.index, lower, color="#78909C", linewidth=1, linestyle="--",
-        label=f"Lower Band ({std_dev}σ)", alpha=0.7
-    )
+    ax.plot(df.index, upper, color="#78909C", linewidth=1, linestyle="--", label=f"Upper Band ({std_dev}σ)", alpha=0.7)
+    ax.plot(df.index, middle, color="#78909C", linewidth=1.5, label=f"SMA({period})", alpha=0.9)
+    ax.plot(df.index, lower, color="#78909C", linewidth=1, linestyle="--", label=f"Lower Band ({std_dev}σ)", alpha=0.7)
 
     # Fill between bands
     ax.fill_between(df.index, lower, upper, color="#90CAF9", alpha=0.15)
@@ -197,10 +181,7 @@ def _plot_adx_panel(ax: plt.Axes, df: pd.DataFrame, params: dict) -> None:
     ax.plot(df.index, minus_di, color="#F44336", linewidth=1.5, label="-DI", alpha=0.8)
 
     # Threshold line
-    ax.axhline(
-        y=threshold, color="#FF9800", linestyle="--", linewidth=1,
-        label=f"Threshold ({threshold})", alpha=0.7
-    )
+    ax.axhline(y=threshold, color="#FF9800", linestyle="--", linewidth=1, label=f"Threshold ({threshold})", alpha=0.7)
 
     # Fill weak trend zone
     ax.fill_between(df.index, 0, threshold, color="#FFF3E0", alpha=0.3)
@@ -251,6 +232,8 @@ def create_backtest_chart(
     output_path: str,
     strategy_params: dict | None = None,
     show_indicators: bool = True,
+    timeframe: str | None = None,
+    year: int | None = None,
 ) -> str:
     """
     Create comprehensive backtest visualization.
@@ -280,7 +263,16 @@ def create_backtest_chart(
     # Create figure with dynamic subplots
     fig_height = 14 if needs_indicator_panel else 12
     fig, axes = plt.subplots(num_rows, 1, figsize=(16, fig_height), height_ratios=height_ratios)
-    fig.suptitle(f"Backtest Results: {strategy_name.upper()}", fontsize=14, fontweight="bold")
+
+    # Build title with optional timeframe/year
+    title = f"Backtest Results: {strategy_name.upper()}"
+    if timeframe and year:
+        title += f" ({timeframe}, {year})"
+    elif timeframe:
+        title += f" ({timeframe})"
+    elif year:
+        title += f" ({year})"
+    fig.suptitle(title, fontsize=14, fontweight="bold")
 
     # Assign axes based on layout
     ax_price = axes[0]
@@ -293,8 +285,8 @@ def create_backtest_chart(
         ax_equity = axes[1]
         ax_returns = axes[2]
 
-    # Plot price chart with signals
-    _plot_price_with_signals(ax_price, df, result.trades)
+    # Plot price chart with signals (include open position if exists)
+    _plot_price_with_signals(ax_price, df, result.trades, result.open_position)
 
     # Plot strategy indicators
     if show_indicators and strategy_params is not None:
@@ -323,7 +315,7 @@ def create_backtest_chart(
     return output_path
 
 
-def _plot_price_with_signals(ax: plt.Axes, df: pd.DataFrame, trades: list[dict]) -> None:
+def _plot_price_with_signals(ax: plt.Axes, df: pd.DataFrame, trades: list[dict], open_position: dict | None = None) -> None:
     """Plot price chart with buy/sell signals."""
     # Plot price as line chart (simpler than candlesticks for clarity)
     ax.plot(df.index, df["close"], color="#2196F3", linewidth=1, label="Price", alpha=0.8)
@@ -361,12 +353,14 @@ def _plot_price_with_signals(ax: plt.Axes, df: pd.DataFrame, trades: list[dict])
         )
         ax.scatter([entry_time], [entry_price], color=entry_color, s=100, marker=entry_marker, zorder=5, label="_nolegend_")
 
-    # Plot exit signals (red for all exits)
+    # Plot exit signals (red for signal exits, purple for stop-loss exits)
+    has_stop_loss_exits = False
     for trade in trades:
         exit_time = trade["exit_time"]
         exit_price = trade["exit_price"]
         pnl_pct = trade["pnl_pct"]
         direction = trade.get("direction", "long")
+        exit_type = trade.get("exit_type", "signal")
 
         if isinstance(exit_time, str):
             exit_time = pd.Timestamp(exit_time)
@@ -379,13 +373,36 @@ def _plot_price_with_signals(ax: plt.Axes, df: pd.DataFrame, trades: list[dict])
             exit_marker = "^"
             arrow_offset = exit_price * 0.98
 
+        # Determine exit arrow color: purple for stop-loss, red for signal
+        if exit_type == "stop_loss":
+            exit_color = "#9C27B0"  # Purple for stop-loss
+            has_stop_loss_exits = True
+        else:
+            exit_color = "#F44336"  # Red for signal exit
+
         ax.annotate(
             "",
             xy=(exit_time, exit_price),
             xytext=(exit_time, arrow_offset),
-            arrowprops={"arrowstyle": "->", "color": "#F44336", "lw": 2},
+            arrowprops={"arrowstyle": "->", "color": exit_color, "lw": 2},
         )
-        ax.scatter([exit_time], [exit_price], color="#F44336", s=100, marker=exit_marker, zorder=5, label="_nolegend_")
+        ax.scatter([exit_time], [exit_price], color=exit_color, s=100, marker=exit_marker, zorder=5, label="_nolegend_")
+
+        # Add "SL" label for stop-loss exits
+        if exit_type == "stop_loss":
+            sl_va = "top" if direction == "long" else "bottom"
+            sl_offset = -12 if direction == "long" else 12
+            ax.annotate(
+                "SL",
+                xy=(exit_time, exit_price),
+                xytext=(0, sl_offset),
+                textcoords="offset points",
+                fontsize=7,
+                color="#9C27B0",
+                fontweight="bold",
+                ha="center",
+                va=sl_va,
+            )
 
         # Add return annotation
         color = "#4CAF50" if pnl_pct > 0 else "#F44336"
@@ -422,14 +439,68 @@ def _plot_price_with_signals(ax: plt.Axes, df: pd.DataFrame, trades: list[dict])
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d"))
     ax.xaxis.set_major_locator(mdates.AutoDateLocator())
 
-    # Legend - include short entry if applicable
+    # Plot open position entry if exists (not yet closed)
+    has_open_position = False
+    if open_position:
+        has_open_position = True
+        entry_time = open_position["entry_time"]
+        entry_price = open_position["entry_price"]
+        current_price = open_position["current_price"]
+        direction = open_position["direction"]
+
+        if isinstance(entry_time, str):
+            entry_time = pd.Timestamp(entry_time)
+
+        # Entry marker with "OPEN" label
+        if direction == "long":
+            marker_color = "#4CAF50"  # Green
+            marker = "^"
+            arrow_offset = entry_price * 0.98
+        else:
+            marker_color = "#FF9800"  # Orange
+            marker = "v"
+            arrow_offset = entry_price * 1.02
+
+        # Entry arrow
+        ax.annotate(
+            "",
+            xy=(entry_time, entry_price),
+            xytext=(entry_time, arrow_offset),
+            arrowprops={"arrowstyle": "->", "color": marker_color, "lw": 2},
+        )
+        ax.scatter([entry_time], [entry_price], color=marker_color, s=150, marker=marker, zorder=5, edgecolors="black", linewidths=2)
+
+        # "OPEN" label
+        ax.annotate(
+            "OPEN",
+            xy=(entry_time, entry_price),
+            xytext=(5, 15),
+            textcoords="offset points",
+            fontsize=9,
+            color=marker_color,
+            fontweight="bold",
+            bbox={"boxstyle": "round,pad=0.3", "facecolor": "white", "edgecolor": marker_color, "alpha": 0.8},
+        )
+
+        # Dashed line from entry to current price (last bar)
+        last_time = df.index[-1]
+        ax.plot([entry_time, last_time], [entry_price, current_price], color=marker_color, linestyle=":", linewidth=2, alpha=0.7)
+
+    # Legend - include short entry and stop-loss exit if applicable
     long_patch = mpatches.Patch(color="#4CAF50", label="Long Entry")
-    exit_patch = mpatches.Patch(color="#F44336", label="Exit")
+    exit_patch = mpatches.Patch(color="#F44336", label="Signal Exit")
+    legend_handles = [long_patch]
     if has_short_trades:
         short_patch = mpatches.Patch(color="#FF9800", label="Short Entry")
-        ax.legend(handles=[long_patch, short_patch, exit_patch], loc="upper left")
-    else:
-        ax.legend(handles=[long_patch, exit_patch], loc="upper left")
+        legend_handles.append(short_patch)
+    legend_handles.append(exit_patch)
+    if has_stop_loss_exits:
+        sl_patch = mpatches.Patch(color="#9C27B0", label="Stop-Loss Exit")
+        legend_handles.append(sl_patch)
+    if has_open_position and open_position is not None:
+        open_patch = mpatches.Patch(color="#4CAF50" if open_position["direction"] == "long" else "#FF9800", label="Open Position")
+        legend_handles.append(open_patch)
+    ax.legend(handles=legend_handles, loc="upper left")
 
 
 def _plot_equity_curve(ax: plt.Axes, equity_curve: list[dict], initial_capital: float) -> None:
@@ -504,14 +575,23 @@ def _add_summary_box(fig: plt.Figure, result: BacktestResult, strategy_name: str
     # Build mode string
     mode_str = "Long+Short" if result.trading_mode == "bidirectional" else "Long Only"
 
+    # Build stop-loss string
+    if result.stop_loss_pct is not None:
+        sl_str = f"Stop-Loss: {result.stop_loss_pct}%"
+        if result.stop_loss_exits > 0:
+            sl_str += f" ({result.stop_loss_exits} exits)"
+    else:
+        sl_str = "Stop-Loss: Disabled"
+
     summary_text = f"""Performance Summary
 ─────────────────
 Strategy: {strategy_name}
 Mode: {mode_str}
+{sl_str}
 Initial Capital: ${result.initial_capital:,.0f}
 Final Capital: ${result.final_capital:,.0f}
 
-Total Return: {result.total_return_pct:+.2f}%
+Realized Return: {result.total_return_pct:+.2f}%
 Max Drawdown: {result.max_drawdown:.2f}%
 Sharpe Ratio: {result.sharpe_ratio:.2f}
 
@@ -523,6 +603,21 @@ Losers: {result.losing_trades}
 Avg Win: {result.avg_win_pct:+.2f}%
 Avg Loss: {result.avg_loss_pct:.2f}%
 Profit Factor: {result.profit_factor:.2f}"""
+
+    # Add open position section if exists
+    if result.open_position:
+        open_pos_text = f"""
+
+─────────────────
+OPEN POSITION
+Direction: {result.open_position['direction'].upper()}
+Entry: ${result.open_position['entry_price']:,.2f}
+Current: ${result.open_position['current_price']:,.2f}
+Unrealized: {result.open_position['unrealized_pnl_pct']:+.2f}%
+
+Total Equity: ${result.total_equity:,.2f}
+Total Return: {result.total_equity_return_pct:+.2f}%"""
+        summary_text += open_pos_text
 
     # Add text box on right side
     fig.text(

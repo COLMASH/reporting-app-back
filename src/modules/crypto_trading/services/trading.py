@@ -124,7 +124,7 @@ def run_trading_loop(
                 # Calculate position size
                 if config.position_size_pct is not None:
                     current_account = get_account(client)
-                    position_size_usd = current_account['equity'] * config.position_size_pct
+                    position_size_usd = current_account["equity"] * config.position_size_pct
                 else:
                     position_size_usd = config.position_size_usd
 

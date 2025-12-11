@@ -213,9 +213,7 @@ async def list_assets(
     total_pages = (total + page_size - 1) // page_size if total > 0 else 0
 
     # Convert assets to response schema using helper function
-    asset_responses = [
-        _build_asset_response(asset, include_extension) for asset in assets
-    ]
+    asset_responses = [_build_asset_response(asset, include_extension) for asset in assets]
 
     return schemas.AssetListResponse(
         assets=asset_responses,

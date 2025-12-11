@@ -47,7 +47,7 @@ class BacktestResult:
     """Results from a backtest run."""
 
     trades: list[dict] = field(default_factory=list)
-    total_return_pct: float = 0.0
+    total_return_pct: float = 0.0  # Return from closed trades only (realized)
     win_rate: float = 0.0
     max_drawdown: float = 0.0
     sharpe_ratio: float = 0.0
@@ -58,13 +58,25 @@ class BacktestResult:
     avg_loss_pct: float = 0.0
     profit_factor: float = 0.0
     initial_capital: float = 0.0
-    final_capital: float = 0.0
+    final_capital: float = 0.0  # Capital after closed trades (realized)
     equity_curve: list[dict] = field(default_factory=list)
     total_fees: float = 0.0
     fee_pct_used: float = DEFAULT_TRADING_FEE_PCT
     trading_mode: str = "long_only"  # "long_only" or "bidirectional"
     long_trades: int = 0
     short_trades: int = 0
+
+    # Total metrics (including open position)
+    total_equity: float = 0.0  # final_capital + unrealized_pnl
+    total_equity_return_pct: float = 0.0  # Return if we closed everything now
+
+    # Open position tracking (position still open at end of backtest)
+    open_position: dict | None = None
+    unrealized_pnl: float = 0.0
+
+    # Risk management settings
+    stop_loss_pct: float | None = None  # Stop-loss % used (None if disabled)
+    stop_loss_exits: int = 0  # Count of trades exited via stop-loss
 
 
 def run_backtest(
@@ -76,6 +88,7 @@ def run_backtest(
     lookback_period: int = 50,
     trading_fee_pct: float = DEFAULT_TRADING_FEE_PCT,
     allow_short: bool = False,
+    stop_loss_pct: float | None = None,
 ) -> BacktestResult:
     """
     Run a backtest simulation.
@@ -89,6 +102,7 @@ def run_backtest(
         lookback_period: Bars needed before starting trades
         trading_fee_pct: Trading fee percentage per trade (default 0.25% for Alpaca crypto)
         allow_short: Enable bidirectional trading (LONG + SHORT). Default: LONG only
+        stop_loss_pct: Stop-loss percentage (e.g., 7.0 for 7% below entry). None = disabled
 
     Returns:
         BacktestResult with trades and performance metrics
@@ -122,8 +136,15 @@ def run_backtest(
             "entry_fee": entry_fee,
         }
 
-    def _close_position(pos: dict, price: float, reason: str) -> None:
-        """Helper to close a position and record the trade."""
+    def _close_position(pos: dict, price: float, reason: str, exit_type: str = "signal") -> None:
+        """Helper to close a position and record the trade.
+
+        Args:
+            pos: Position dict
+            price: Exit price
+            reason: Exit reason description
+            exit_type: "signal" for strategy exit, "stop_loss" for SL exit
+        """
         nonlocal capital, total_fees
         exit_value = price * pos["size"]
         exit_fee = exit_value * fee_rate
@@ -138,22 +159,25 @@ def run_backtest(
         net_pnl = gross_pnl - pos["entry_fee"] - exit_fee
         pnl_pct = (net_pnl / (pos["entry_price"] * pos["size"])) * 100
 
-        trades.append({
-            "direction": pos["direction"],
-            "entry_time": pos["entry_time"],
-            "exit_time": current_time,
-            "entry_price": pos["entry_price"],
-            "exit_price": price,
-            "size": pos["size"],
-            "gross_pnl": gross_pnl,
-            "entry_fee": pos["entry_fee"],
-            "exit_fee": exit_fee,
-            "total_fees": pos["entry_fee"] + exit_fee,
-            "pnl": net_pnl,
-            "pnl_pct": pnl_pct,
-            "entry_reason": pos["entry_reason"],
-            "exit_reason": reason,
-        })
+        trades.append(
+            {
+                "direction": pos["direction"],
+                "entry_time": pos["entry_time"],
+                "exit_time": current_time,
+                "entry_price": pos["entry_price"],
+                "exit_price": price,
+                "size": pos["size"],
+                "gross_pnl": gross_pnl,
+                "entry_fee": pos["entry_fee"],
+                "exit_fee": exit_fee,
+                "total_fees": pos["entry_fee"] + exit_fee,
+                "pnl": net_pnl,
+                "pnl_pct": pnl_pct,
+                "entry_reason": pos["entry_reason"],
+                "exit_reason": reason,
+                "exit_type": exit_type,  # "signal" or "stop_loss"
+            }
+        )
         capital += net_pnl
 
     # Iterate through bars
@@ -163,6 +187,27 @@ def run_backtest(
         current_bar = df.iloc[i]
         current_time = df.index[i]
         current_price = current_bar["close"]
+
+        # Check stop-loss BEFORE strategy signals (takes priority)
+        if position is not None and stop_loss_pct is not None:
+            entry_price = position["entry_price"]
+
+            if position["direction"] == "long":
+                stop_price = entry_price * (1 - stop_loss_pct / 100)
+                # Check if bar's low touched stop price (realistic fill)
+                if current_bar["low"] <= stop_price:
+                    _close_position(position, stop_price, f"Stop-loss hit at {stop_loss_pct}%", exit_type="stop_loss")
+                    position = None
+                    # Skip strategy signal for this bar - we're now flat
+                    # Continue to equity tracking below
+
+            else:  # short position
+                stop_price = entry_price * (1 + stop_loss_pct / 100)
+                # Check if bar's high touched stop price
+                if current_bar["high"] >= stop_price:
+                    _close_position(position, stop_price, f"Stop-loss hit at {stop_loss_pct}%", exit_type="stop_loss")
+                    position = None
+                    # Skip strategy signal for this bar
 
         # Get strategy signal
         signal = strategy_fn(window, **strategy_params)  # type: ignore[call-arg]
@@ -210,27 +255,60 @@ def run_backtest(
 
         current_equity = capital + unrealized_pnl
 
-        equity_curve.append({
-            "time": current_time,
-            "equity": current_equity,
-            "capital": capital,
-            "unrealized_pnl": unrealized_pnl,
-        })
+        equity_curve.append(
+            {
+                "time": current_time,
+                "equity": current_equity,
+                "capital": capital,
+                "unrealized_pnl": unrealized_pnl,
+            }
+        )
 
         # Track peak for drawdown
         if current_equity > peak_capital:
             peak_capital = current_equity
 
-    # Close any remaining position at last price
+    # Track open position (don't force close - it would skew statistics)
+    open_position_result = None
+    final_unrealized_pnl = 0.0
+
     if position is not None:
         last_bar = df.iloc[-1]
         current_price = last_bar["close"]
-        current_time = df.index[-1]
-        _close_position(position, current_price, "End of backtest")
 
-    # Calculate metrics
+        # Calculate unrealized P&L (what we'd get if we closed now)
+        potential_exit_fee = current_price * position["size"] * fee_rate
+        if position["direction"] == "long":
+            gross_unrealized = (current_price - position["entry_price"]) * position["size"]
+        else:  # short
+            gross_unrealized = (position["entry_price"] - current_price) * position["size"]
+
+        final_unrealized_pnl = gross_unrealized - position["entry_fee"] - potential_exit_fee
+
+        # Store open position details for reporting
+        open_position_result = {
+            "direction": position["direction"],
+            "entry_time": position["entry_time"],
+            "entry_price": position["entry_price"],
+            "current_price": current_price,
+            "size": position["size"],
+            "entry_reason": position["entry_reason"],
+            "unrealized_pnl": final_unrealized_pnl,
+            "unrealized_pnl_pct": (final_unrealized_pnl / (position["entry_price"] * position["size"])) * 100,
+        }
+
+    # Calculate metrics (pass open position info)
     result = _calculate_metrics(
-        trades, equity_curve, initial_capital, capital, total_fees, trading_fee_pct, trading_mode
+        trades,
+        equity_curve,
+        initial_capital,
+        capital,  # Realized capital only
+        total_fees,
+        trading_fee_pct,
+        trading_mode,
+        open_position_result,
+        final_unrealized_pnl,
+        stop_loss_pct,
     )
 
     return result
@@ -244,8 +322,18 @@ def _calculate_metrics(
     total_fees: float = 0.0,
     fee_pct_used: float = DEFAULT_TRADING_FEE_PCT,
     trading_mode: str = "long_only",
+    open_position: dict | None = None,
+    unrealized_pnl: float = 0.0,
+    stop_loss_pct: float | None = None,
 ) -> BacktestResult:
     """Calculate performance metrics from trades."""
+    # Calculate total equity (realized + unrealized)
+    total_equity = final_capital + unrealized_pnl
+    total_equity_return_pct = ((total_equity / initial_capital) - 1) * 100 if initial_capital > 0 else 0.0
+
+    # Count stop-loss exits
+    stop_loss_exits = len([t for t in trades if t.get("exit_type") == "stop_loss"])
+
     if not trades:
         return BacktestResult(
             trades=[],
@@ -267,6 +355,12 @@ def _calculate_metrics(
             trading_mode=trading_mode,
             long_trades=0,
             short_trades=0,
+            total_equity=total_equity,
+            total_equity_return_pct=total_equity_return_pct,
+            open_position=open_position,
+            unrealized_pnl=unrealized_pnl,
+            stop_loss_pct=stop_loss_pct,
+            stop_loss_exits=0,
         )
 
     # Separate winning and losing trades
@@ -322,6 +416,12 @@ def _calculate_metrics(
         trading_mode=trading_mode,
         long_trades=long_trades,
         short_trades=short_trades,
+        total_equity=total_equity,
+        total_equity_return_pct=total_equity_return_pct,
+        open_position=open_position,
+        unrealized_pnl=unrealized_pnl,
+        stop_loss_pct=stop_loss_pct,
+        stop_loss_exits=stop_loss_exits,
     )
 
 

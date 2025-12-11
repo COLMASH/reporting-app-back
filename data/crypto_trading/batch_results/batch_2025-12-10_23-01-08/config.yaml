@@ -1,0 +1,35 @@
+common:
+  symbol: BTC/USD
+  initial_capital: 10000.0
+  position_size_pct: 1.0
+  trading_fee_pct: 0.25
+  trading_mode: long_only
+  lookback_bars: 50
+strategies:
+- name: sma_crossover
+  params: {}
+- name: rsi
+  params: {}
+- name: macd
+  params: {}
+- name: bollinger
+  params: {}
+- name: stochastic
+  params: {}
+- name: adx
+  params: {}
+timeframes:
+- 4h
+- 8h
+- 12h
+- 1d
+years:
+- 2021
+- 2022
+- 2023
+- 2024
+- 2025
+output:
+  save_individual_results: true
+  save_individual_charts: true
+  generate_summary_report: true

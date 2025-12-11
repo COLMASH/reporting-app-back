@@ -1,0 +1,28 @@
+# Small test config - 2 strategies x 1 timeframe x 1 year = 2 backtests
+# Use this to verify the batch system works before running full tests
+
+common:
+  symbol: "BTC/USD"
+  initial_capital: 10000.0
+  position_size_pct: 1.0        # 100% of capital per trade (matches individual runs)
+  trading_fee_pct: 0.25
+  trading_mode: "long_only"
+  lookback_bars: 50
+  # stop_loss_pct: 10.0         # Stop-loss percentage (disabled by default). Uncomment to enable
+
+strategies:
+  - name: "sma_crossover"
+    params: {}
+  - name: "bollinger"
+    params: {}
+
+timeframes:
+  - "4h"
+
+years:
+  - 2024
+
+output:
+  save_individual_results: true
+  save_individual_charts: true
+  generate_summary_report: true

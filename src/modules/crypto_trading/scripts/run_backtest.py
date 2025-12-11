@@ -21,12 +21,53 @@ Available strategies:
 
 import argparse
 import sys
+from datetime import datetime, timedelta
 
 from src.modules.crypto_trading.services.alpaca_client import get_historical_bars
 from src.modules.crypto_trading.services.backtest import DEFAULT_TRADING_FEE_PCT, run_backtest
 from src.modules.crypto_trading.services.visualization import create_backtest_chart
-from src.modules.crypto_trading.storage.file_storage import get_chart_path, save_backtest_result, save_trades_csv
+from src.modules.crypto_trading.storage.file_storage import get_chart_path, get_single_run_dir, save_backtest_result, save_trades_csv
 from src.modules.crypto_trading.strategies import get_strategy, list_strategies
+
+
+def calculate_warmup_start(start_date: str, timeframe: str, lookback_bars: int = 50) -> str:
+    """
+    Calculate the actual start date for data fetching, including warmup period.
+
+    This ensures indicators have enough historical data to be valid from day 1
+    of the requested backtest period.
+
+    Args:
+        start_date: User-requested start date (YYYY-MM-DD)
+        timeframe: Candle timeframe (1h, 4h, 1d, etc.)
+        lookback_bars: Number of bars needed for warmup (default: 50)
+
+    Returns:
+        Adjusted start date string (YYYY-MM-DD) that includes warmup period
+    """
+    # Map timeframe to hours
+    timeframe_hours = {
+        "1m": 1 / 60,
+        "5m": 5 / 60,
+        "15m": 15 / 60,
+        "30m": 30 / 60,
+        "1h": 1,
+        "4h": 4,
+        "8h": 8,
+        "12h": 12,
+        "1d": 24,
+    }
+
+    hours_per_bar = timeframe_hours.get(timeframe, 1)
+    warmup_hours = lookback_bars * hours_per_bar
+
+    # Add 20% buffer for weekends/gaps
+    warmup_hours *= 1.2
+
+    start = datetime.strptime(start_date, "%Y-%m-%d")
+    warmup_start = start - timedelta(hours=warmup_hours)
+
+    return warmup_start.strftime("%Y-%m-%d")
 
 
 def parse_strategy_params(params_str: str | None) -> dict:
@@ -136,13 +177,23 @@ Examples:
         action="store_true",
         help="Enable bidirectional trading (LONG + SHORT). Default: LONG only",
     )
+    parser.add_argument(
+        "--stop-loss",
+        type=float,
+        default=None,
+        help="Stop-loss percentage (disabled by default). Example: --stop-loss 10 for 10%%",
+    )
 
     args = parser.parse_args()
 
     # Determine fee
     trading_fee = 0.0 if args.no_fees else args.fee
 
+    # Determine stop-loss (None by default, enabled via --stop-loss X)
+    stop_loss = args.stop_loss
+
     trading_mode_str = "Bidirectional (LONG+SHORT)" if args.bidirectional else "LONG only"
+    stop_loss_str = f"{stop_loss}%" if stop_loss else "Disabled"
 
     print(f"\n{'='*60}")
     print(f"  BACKTEST: {args.strategy.upper()} Strategy")
@@ -153,6 +204,7 @@ Examples:
     print(f"  Capital: ${args.capital:,.0f}")
     print(f"  Position Size: {args.position_size*100:.0f}%")
     print(f"  Trading Mode: {trading_mode_str}")
+    print(f"  Stop-Loss: {stop_loss_str}")
     print(f"  Trading Fee: {trading_fee}% per trade {'(disabled)' if args.no_fees else '(Alpaca taker)'}")
     print(f"{'='*60}\n")
 
@@ -161,27 +213,32 @@ Examples:
     if strategy_params:
         print(f"Strategy parameters: {strategy_params}\n")
 
-    # Fetch historical data
+    # Calculate warmup start date (fetch extra data for indicator warmup)
+    lookback_bars = 50  # Same as backtest.py default
+    warmup_start = calculate_warmup_start(args.start, args.timeframe, lookback_bars)
+
+    # Fetch historical data (including warmup period)
     print("Fetching historical data from Alpaca...")
     try:
         df = get_historical_bars(
             symbol=args.symbol,
             timeframe=args.timeframe,
-            start=args.start,
+            start=warmup_start,
             end=args.end,
         )
-        print(f"  Loaded {len(df)} bars from {df.index[0]} to {df.index[-1]}\n")
+        print(f"  Fetched {len(df)} bars (including {lookback_bars} warmup bars)")
+        print(f"  Data range: {df.index[0]} to {df.index[-1]}\n")
     except Exception as e:
         print(f"ERROR: Failed to fetch data: {e}")
         return 1
 
-    if len(df) < 100:
+    if len(df) < lookback_bars + 50:
         print(f"WARNING: Only {len(df)} bars loaded. Results may be unreliable.")
 
     # Get strategy function
     strategy_fn = get_strategy(args.strategy)
 
-    # Run backtest
+    # Run backtest (uses full data including warmup for indicator calculation)
     print("Running backtest...")
     result = run_backtest(
         df=df,
@@ -191,13 +248,19 @@ Examples:
         position_size_pct=args.position_size,
         trading_fee_pct=trading_fee,
         allow_short=args.bidirectional,
+        lookback_period=lookback_bars,
+        stop_loss_pct=stop_loss,
     )
+
+    # Trim DataFrame to user-requested period for display/charts
+    user_start_str = args.start
+    df_display = df[df.index >= user_start_str]
 
     # Print results
     print(f"\n{'='*60}")
-    print("  RESULTS")
+    print("  RESULTS (Realized - Closed Trades Only)")
     print(f"{'='*60}")
-    print(f"  Total Return:    {result.total_return_pct:+.2f}%")
+    print(f"  Realized Return: {result.total_return_pct:+.2f}%")
     print(f"  Final Capital:   ${result.final_capital:,.2f}")
     print(f"  Max Drawdown:    {result.max_drawdown:.2f}%")
     print(f"  Sharpe Ratio:    {result.sharpe_ratio:.2f}")
@@ -216,30 +279,51 @@ Examples:
     print()
     print(f"  Total Fees Paid: ${result.total_fees:,.2f}")
     print(f"  Fee Rate Used:   {result.fee_pct_used}%")
+
+    # Show open position if exists (not included in trade stats)
+    if result.open_position:
+        print(f"{'='*60}")
+        print("  OPEN POSITION (Not Included in Trade Stats)")
+        print(f"{'='*60}")
+        print(f"  Direction:       {result.open_position['direction'].upper()}")
+        print(f"  Entry Price:     ${result.open_position['entry_price']:,.2f}")
+        print(f"  Current Price:   ${result.open_position['current_price']:,.2f}")
+        print(f"  Unrealized P/L:  ${result.unrealized_pnl:+,.2f} ({result.open_position['unrealized_pnl_pct']:+.2f}%)")
+        print(f"  Entry Reason:    {result.open_position['entry_reason']}")
+        print()
+        print(f"  Total Equity:    ${result.total_equity:,.2f} (if closed now)")
+        print(f"  Total Return:    {result.total_equity_return_pct:+.2f}% (if closed now)")
+
     print(f"{'='*60}\n")
 
     # Save results
     print("Saving results...")
 
+    # Create run directory ONCE (all files go to same folder)
+    run_dir = get_single_run_dir(args.strategy, args.timeframe)
+    print(f"  Run folder: {run_dir}")
+
     # Save JSON
-    json_path = save_backtest_result(result, args.strategy, args.timeframe)
+    json_path = save_backtest_result(result, args.strategy, args.timeframe, run_dir=run_dir)
     print(f"  Results: {json_path}")
 
     # Save trades CSV
     if result.trades:
-        csv_path = save_trades_csv(result.trades, args.strategy, args.timeframe)
+        csv_path = save_trades_csv(result.trades, args.strategy, args.timeframe, run_dir=run_dir)
         print(f"  Trades CSV: {csv_path}")
 
-    # Generate chart
+    # Generate chart (using trimmed data for cleaner visualization)
     if not args.no_chart and result.trades:
         print("\nGenerating chart...")
-        chart_path = get_chart_path(args.strategy, args.timeframe)
+        chart_path = get_chart_path(args.strategy, args.timeframe, run_dir=run_dir)
         create_backtest_chart(
-            df,
+            df_display,
             result,
             args.strategy,
             chart_path,
             strategy_params=strategy_params,
+            timeframe=args.timeframe,
+            year=int(args.start.split("-")[0]),
         )
         print(f"  Chart: {chart_path}")
 

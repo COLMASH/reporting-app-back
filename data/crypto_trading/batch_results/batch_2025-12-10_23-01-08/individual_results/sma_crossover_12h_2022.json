@@ -1,0 +1,4838 @@
+{
+  "trades": [
+    {
+      "direction": "long",
+      "entry_time": "2022-01-15T00:00:00+00:00",
+      "exit_time": "2022-01-19T12:00:00+00:00",
+      "entry_price": 43044.67,
+      "exit_price": 41670.85,
+      "size": 0.23173600819799525,
+      "gross_pnl": -318.3635627825698,
+      "entry_fee": 25.0,
+      "exit_fee": 24.141591093043576,
+      "total_fees": 49.14159109304357,
+      "pnl": -367.50515387561336,
+      "pnl_pct": -3.6842621942417377,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-01-29T12:00:00+00:00",
+      "exit_time": "2022-02-14T12:00:00+00:00",
+      "entry_price": 38180.51,
+      "exit_price": 42549.3,
+      "size": 0.2516575501220145,
+      "gross_pnl": 1099.438988397556,
+      "entry_fee": 24.08123711531097,
+      "exit_fee": 26.76963149351658,
+      "total_fees": 50.850868608827554,
+      "pnl": 1048.5881197887284,
+      "pnl_pct": 10.913228368994723,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-02-28T12:00:00+00:00",
+      "exit_time": "2022-03-07T00:00:00+00:00",
+      "entry_price": 43189.19,
+      "exit_price": 38342.5,
+      "size": 0.24669090248042005,
+      "gross_pnl": -1195.6343301428276,
+      "entry_fee": 26.70270741478279,
+      "exit_fee": 23.646864820888762,
+      "total_fees": 50.34957223567155,
+      "pnl": -1245.9839023784991,
+      "pnl_pct": -11.694569483613613,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-03-13T00:00:00+00:00",
+      "exit_time": "2022-03-14T12:00:00+00:00",
+      "entry_price": 38757.39,
+      "exit_price": 39686.63,
+      "size": 0.2428314010792724,
+      "gross_pnl": 225.64865113890258,
+      "entry_fee": 23.587747658836545,
+      "exit_fee": 24.092899917536712,
+      "total_fees": 47.68064757637326,
+      "pnl": 177.9680035625293,
+      "pnl_pct": 1.8909609476038611,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-03-18T00:00:00+00:00",
+      "exit_time": "2022-04-04T12:00:00+00:00",
+      "entry_price": 40397.7,
+      "exit_price": 46586.91,
+      "size": 0.23736585002189245,
+      "gross_pnl": 1469.1070926139985,
+      "entry_fee": 24.032667667742867,
+      "exit_fee": 27.645353730108503,
+      "total_fees": 51.67802139785137,
+      "pnl": 1417.4290712161471,
+      "pnl_pct": 14.781770636890107,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-04-20T00:00:00+00:00",
+      "exit_time": "2022-04-25T00:00:00+00:00",
+      "entry_price": 42094.47,
+      "exit_price": 38821.75,
+      "size": 0.26138635070040106,
+      "gross_pnl": -855.4443376642168,
+      "entry_fee": 27.576240345783237,
+      "exit_fee": 25.36868890075824,
+      "total_fees": 52.94492924654148,
+      "pnl": -908.3892669107584,
+      "pnl_pct": -8.255892756963162,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-05-19T00:00:00+00:00",
+      "exit_time": "2022-05-21T12:00:00+00:00",
+      "entry_price": 29466.22,
+      "exit_price": 29409.35,
+      "size": 0.3426568322718024,
+      "gross_pnl": -19.4868940512983,
+      "entry_fee": 25.305267178506337,
+      "exit_fee": 25.193286775431826,
+      "total_fees": 50.49855395393816,
+      "pnl": -69.98544800523646,
+      "pnl_pct": -0.6931447278904423,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-05-31T00:00:00+00:00",
+      "exit_time": "2022-06-06T00:00:00+00:00",
+      "entry_price": 31746.63,
+      "exit_price": 31375.5,
+      "size": 0.3158442681896883,
+      "gross_pnl": -117.21928325323934,
+      "entry_fee": 25.130303558493246,
+      "exit_fee": 24.774429591463914,
+      "total_fees": 49.90473314995716,
+      "pnl": -167.1240164031965,
+      "pnl_pct": -1.6667414422312083,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-06-10T00:00:00+00:00",
+      "exit_time": "2022-06-11T12:00:00+00:00",
+      "entry_price": 29995.82,
+      "exit_price": 28380.0,
+      "size": 0.32872196570977613,
+      "gross_pnl": -531.1555266331703,
+      "entry_fee": 24.712493517485257,
+      "exit_fee": 23.322823467108616,
+      "total_fees": 48.03531698459388,
+      "pnl": -579.1908436177642,
+      "pnl_pct": -5.873976753208733,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-06-24T00:00:00+00:00",
+      "exit_time": "2022-06-30T00:00:00+00:00",
+      "entry_price": 21152.81,
+      "exit_price": 19079.64,
+      "size": 0.43883257340125953,
+      "gross_pnl": -909.77452619829,
+      "entry_fee": 23.264516408440844,
+      "exit_fee": 20.931918801924017,
+      "total_fees": 44.19643521036486,
+      "pnl": -953.9709614086548,
+      "pnl_pct": -10.277044333133565,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-07-07T12:00:00+00:00",
+      "exit_time": "2022-07-13T12:00:00+00:00",
+      "entry_price": 21615.25,
+      "exit_price": 20219.7,
+      "size": 0.38542029414245793,
+      "gross_pnl": -537.8732914905069,
+      "entry_fee": 20.879589004919207,
+      "exit_fee": 19.482706803680642,
+      "total_fees": 40.36229580859985,
+      "pnl": -578.2355872991068,
+      "pnl_pct": -6.940807110245046,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-07-18T00:00:00+00:00",
+      "exit_time": "2022-07-26T12:00:00+00:00",
+      "entry_price": 22127.4,
+      "exit_price": 21255.55,
+      "size": 0.35043276727640416,
+      "gross_pnl": -305.52480814993373,
+      "entry_fee": 19.434000036671442,
+      "exit_fee": 18.621603016204933,
+      "total_fees": 38.05560305287638,
+      "pnl": -343.58041120281007,
+      "pnl_pct": -4.430913789496936,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-07-30T12:00:00+00:00",
+      "exit_time": "2022-08-05T00:00:00+00:00",
+      "entry_price": 23650.19,
+      "exit_price": 23409.96,
+      "size": 0.3133778018044296,
+      "gross_pnl": -75.28274932747799,
+      "entry_fee": 18.57504900866442,
+      "exit_fee": 18.340404512824062,
+      "total_fees": 36.91545352148848,
+      "pnl": -112.19820284896647,
+      "pnl_pct": -1.5138506673640646,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-08-09T00:00:00+00:00",
+      "exit_time": "2022-08-18T12:00:00+00:00",
+      "entry_price": 23267.78,
+      "exit_price": 23198.25,
+      "size": 0.313718233845913,
+      "gross_pnl": -21.81282879930597,
+      "entry_fee": 18.294553501542,
+      "exit_fee": 18.19428504578988,
+      "total_fees": 36.48883854733188,
+      "pnl": -58.301667346637856,
+      "pnl_pct": -0.7987047457696307,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-09-10T12:00:00+00:00",
+      "exit_time": "2022-09-17T00:00:00+00:00",
+      "entry_price": 21650.6,
+      "exit_price": 19805.97,
+      "size": 0.3344651387923192,
+      "gross_pnl": -616.964428970475,
+      "entry_fee": 18.148799333175404,
+      "exit_fee": 16.561016262416278,
+      "total_fees": 34.70981559559168,
+      "pnl": -651.6742445660666,
+      "pnl_pct": -8.999321406281897,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-09-28T00:00:00+00:00",
+      "exit_time": "2022-10-10T12:00:00+00:00",
+      "entry_price": 18954.71,
+      "exit_price": 19132.28,
+      "size": 0.3477407923931485,
+      "gross_pnl": 61.74833250525128,
+      "entry_fee": 16.519613721760237,
+      "exit_fee": 16.632685518718965,
+      "total_fees": 33.1522992404792,
+      "pnl": 28.596033264772075,
+      "pnl_pct": 0.4338434149236888,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-10-18T00:00:00+00:00",
+      "exit_time": "2022-10-22T12:00:00+00:00",
+      "entry_price": 19564.56,
+      "exit_price": 19205.51,
+      "size": 0.33835927913349156,
+      "gross_pnl": -121.48789917288113,
+      "entry_fee": 16.591103804922167,
+      "exit_fee": 16.245906297477656,
+      "total_fees": 32.83701010239982,
+      "pnl": -154.32490927528096,
+      "pnl_pct": -2.331244658517283,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-10-25T12:00:00+00:00",
+      "exit_time": "2022-11-04T00:00:00+00:00",
+      "entry_price": 20085.39,
+      "exit_price": 20555.16,
+      "size": 0.32192112381994337,
+      "gross_pnl": 151.22888633689493,
+      "entry_fee": 16.205291531733966,
+      "exit_fee": 16.542850518746867,
+      "total_fees": 32.74814205048084,
+      "pnl": 118.48074428641411,
+      "pnl_pct": 1.8323904922519791,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-11-05T12:00:00+00:00",
+      "exit_time": "2022-11-09T00:00:00+00:00",
+      "entry_price": 21294.08,
+      "exit_price": 17795.52,
+      "size": 0.3091984186960671,
+      "gross_pnl": -1081.749219713313,
+      "entry_fee": 16.50149339245,
+      "exit_fee": 13.75586660968559,
+      "total_fees": 30.25736000213559,
+      "pnl": -1112.0065797154487,
+      "pnl_pct": -16.88928294415108,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-11-27T00:00:00+00:00",
+      "exit_time": "2022-12-10T00:00:00+00:00",
+      "entry_price": 16541.01,
+      "exit_price": 17167.36,
+      "size": 0.3309876059757772,
+      "gross_pnl": 207.31408700292877,
+      "entry_fee": 13.72147694316138,
+      "exit_fee": 14.205458468310797,
+      "total_fees": 27.926935411472176,
+      "pnl": 179.3871515914566,
+      "pnl_pct": 3.276555872866701,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-12-10T12:00:00+00:00",
+      "exit_time": "2022-12-18T12:00:00+00:00",
+      "entry_price": 17128.95,
+      "exit_price": 16740.51,
+      "size": 0.330073237649352,
+      "gross_pnl": -128.21364843251504,
+      "entry_fee": 14.16994482214002,
+      "exit_fee": 13.813985839003383,
+      "total_fees": 27.983930661143404,
+      "pnl": -156.19757909365845,
+      "pnl_pct": -2.7626969209912025,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    },
+    {
+      "direction": "long",
+      "entry_time": "2022-12-25T00:00:00+00:00",
+      "exit_time": "2022-12-28T12:00:00+00:00",
+      "entry_price": 16820.37,
+      "exit_price": 16541.63,
+      "size": 0.3268656336862949,
+      "gross_pnl": -91.11052673371718,
+      "entry_fee": 13.779450874405873,
+      "exit_fee": 13.517225930385566,
+      "total_fees": 27.29667680479144,
+      "pnl": -118.40720353850861,
+      "pnl_pct": -2.1536410363712073,
+      "entry_reason": "Bullish crossover: SMA(10) crossed above SMA(20)",
+      "exit_reason": "Bearish crossover: SMA(10) crossed below SMA(20)",
+      "exit_type": "signal"
+    }
+  ],
+  "total_return_pct": -46.0662685377616,
+  "win_rate": 27.27272727272727,
+  "max_drawdown": 52.86869545752154,
+  "sharpe_ratio": -0.991574083799863,
+  "total_trades": 22,
+  "winning_trades": 6,
+  "losing_trades": 16,
+  "avg_win_pct": 5.521458288921843,
+  "avg_loss_pct": -5.560380935654425,
+  "profit_factor": 0.3920310595454174,
+  "initial_capital": 10000.0,
+  "final_capital": 5393.37314622384,
+  "equity_curve": [
+    {
+      "time": "2021-12-27T12:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2021-12-28T00:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2021-12-28T12:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2021-12-29T00:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2021-12-29T12:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2021-12-30T00:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2021-12-30T12:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2021-12-31T00:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2021-12-31T12:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-01T00:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-01T12:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-02T00:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-02T12:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-03T00:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-03T12:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-04T00:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-04T12:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-05T00:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-05T12:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-06T00:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-06T12:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-07T00:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-07T12:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-08T00:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-08T12:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-09T00:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-09T12:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-10T00:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-10T12:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-11T00:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-11T12:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-12T00:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-12T12:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-13T00:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-13T12:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-14T00:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-14T12:00:00+00:00",
+      "equity": 10000.0,
+      "capital": 10000.0,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-15T00:00:00+00:00",
+      "equity": 9950.0625,
+      "capital": 10000.0,
+      "unrealized_pnl": -49.9375
+    },
+    {
+      "time": "2022-01-15T12:00:00+00:00",
+      "equity": 9959.717914029776,
+      "capital": 10000.0,
+      "unrealized_pnl": -40.28208597022487
+    },
+    {
+      "time": "2022-01-16T00:00:00+00:00",
+      "equity": 9940.182864002094,
+      "capital": 10000.0,
+      "unrealized_pnl": -59.817135997905886
+    },
+    {
+      "time": "2022-01-16T12:00:00+00:00",
+      "equity": 9964.662355162092,
+      "capital": 10000.0,
+      "unrealized_pnl": -35.33764483790827
+    },
+    {
+      "time": "2022-01-17T00:00:00+00:00",
+      "equity": 9864.754131609094,
+      "capital": 10000.0,
+      "unrealized_pnl": -135.24586839090546
+    },
+    {
+      "time": "2022-01-17T12:00:00+00:00",
+      "equity": 9759.959256090824,
+      "capital": 10000.0,
+      "unrealized_pnl": -240.04074390917654
+    },
+    {
+      "time": "2022-01-18T00:00:00+00:00",
+      "equity": 9680.31884920363,
+      "capital": 10000.0,
+      "unrealized_pnl": -319.68115079637045
+    },
+    {
+      "time": "2022-01-18T12:00:00+00:00",
+      "equity": 9791.558372630689,
+      "capital": 10000.0,
+      "unrealized_pnl": -208.44162736931128
+    },
+    {
+      "time": "2022-01-19T00:00:00+00:00",
+      "equity": 9722.197502777348,
+      "capital": 10000.0,
+      "unrealized_pnl": -277.8024972226514
+    },
+    {
+      "time": "2022-01-19T12:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-20T00:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-20T12:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-21T00:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-21T12:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-22T00:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-22T12:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-23T00:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-23T12:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-24T00:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-24T12:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-25T00:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-25T12:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-26T00:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-26T12:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-27T00:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-27T12:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-28T00:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-28T12:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-29T00:00:00+00:00",
+      "equity": 9632.494846124388,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-01-29T12:00:00+00:00",
+      "equity": 9584.392574986554,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": -48.10227113783367
+    },
+    {
+      "time": "2022-01-30T00:00:00+00:00",
+      "equity": 9574.123002887,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": -58.371843237387424
+    },
+    {
+      "time": "2022-01-30T12:00:00+00:00",
+      "equity": 9516.808197172752,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": -115.68664895163606
+    },
+    {
+      "time": "2022-01-31T00:00:00+00:00",
+      "equity": 9359.556472647626,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": -272.93837347676237
+    },
+    {
+      "time": "2022-01-31T12:00:00+00:00",
+      "equity": 9665.379359409866,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 32.884513285478576
+    },
+    {
+      "time": "2022-02-01T00:00:00+00:00",
+      "equity": 9657.898712903716,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 25.403866779327736
+    },
+    {
+      "time": "2022-02-01T12:00:00+00:00",
+      "equity": 9719.819889872591,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 87.32504374820313
+    },
+    {
+      "time": "2022-02-02T00:00:00+00:00",
+      "equity": 9668.359066592015,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 35.86422046762768
+    },
+    {
+      "time": "2022-02-02T12:00:00+00:00",
+      "equity": 9270.730071097227,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": -361.7647750271601
+    },
+    {
+      "time": "2022-02-03T00:00:00+00:00",
+      "equity": 9235.937533991433,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": -396.5573121329537
+    },
+    {
+      "time": "2022-02-03T12:00:00+00:00",
+      "equity": 9371.570692170593,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": -260.9241539537947
+    },
+    {
+      "time": "2022-02-04T00:00:00+00:00",
+      "equity": 9497.305800291444,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": -135.1890458329435
+    },
+    {
+      "time": "2022-02-04T12:00:00+00:00",
+      "equity": 10437.992077871926,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 805.4972317475388
+    },
+    {
+      "time": "2022-02-05T00:00:00+00:00",
+      "equity": 10414.212156948177,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 781.717310823789
+    },
+    {
+      "time": "2022-02-05T12:00:00+00:00",
+      "equity": 10397.02926254059,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 764.5344164162007
+    },
+    {
+      "time": "2022-02-06T00:00:00+00:00",
+      "equity": 10429.826123816722,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 797.3312776923336
+    },
+    {
+      "time": "2022-02-06T12:00:00+00:00",
+      "equity": 10644.103971388911,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 1011.6091252645243
+    },
+    {
+      "time": "2022-02-07T00:00:00+00:00",
+      "equity": 10736.670696192386,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 1104.1758500679985
+    },
+    {
+      "time": "2022-02-07T12:00:00+00:00",
+      "equity": 11012.330009660023,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 1379.835163535636
+    },
+    {
+      "time": "2022-02-08T00:00:00+00:00",
+      "equity": 11050.641965021397,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 1418.1471188970092
+    },
+    {
+      "time": "2022-02-08T12:00:00+00:00",
+      "equity": 11067.272596935241,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 1434.7777508108538
+    },
+    {
+      "time": "2022-02-09T00:00:00+00:00",
+      "equity": 10985.003057356007,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 1352.5082112316188
+    },
+    {
+      "time": "2022-02-09T12:00:00+00:00",
+      "equity": 11148.681109081048,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 1516.1862629566604
+    },
+    {
+      "time": "2022-02-10T00:00:00+00:00",
+      "equity": 11266.26532485107,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 1633.7704787266825
+    },
+    {
+      "time": "2022-02-10T12:00:00+00:00",
+      "equity": 10924.57800968836,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 1292.0831635639736
+    },
+    {
+      "time": "2022-02-11T00:00:00+00:00",
+      "equity": 10892.782751753151,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 1260.2879056287645
+    },
+    {
+      "time": "2022-02-11T12:00:00+00:00",
+      "equity": 10644.623600189843,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 1012.128754065455
+    },
+    {
+      "time": "2022-02-12T00:00:00+00:00",
+      "equity": 10646.036890117013,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 1013.5420439926252
+    },
+    {
+      "time": "2022-02-12T12:00:00+00:00",
+      "equity": 10595.843760287982,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 963.3489141635946
+    },
+    {
+      "time": "2022-02-13T00:00:00+00:00",
+      "equity": 10668.895536789838,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 1036.40069066545
+    },
+    {
+      "time": "2022-02-13T12:00:00+00:00",
+      "equity": 10562.052826523113,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 929.5579803987249
+    },
+    {
+      "time": "2022-02-14T00:00:00+00:00",
+      "equity": 10574.805069560445,
+      "capital": 9632.494846124388,
+      "unrealized_pnl": 942.3102234360584
+    },
+    {
+      "time": "2022-02-14T12:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-15T00:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-15T12:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-16T00:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-16T12:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-17T00:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-17T12:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-18T00:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-18T12:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-19T00:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-19T12:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-20T00:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-20T12:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-21T00:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-21T12:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-22T00:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-22T12:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-23T00:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-23T12:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-24T00:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-24T12:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-25T00:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-25T12:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-26T00:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-26T12:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-27T00:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-27T12:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-28T00:00:00+00:00",
+      "equity": 10681.082965913116,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-02-28T12:00:00+00:00",
+      "equity": 10627.744307852086,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": -53.338658061028625
+    },
+    {
+      "time": "2022-03-01T00:00:00+00:00",
+      "equity": 10736.91511569031,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 55.8321497771947
+    },
+    {
+      "time": "2022-03-01T12:00:00+00:00",
+      "equity": 10932.071622577134,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 250.98865666401875
+    },
+    {
+      "time": "2022-03-02T00:00:00+00:00",
+      "equity": 10855.545014824156,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 174.46204891103937
+    },
+    {
+      "time": "2022-03-02T12:00:00+00:00",
+      "equity": 10812.058786578531,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": 130.97582066541509
+    },
+    {
+      "time": "2022-03-03T00:00:00+00:00",
+      "equity": 10679.976012285179,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": -1.106953627937191
+    },
+    {
+      "time": "2022-03-03T12:00:00+00:00",
+      "equity": 10453.356461354188,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": -227.72650455892824
+    },
+    {
+      "time": "2022-03-04T00:00:00+00:00",
+      "equity": 10251.021970776073,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": -430.06099513704226
+    },
+    {
+      "time": "2022-03-04T12:00:00+00:00",
+      "equity": 9633.324115386487,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": -1047.758850526629
+    },
+    {
+      "time": "2022-03-05T00:00:00+00:00",
+      "equity": 9634.146003131735,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": -1046.936962781381
+    },
+    {
+      "time": "2022-03-05T12:00:00+00:00",
+      "equity": 9698.942254951777,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": -982.1407109613396
+    },
+    {
+      "time": "2022-03-06T00:00:00+00:00",
+      "equity": 9438.192215917185,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": -1242.8907499959307
+    },
+    {
+      "time": "2022-03-06T12:00:00+00:00",
+      "equity": 9452.683524096139,
+      "capital": 10681.082965913116,
+      "unrealized_pnl": -1228.3994418169766
+    },
+    {
+      "time": "2022-03-07T00:00:00+00:00",
+      "equity": 9435.099063534617,
+      "capital": 9435.099063534617,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-03-07T12:00:00+00:00",
+      "equity": 9435.099063534617,
+      "capital": 9435.099063534617,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-03-08T00:00:00+00:00",
+      "equity": 9435.099063534617,
+      "capital": 9435.099063534617,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-03-08T12:00:00+00:00",
+      "equity": 9435.099063534617,
+      "capital": 9435.099063534617,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-03-09T00:00:00+00:00",
+      "equity": 9435.099063534617,
+      "capital": 9435.099063534617,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-03-09T12:00:00+00:00",
+      "equity": 9435.099063534617,
+      "capital": 9435.099063534617,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-03-10T00:00:00+00:00",
+      "equity": 9435.099063534617,
+      "capital": 9435.099063534617,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-03-10T12:00:00+00:00",
+      "equity": 9435.099063534617,
+      "capital": 9435.099063534617,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-03-11T00:00:00+00:00",
+      "equity": 9435.099063534617,
+      "capital": 9435.099063534617,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-03-11T12:00:00+00:00",
+      "equity": 9435.099063534617,
+      "capital": 9435.099063534617,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-03-12T00:00:00+00:00",
+      "equity": 9435.099063534617,
+      "capital": 9435.099063534617,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-03-12T12:00:00+00:00",
+      "equity": 9435.099063534617,
+      "capital": 9435.099063534617,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-03-13T00:00:00+00:00",
+      "equity": 9387.982537586091,
+      "capital": 9435.099063534617,
+      "unrealized_pnl": -47.116525948526
+    },
+    {
+      "time": "2022-03-13T12:00:00+00:00",
+      "equity": 9153.565104926161,
+      "capital": 9435.099063534617,
+      "unrealized_pnl": -281.5339586084565
+    },
+    {
+      "time": "2022-03-14T00:00:00+00:00",
+      "equity": 9422.131322582938,
+      "capital": 9435.099063534617,
+      "unrealized_pnl": -12.967740951679787
+    },
+    {
+      "time": "2022-03-14T12:00:00+00:00",
+      "equity": 9613.067067097147,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-03-15T00:00:00+00:00",
+      "equity": 9613.067067097147,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-03-15T12:00:00+00:00",
+      "equity": 9613.067067097147,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-03-16T00:00:00+00:00",
+      "equity": 9613.067067097147,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-03-16T12:00:00+00:00",
+      "equity": 9613.067067097147,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-03-17T00:00:00+00:00",
+      "equity": 9613.067067097147,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-03-17T12:00:00+00:00",
+      "equity": 9613.067067097147,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-03-18T00:00:00+00:00",
+      "equity": 9565.06181343083,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": -48.00525366631638
+    },
+    {
+      "time": "2022-03-18T12:00:00+00:00",
+      "equity": 9889.26720604666,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 276.20013894951256
+    },
+    {
+      "time": "2022-03-19T00:00:00+00:00",
+      "equity": 9881.250091384121,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 268.18302428697547
+    },
+    {
+      "time": "2022-03-19T12:00:00+00:00",
+      "equity": 9998.644232578228,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 385.57716548108107
+    },
+    {
+      "time": "2022-03-20T00:00:00+00:00",
+      "equity": 9852.59825897675,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 239.53119187960368
+    },
+    {
+      "time": "2022-03-20T12:00:00+00:00",
+      "equity": 9775.230497986478,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 162.16343088933252
+    },
+    {
+      "time": "2022-03-21T00:00:00+00:00",
+      "equity": 9772.498144082001,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 159.43107698485454
+    },
+    {
+      "time": "2022-03-21T12:00:00+00:00",
+      "equity": 9710.617668091036,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 97.55060099388959
+    },
+    {
+      "time": "2022-03-22T00:00:00+00:00",
+      "equity": 10181.856375363946,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 568.7893082668003
+    },
+    {
+      "time": "2022-03-22T12:00:00+00:00",
+      "equity": 10033.95410586896,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 420.88703877181257
+    },
+    {
+      "time": "2022-03-23T00:00:00+00:00",
+      "equity": 9958.366873592871,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 345.29980649572485
+    },
+    {
+      "time": "2022-03-23T12:00:00+00:00",
+      "equity": 10157.274661121048,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 544.2075940239007
+    },
+    {
+      "time": "2022-03-24T00:00:00+00:00",
+      "equity": 10173.739816278543,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 560.672749181397
+    },
+    {
+      "time": "2022-03-24T12:00:00+00:00",
+      "equity": 10421.299603832062,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 808.2325367349141
+    },
+    {
+      "time": "2022-03-25T00:00:00+00:00",
+      "equity": 10565.482178366967,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 952.4151112698195
+    },
+    {
+      "time": "2022-03-25T12:00:00+00:00",
+      "equity": 10496.415658961707,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 883.3485918645608
+    },
+    {
+      "time": "2022-03-26T00:00:00+00:00",
+      "equity": 10504.347535547502,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 891.2804684503549
+    },
+    {
+      "time": "2022-03-26T12:00:00+00:00",
+      "equity": 10547.32883574509,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 934.2617686479426
+    },
+    {
+      "time": "2022-03-27T00:00:00+00:00",
+      "equity": 10557.808383735754,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 944.741316638607
+    },
+    {
+      "time": "2022-03-27T12:00:00+00:00",
+      "equity": 11093.55337330818,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 1480.486306211033
+    },
+    {
+      "time": "2022-03-28T00:00:00+00:00",
+      "equity": 11195.782240015116,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 1582.7151729179702
+    },
+    {
+      "time": "2022-03-28T12:00:00+00:00",
+      "equity": 11158.900197753352,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 1545.8331306562059
+    },
+    {
+      "time": "2022-03-29T00:00:00+00:00",
+      "equity": 11351.415129525814,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 1738.348062428667
+    },
+    {
+      "time": "2022-03-29T12:00:00+00:00",
+      "equity": 11236.144837077216,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 1623.0777699800697
+    },
+    {
+      "time": "2022-03-30T00:00:00+00:00",
+      "equity": 11207.317793067652,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 1594.2507259705046
+    },
+    {
+      "time": "2022-03-30T12:00:00+00:00",
+      "equity": 11147.613255757986,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 1534.5461886608389
+    },
+    {
+      "time": "2022-03-31T00:00:00+00:00",
+      "equity": 11167.774428632025,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 1554.7073615348781
+    },
+    {
+      "time": "2022-03-31T12:00:00+00:00",
+      "equity": 10782.164472620381,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 1169.097405523234
+    },
+    {
+      "time": "2022-04-01T00:00:00+00:00",
+      "equity": 10676.492934702774,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 1063.4258676056265
+    },
+    {
+      "time": "2022-04-01T12:00:00+00:00",
+      "equity": 10961.233097786655,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 1348.166030689509
+    },
+    {
+      "time": "2022-04-02T00:00:00+00:00",
+      "equity": 11025.576007105747,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 1412.5089400085994
+    },
+    {
+      "time": "2022-04-02T12:00:00+00:00",
+      "equity": 10848.721204210433,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 1235.6541371132867
+    },
+    {
+      "time": "2022-04-03T00:00:00+00:00",
+      "equity": 10953.914461808541,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 1340.8473947113935
+    },
+    {
+      "time": "2022-04-03T12:00:00+00:00",
+      "equity": 10992.131900605942,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 1379.064833508796
+    },
+    {
+      "time": "2022-04-04T00:00:00+00:00",
+      "equity": 10929.185948655693,
+      "capital": 9613.067067097147,
+      "unrealized_pnl": 1316.1188815585472
+    },
+    {
+      "time": "2022-04-04T12:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-05T00:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-05T12:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-06T00:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-06T12:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-07T00:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-07T12:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-08T00:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-08T12:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-09T00:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-09T12:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-10T00:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-10T12:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-11T00:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-11T12:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-12T00:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-12T12:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-13T00:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-13T12:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-14T00:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-14T12:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-15T00:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-15T12:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-16T00:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-16T12:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-17T00:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-17T12:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-18T00:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-18T12:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-19T00:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-19T12:00:00+00:00",
+      "equity": 11030.496138313294,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-20T00:00:00+00:00",
+      "equity": 10975.412598222592,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": -55.083540090702016
+    },
+    {
+      "time": "2022-04-20T12:00:00+00:00",
+      "equity": 10787.139989420282,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": -243.3561488930125
+    },
+    {
+      "time": "2022-04-21T00:00:00+00:00",
+      "equity": 11070.72089694103,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": 40.224758627735255
+    },
+    {
+      "time": "2022-04-21T12:00:00+00:00",
+      "equity": 10555.335418167817,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": -475.1607201454774
+    },
+    {
+      "time": "2022-04-22T00:00:00+00:00",
+      "equity": 10581.163617738446,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": -449.3325205748472
+    },
+    {
+      "time": "2022-04-22T12:00:00+00:00",
+      "equity": 10351.233715927863,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": -679.2624223854316
+    },
+    {
+      "time": "2022-04-23T00:00:00+00:00",
+      "equity": 10332.07767087987,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": -698.4184674334253
+    },
+    {
+      "time": "2022-04-23T12:00:00+00:00",
+      "equity": 10285.35433791947,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": -745.1418003938227
+    },
+    {
+      "time": "2022-04-24T00:00:00+00:00",
+      "equity": 10328.792436531092,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": -701.703701782203
+    },
+    {
+      "time": "2022-04-24T12:00:00+00:00",
+      "equity": 10289.68771846524,
+      "capital": 11030.496138313294,
+      "unrealized_pnl": -740.808419848053
+    },
+    {
+      "time": "2022-04-25T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-25T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-26T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-26T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-27T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-27T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-28T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-28T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-29T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-29T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-30T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-04-30T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-01T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-01T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-02T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-02T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-03T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-03T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-04T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-04T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-05T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-05T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-06T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-06T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-07T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-07T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-08T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-08T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-09T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-09T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-10T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-10T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-11T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-11T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-12T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-12T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-13T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-13T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-14T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-14T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-15T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-15T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-16T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-16T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-17T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-17T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-18T00:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-18T12:00:00+00:00",
+      "equity": 10122.106871402535,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-19T00:00:00+00:00",
+      "equity": 10071.559600213468,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": -50.54727118906641
+    },
+    {
+      "time": "2022-05-19T12:00:00+00:00",
+      "equity": 10351.193171812629,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 229.08630041009468
+    },
+    {
+      "time": "2022-05-20T00:00:00+00:00",
+      "equity": 10386.593417510725,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": 264.4865461081892
+    },
+    {
+      "time": "2022-05-20T12:00:00+00:00",
+      "equity": 9971.268588407589,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": -150.83828299494633
+    },
+    {
+      "time": "2022-05-21T00:00:00+00:00",
+      "equity": 9994.791277496543,
+      "capital": 10122.106871402535,
+      "unrealized_pnl": -127.31559390599335
+    },
+    {
+      "time": "2022-05-21T12:00:00+00:00",
+      "equity": 10052.121423397299,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-22T00:00:00+00:00",
+      "equity": 10052.121423397299,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-22T12:00:00+00:00",
+      "equity": 10052.121423397299,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-23T00:00:00+00:00",
+      "equity": 10052.121423397299,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-23T12:00:00+00:00",
+      "equity": 10052.121423397299,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-24T00:00:00+00:00",
+      "equity": 10052.121423397299,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-24T12:00:00+00:00",
+      "equity": 10052.121423397299,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-25T00:00:00+00:00",
+      "equity": 10052.121423397299,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-25T12:00:00+00:00",
+      "equity": 10052.121423397299,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-26T00:00:00+00:00",
+      "equity": 10052.121423397299,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-26T12:00:00+00:00",
+      "equity": 10052.121423397299,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-27T00:00:00+00:00",
+      "equity": 10052.121423397299,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-27T12:00:00+00:00",
+      "equity": 10052.121423397299,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-28T00:00:00+00:00",
+      "equity": 10052.121423397299,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-28T12:00:00+00:00",
+      "equity": 10052.121423397299,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-29T00:00:00+00:00",
+      "equity": 10052.121423397299,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-29T12:00:00+00:00",
+      "equity": 10052.121423397299,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-30T00:00:00+00:00",
+      "equity": 10052.121423397299,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-30T12:00:00+00:00",
+      "equity": 10052.121423397299,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-05-31T00:00:00+00:00",
+      "equity": 10001.923642039208,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": -50.19778135809026
+    },
+    {
+      "time": "2022-05-31T12:00:00+00:00",
+      "equity": 10011.066528200416,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": -41.054895196882526
+    },
+    {
+      "time": "2022-06-01T00:00:00+00:00",
+      "equity": 9951.829951493653,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": -100.2914719036453
+    },
+    {
+      "time": "2022-06-01T12:00:00+00:00",
+      "equity": 9383.140541938596,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": -668.9808814587025
+    },
+    {
+      "time": "2022-06-02T00:00:00+00:00",
+      "equity": 9500.945779478181,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": -551.1756439191184
+    },
+    {
+      "time": "2022-06-02T12:00:00+00:00",
+      "equity": 9587.125830495987,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": -464.9955929013124
+    },
+    {
+      "time": "2022-06-03T00:00:00+00:00",
+      "equity": 9364.889425628508,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": -687.2319977687906
+    },
+    {
+      "time": "2022-06-03T12:00:00+00:00",
+      "equity": 9348.128517848485,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": -703.992905548813
+    },
+    {
+      "time": "2022-06-04T00:00:00+00:00",
+      "equity": 9342.426028547387,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": -709.6953948499115
+    },
+    {
+      "time": "2022-06-04T12:00:00+00:00",
+      "equity": 9403.206373075995,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": -648.9150503213041
+    },
+    {
+      "time": "2022-06-05T00:00:00+00:00",
+      "equity": 9357.261952369967,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": -694.8594710273316
+    },
+    {
+      "time": "2022-06-05T12:00:00+00:00",
+      "equity": 9417.289316267104,
+      "capital": 10052.121423397299,
+      "unrealized_pnl": -634.832107130195
+    },
+    {
+      "time": "2022-06-06T00:00:00+00:00",
+      "equity": 9884.997406994102,
+      "capital": 9884.997406994102,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-06T12:00:00+00:00",
+      "equity": 9884.997406994102,
+      "capital": 9884.997406994102,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-07T00:00:00+00:00",
+      "equity": 9884.997406994102,
+      "capital": 9884.997406994102,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-07T12:00:00+00:00",
+      "equity": 9884.997406994102,
+      "capital": 9884.997406994102,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-08T00:00:00+00:00",
+      "equity": 9884.997406994102,
+      "capital": 9884.997406994102,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-08T12:00:00+00:00",
+      "equity": 9884.997406994102,
+      "capital": 9884.997406994102,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-09T00:00:00+00:00",
+      "equity": 9884.997406994102,
+      "capital": 9884.997406994102,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-09T12:00:00+00:00",
+      "equity": 9884.997406994102,
+      "capital": 9884.997406994102,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-10T00:00:00+00:00",
+      "equity": 9835.634201192925,
+      "capital": 9884.997406994102,
+      "unrealized_pnl": -49.363205801176804
+    },
+    {
+      "time": "2022-06-10T12:00:00+00:00",
+      "equity": 9529.624655132131,
+      "capital": 9884.997406994102,
+      "unrealized_pnl": -355.37275186197013
+    },
+    {
+      "time": "2022-06-11T00:00:00+00:00",
+      "equity": 9411.046119983654,
+      "capital": 9884.997406994102,
+      "unrealized_pnl": -473.95128701044774
+    },
+    {
+      "time": "2022-06-11T12:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-12T00:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-12T12:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-13T00:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-13T12:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-14T00:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-14T12:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-15T00:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-15T12:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-16T00:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-16T12:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-17T00:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-17T12:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-18T00:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-18T12:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-19T00:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-19T12:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-20T00:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-20T12:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-21T00:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-21T12:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-22T00:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-22T12:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-23T00:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-23T12:00:00+00:00",
+      "equity": 9305.806563376338,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-24T00:00:00+00:00",
+      "equity": 9259.335691850478,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": -46.47087152586059
+    },
+    {
+      "time": "2022-06-24T12:00:00+00:00",
+      "equity": 9288.06427218832,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": -17.742291188017887
+    },
+    {
+      "time": "2022-06-25T00:00:00+00:00",
+      "equity": 9332.590726431281,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 26.784163054942812
+    },
+    {
+      "time": "2022-06-25T12:00:00+00:00",
+      "equity": 9398.014673060781,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 92.20810968444329
+    },
+    {
+      "time": "2022-06-26T00:00:00+00:00",
+      "equity": 9498.339270464872,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 192.53270708853438
+    },
+    {
+      "time": "2022-06-26T12:00:00+00:00",
+      "equity": 9203.940265341957,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": -101.86629803438143
+    },
+    {
+      "time": "2022-06-27T00:00:00+00:00",
+      "equity": 9318.46500210548,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": 12.658438729143114
+    },
+    {
+      "time": "2022-06-27T12:00:00+00:00",
+      "equity": 9071.161958563378,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": -234.64460481296015
+    },
+    {
+      "time": "2022-06-28T00:00:00+00:00",
+      "equity": 9183.042772955418,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": -122.76379042092123
+    },
+    {
+      "time": "2022-06-28T12:00:00+00:00",
+      "equity": 8865.487560307407,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": -440.3190030689304
+    },
+    {
+      "time": "2022-06-29T00:00:00+00:00",
+      "equity": 8789.8293578757,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": -515.9772055006375
+    },
+    {
+      "time": "2022-06-29T12:00:00+00:00",
+      "equity": 8798.338935839553,
+      "capital": 9305.806563376338,
+      "unrealized_pnl": -507.46762753678485
+    },
+    {
+      "time": "2022-06-30T00:00:00+00:00",
+      "equity": 8351.835601967683,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-06-30T12:00:00+00:00",
+      "equity": 8351.835601967683,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-01T00:00:00+00:00",
+      "equity": 8351.835601967683,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-01T12:00:00+00:00",
+      "equity": 8351.835601967683,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-02T00:00:00+00:00",
+      "equity": 8351.835601967683,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-02T12:00:00+00:00",
+      "equity": 8351.835601967683,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-03T00:00:00+00:00",
+      "equity": 8351.835601967683,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-03T12:00:00+00:00",
+      "equity": 8351.835601967683,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-04T00:00:00+00:00",
+      "equity": 8351.835601967683,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-04T12:00:00+00:00",
+      "equity": 8351.835601967683,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-05T00:00:00+00:00",
+      "equity": 8351.835601967683,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-05T12:00:00+00:00",
+      "equity": 8351.835601967683,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-06T00:00:00+00:00",
+      "equity": 8351.835601967683,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-06T12:00:00+00:00",
+      "equity": 8351.835601967683,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-07T00:00:00+00:00",
+      "equity": 8351.835601967683,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-07T12:00:00+00:00",
+      "equity": 8310.128622930357,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": -41.70697903732612
+    },
+    {
+      "time": "2022-07-08T00:00:00+00:00",
+      "equity": 8293.470112238527,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": -58.36548972915651
+    },
+    {
+      "time": "2022-07-08T12:00:00+00:00",
+      "equity": 8302.723986052337,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": -49.111615915346285
+    },
+    {
+      "time": "2022-07-09T00:00:00+00:00",
+      "equity": 8240.026780337506,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": -111.80882163017712
+    },
+    {
+      "time": "2022-07-09T12:00:00+00:00",
+      "equity": 8297.122451300895,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": -54.71315066678903
+    },
+    {
+      "time": "2022-07-10T00:00:00+00:00",
+      "equity": 8184.084479604339,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": -167.75112236334388
+    },
+    {
+      "time": "2022-07-10T12:00:00+00:00",
+      "equity": 8013.831655353938,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": -338.00394661374486
+    },
+    {
+      "time": "2022-07-11T00:00:00+00:00",
+      "equity": 7865.031517385653,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": -486.8040845820299
+    },
+    {
+      "time": "2022-07-11T12:00:00+00:00",
+      "equity": 7668.378048565486,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": -683.4575534021974
+    },
+    {
+      "time": "2022-07-12T00:00:00+00:00",
+      "equity": 7595.40046953195,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": -756.4351324357333
+    },
+    {
+      "time": "2022-07-12T12:00:00+00:00",
+      "equity": 7423.233050699381,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": -928.6025512683015
+    },
+    {
+      "time": "2022-07-13T00:00:00+00:00",
+      "equity": 7622.762255960234,
+      "capital": 8351.835601967683,
+      "unrealized_pnl": -729.0733460074491
+    },
+    {
+      "time": "2022-07-13T12:00:00+00:00",
+      "equity": 7773.6000146685765,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-14T00:00:00+00:00",
+      "equity": 7773.6000146685765,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-14T12:00:00+00:00",
+      "equity": 7773.6000146685765,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-15T00:00:00+00:00",
+      "equity": 7773.6000146685765,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-15T12:00:00+00:00",
+      "equity": 7773.6000146685765,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-16T00:00:00+00:00",
+      "equity": 7773.6000146685765,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-16T12:00:00+00:00",
+      "equity": 7773.6000146685765,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-17T00:00:00+00:00",
+      "equity": 7773.6000146685765,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-17T12:00:00+00:00",
+      "equity": 7773.6000146685765,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-18T00:00:00+00:00",
+      "equity": 7734.780599595325,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": -38.81941507325121
+    },
+    {
+      "time": "2022-07-18T12:00:00+00:00",
+      "equity": 7837.777476936122,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 64.17746226754554
+    },
+    {
+      "time": "2022-07-19T00:00:00+00:00",
+      "equity": 7682.067451443306,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": -91.53256322527076
+    },
+    {
+      "time": "2022-07-19T12:00:00+00:00",
+      "equity": 8176.896399669538,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 403.2963850009623
+    },
+    {
+      "time": "2022-07-20T00:00:00+00:00",
+      "equity": 8295.375142604853,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 521.7751279362758
+    },
+    {
+      "time": "2022-07-20T12:00:00+00:00",
+      "equity": 8118.663751455714,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 345.0637367871375
+    },
+    {
+      "time": "2022-07-21T00:00:00+00:00",
+      "equity": 7903.4451958475165,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 129.84518117893967
+    },
+    {
+      "time": "2022-07-21T12:00:00+00:00",
+      "equity": 8092.7895656055,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 319.18955093692364
+    },
+    {
+      "time": "2022-07-22T00:00:00+00:00",
+      "equity": 8255.878732726227,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 482.27871805765074
+    },
+    {
+      "time": "2022-07-22T12:00:00+00:00",
+      "equity": 7929.448717671314,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 155.84870300273693
+    },
+    {
+      "time": "2022-07-23T00:00:00+00:00",
+      "equity": 7771.344228883794,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": -2.2557857847826206
+    },
+    {
+      "time": "2022-07-23T12:00:00+00:00",
+      "equity": 7847.306392178987,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 73.70637751041113
+    },
+    {
+      "time": "2022-07-24T00:00:00+00:00",
+      "equity": 7921.041879388448,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 147.44186471987217
+    },
+    {
+      "time": "2022-07-24T12:00:00+00:00",
+      "equity": 7896.932954799292,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": 123.33294013071577
+    },
+    {
+      "time": "2022-07-25T00:00:00+00:00",
+      "equity": 7671.332565635956,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": -102.26744903262119
+    },
+    {
+      "time": "2022-07-25T12:00:00+00:00",
+      "equity": 7451.22720756645,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": -322.3728071021266
+    },
+    {
+      "time": "2022-07-26T00:00:00+00:00",
+      "equity": 7373.789915059044,
+      "capital": 7773.6000146685765,
+      "unrealized_pnl": -399.8100996095324
+    },
+    {
+      "time": "2022-07-26T12:00:00+00:00",
+      "equity": 7430.0196034657665,
+      "capital": 7430.0196034657665,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-27T00:00:00+00:00",
+      "equity": 7430.0196034657665,
+      "capital": 7430.0196034657665,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-27T12:00:00+00:00",
+      "equity": 7430.0196034657665,
+      "capital": 7430.0196034657665,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-28T00:00:00+00:00",
+      "equity": 7430.0196034657665,
+      "capital": 7430.0196034657665,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-28T12:00:00+00:00",
+      "equity": 7430.0196034657665,
+      "capital": 7430.0196034657665,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-29T00:00:00+00:00",
+      "equity": 7430.0196034657665,
+      "capital": 7430.0196034657665,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-29T12:00:00+00:00",
+      "equity": 7430.0196034657665,
+      "capital": 7430.0196034657665,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-30T00:00:00+00:00",
+      "equity": 7430.0196034657665,
+      "capital": 7430.0196034657665,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-07-30T12:00:00+00:00",
+      "equity": 7392.91594307096,
+      "capital": 7430.0196034657665,
+      "unrealized_pnl": -37.10366039480718
+    },
+    {
+      "time": "2022-07-31T00:00:00+00:00",
+      "equity": 7442.587186445917,
+      "capital": 7430.0196034657665,
+      "unrealized_pnl": 12.56758298015033
+    },
+    {
+      "time": "2022-07-31T12:00:00+00:00",
+      "equity": 7284.902088849546,
+      "capital": 7430.0196034657665,
+      "unrealized_pnl": -145.11751461622015
+    },
+    {
+      "time": "2022-08-01T00:00:00+00:00",
+      "equity": 7262.6328668355,
+      "capital": 7430.0196034657665,
+      "unrealized_pnl": -167.38673663026685
+    },
+    {
+      "time": "2022-08-01T12:00:00+00:00",
+      "equity": 7275.908749190027,
+      "capital": 7430.0196034657665,
+      "unrealized_pnl": -154.11085427573894
+    },
+    {
+      "time": "2022-08-02T00:00:00+00:00",
+      "equity": 7155.100407924328,
+      "capital": 7430.0196034657665,
+      "unrealized_pnl": -274.91919554143885
+    },
+    {
+      "time": "2022-08-02T12:00:00+00:00",
+      "equity": 7186.778720093102,
+      "capital": 7430.0196034657665,
+      "unrealized_pnl": -243.24088337266502
+    },
+    {
+      "time": "2022-08-03T00:00:00+00:00",
+      "equity": 7317.227471337931,
+      "capital": 7430.0196034657665,
+      "unrealized_pnl": -112.79213212783563
+    },
+    {
+      "time": "2022-08-03T12:00:00+00:00",
+      "equity": 7134.825537909855,
+      "capital": 7430.0196034657665,
+      "unrealized_pnl": -295.19406555591166
+    },
+    {
+      "time": "2022-08-04T00:00:00+00:00",
+      "equity": 7155.059770657878,
+      "capital": 7430.0196034657665,
+      "unrealized_pnl": -274.9598328078881
+    },
+    {
+      "time": "2022-08-04T12:00:00+00:00",
+      "equity": 7071.593951315228,
+      "capital": 7430.0196034657665,
+      "unrealized_pnl": -358.42565215053884
+    },
+    {
+      "time": "2022-08-05T00:00:00+00:00",
+      "equity": 7317.8214006168,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-05T12:00:00+00:00",
+      "equity": 7317.8214006168,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-06T00:00:00+00:00",
+      "equity": 7317.8214006168,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-06T12:00:00+00:00",
+      "equity": 7317.8214006168,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-07T00:00:00+00:00",
+      "equity": 7317.8214006168,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-07T12:00:00+00:00",
+      "equity": 7317.8214006168,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-08T00:00:00+00:00",
+      "equity": 7317.8214006168,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-08T12:00:00+00:00",
+      "equity": 7317.8214006168,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-09T00:00:00+00:00",
+      "equity": 7281.27802999747,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": -36.54337061933015
+    },
+    {
+      "time": "2022-08-09T12:00:00+00:00",
+      "equity": 7246.251334287883,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": -71.57006632891735
+    },
+    {
+      "time": "2022-08-10T00:00:00+00:00",
+      "equity": 7237.604969573724,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": -80.2164310430762
+    },
+    {
+      "time": "2022-08-10T12:00:00+00:00",
+      "equity": 7499.424278359422,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 181.60287774262153
+    },
+    {
+      "time": "2022-08-11T00:00:00+00:00",
+      "equity": 7687.957588143705,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 370.13618752690513
+    },
+    {
+      "time": "2022-08-11T12:00:00+00:00",
+      "equity": 7491.6603873511585,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 173.83898673435834
+    },
+    {
+      "time": "2022-08-12T00:00:00+00:00",
+      "equity": 7410.166131149152,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 92.3447305323516
+    },
+    {
+      "time": "2022-08-12T12:00:00+00:00",
+      "equity": 7639.465345070735,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 321.64394445393464
+    },
+    {
+      "time": "2022-08-13T00:00:00+00:00",
+      "equity": 7650.177073777419,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 332.3556731606187
+    },
+    {
+      "time": "2022-08-13T12:00:00+00:00",
+      "equity": 7653.919763679025,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 336.09836306222473
+    },
+    {
+      "time": "2022-08-14T00:00:00+00:00",
+      "equity": 7688.974623443054,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 371.15322282625436
+    },
+    {
+      "time": "2022-08-14T12:00:00+00:00",
+      "equity": 7609.160822489511,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 291.33942187271043
+    },
+    {
+      "time": "2022-08-15T00:00:00+00:00",
+      "equity": 7531.284082613804,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 213.46268199700359
+    },
+    {
+      "time": "2022-08-15T12:00:00+00:00",
+      "equity": 7540.712782173617,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 222.89138155681684
+    },
+    {
+      "time": "2022-08-16T00:00:00+00:00",
+      "equity": 7522.825478262601,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 205.00407764580106
+    },
+    {
+      "time": "2022-08-16T12:00:00+00:00",
+      "equity": 7465.148624101661,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 147.32722348486078
+    },
+    {
+      "time": "2022-08-17T00:00:00+00:00",
+      "equity": 7433.780126130348,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 115.95872551354887
+    },
+    {
+      "time": "2022-08-17T12:00:00+00:00",
+      "equity": 7302.601348550595,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": -15.220052066205465
+    },
+    {
+      "time": "2022-08-18T00:00:00+00:00",
+      "equity": 7364.712476616698,
+      "capital": 7317.8214006168,
+      "unrealized_pnl": 46.89107599989801
+    },
+    {
+      "time": "2022-08-18T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-19T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-19T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-20T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-20T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-21T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-21T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-22T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-22T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-23T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-23T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-24T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-24T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-25T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-25T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-26T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-26T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-27T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-27T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-28T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-28T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-29T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-29T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-30T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-30T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-31T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-08-31T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-01T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-01T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-02T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-02T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-03T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-03T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-04T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-04T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-05T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-05T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-06T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-06T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-07T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-07T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-08T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-08T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-09T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-09T12:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-10T00:00:00+00:00",
+      "equity": 7259.519733270162,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-10T12:00:00+00:00",
+      "equity": 7223.267506602144,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": -36.25222666801787
+    },
+    {
+      "time": "2022-09-11T00:00:00+00:00",
+      "equity": 7213.732390469627,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": -45.78734280053501
+    },
+    {
+      "time": "2022-09-11T12:00:00+00:00",
+      "equity": 7283.120544886739,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 23.600811616576326
+    },
+    {
+      "time": "2022-09-12T00:00:00+00:00",
+      "equity": 7447.025788189164,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 187.5060549190018
+    },
+    {
+      "time": "2022-09-12T12:00:00+00:00",
+      "equity": 7473.289061175581,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 213.7693279054192
+    },
+    {
+      "time": "2022-09-13T00:00:00+00:00",
+      "equity": 7517.861892361878,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": 258.3421590917159
+    },
+    {
+      "time": "2022-09-13T12:00:00+00:00",
+      "equity": 6730.547553477271,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": -528.9721797928904
+    },
+    {
+      "time": "2022-09-14T00:00:00+00:00",
+      "equity": 6748.1965263047805,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": -511.32320696538153
+    },
+    {
+      "time": "2022-09-14T12:00:00+00:00",
+      "equity": 6749.647812350142,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": -509.8719209200198
+    },
+    {
+      "time": "2022-09-15T00:00:00+00:00",
+      "equity": 6722.613856429291,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": -536.9058768408702
+    },
+    {
+      "time": "2022-09-15T12:00:00+00:00",
+      "equity": 6571.903639125504,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": -687.6160941446577
+    },
+    {
+      "time": "2022-09-16T00:00:00+00:00",
+      "equity": 6627.339429768582,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": -632.1803035015803
+    },
+    {
+      "time": "2022-09-16T12:00:00+00:00",
+      "equity": 6605.98717530808,
+      "capital": 7259.519733270162,
+      "unrealized_pnl": -653.5325579620819
+    },
+    {
+      "time": "2022-09-17T00:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-17T12:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-18T00:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-18T12:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-19T00:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-19T12:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-20T00:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-20T12:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-21T00:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-21T12:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-22T00:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-22T12:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-23T00:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-23T12:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-24T00:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-24T12:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-25T00:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-25T12:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-26T00:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-26T12:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-27T00:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-27T12:00:00+00:00",
+      "equity": 6607.845488704095,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-09-28T00:00:00+00:00",
+      "equity": 6574.847560294879,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": -32.99792840921607
+    },
+    {
+      "time": "2022-09-28T12:00:00+00:00",
+      "equity": 6734.217643592249,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 126.37215488815366
+    },
+    {
+      "time": "2022-09-29T00:00:00+00:00",
+      "equity": 6752.27923949451,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 144.43375079041502
+    },
+    {
+      "time": "2022-09-29T12:00:00+00:00",
+      "equity": 6795.211517674325,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 187.36602897022894
+    },
+    {
+      "time": "2022-09-30T00:00:00+00:00",
+      "equity": 6741.918189569399,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 134.072700865304
+    },
+    {
+      "time": "2022-09-30T12:00:00+00:00",
+      "equity": 6738.546599168592,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 130.70111046449733
+    },
+    {
+      "time": "2022-10-01T00:00:00+00:00",
+      "equity": 6699.894714563465,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 92.04922585936963
+    },
+    {
+      "time": "2022-10-01T12:00:00+00:00",
+      "equity": 6698.822881812591,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 90.97739310849599
+    },
+    {
+      "time": "2022-10-02T00:00:00+00:00",
+      "equity": 6657.382150826551,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 49.53666212245541
+    },
+    {
+      "time": "2022-10-02T12:00:00+00:00",
+      "equity": 6610.585724800546,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 2.7402360964502073
+    },
+    {
+      "time": "2022-10-03T00:00:00+00:00",
+      "equity": 6677.358477079887,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 69.51298837579209
+    },
+    {
+      "time": "2022-10-03T12:00:00+00:00",
+      "equity": 6809.939679034224,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 202.09419033012915
+    },
+    {
+      "time": "2022-10-04T00:00:00+00:00",
+      "equity": 6917.726510427901,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 309.88102172380604
+    },
+    {
+      "time": "2022-10-04T12:00:00+00:00",
+      "equity": 7055.944373288936,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 448.0988845848408
+    },
+    {
+      "time": "2022-10-05T00:00:00+00:00",
+      "equity": 6947.016334856304,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 339.17084615220887
+    },
+    {
+      "time": "2022-10-05T12:00:00+00:00",
+      "equity": 6992.546680124806,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 384.7011914207104
+    },
+    {
+      "time": "2022-10-06T00:00:00+00:00",
+      "equity": 7023.831015335579,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 415.98552663148314
+    },
+    {
+      "time": "2022-10-06T12:00:00+00:00",
+      "equity": 6924.400316941431,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 316.5548282373354
+    },
+    {
+      "time": "2022-10-07T00:00:00+00:00",
+      "equity": 6937.99073997678,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 330.1452512726842
+    },
+    {
+      "time": "2022-10-07T12:00:00+00:00",
+      "equity": 6775.301096994665,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 167.4556082905701
+    },
+    {
+      "time": "2022-10-08T00:00:00+00:00",
+      "equity": 6777.521074213304,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 169.67558550920847
+    },
+    {
+      "time": "2022-10-08T12:00:00+00:00",
+      "equity": 6736.139311372132,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 128.29382266803736
+    },
+    {
+      "time": "2022-10-09T00:00:00+00:00",
+      "equity": 6754.502685427552,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 146.65719672345696
+    },
+    {
+      "time": "2022-10-09T12:00:00+00:00",
+      "equity": 6743.84679477809,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 136.0013060739948
+    },
+    {
+      "time": "2022-10-10T00:00:00+00:00",
+      "equity": 6707.338575674709,
+      "capital": 6607.845488704095,
+      "unrealized_pnl": 99.4930869706144
+    },
+    {
+      "time": "2022-10-10T12:00:00+00:00",
+      "equity": 6636.441521968867,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-11T00:00:00+00:00",
+      "equity": 6636.441521968867,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-11T12:00:00+00:00",
+      "equity": 6636.441521968867,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-12T00:00:00+00:00",
+      "equity": 6636.441521968867,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-12T12:00:00+00:00",
+      "equity": 6636.441521968867,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-13T00:00:00+00:00",
+      "equity": 6636.441521968867,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-13T12:00:00+00:00",
+      "equity": 6636.441521968867,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-14T00:00:00+00:00",
+      "equity": 6636.441521968867,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-14T12:00:00+00:00",
+      "equity": 6636.441521968867,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-15T00:00:00+00:00",
+      "equity": 6636.441521968867,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-15T12:00:00+00:00",
+      "equity": 6636.441521968867,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-16T00:00:00+00:00",
+      "equity": 6636.441521968867,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-16T12:00:00+00:00",
+      "equity": 6636.441521968867,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-17T00:00:00+00:00",
+      "equity": 6636.441521968867,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-17T12:00:00+00:00",
+      "equity": 6636.441521968867,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-18T00:00:00+00:00",
+      "equity": 6603.300792118535,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": -33.14072985033203
+    },
+    {
+      "time": "2022-10-18T12:00:00+00:00",
+      "equity": 6524.704051100048,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": -111.73747086881956
+    },
+    {
+      "time": "2022-10-19T00:00:00+00:00",
+      "equity": 6479.63588934371,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": -156.80563262515753
+    },
+    {
+      "time": "2022-10-19T12:00:00+00:00",
+      "equity": 6453.7216119554705,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": -182.71991001339697
+    },
+    {
+      "time": "2022-10-20T00:00:00+00:00",
+      "equity": 6483.274283590195,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": -153.16723837867153
+    },
+    {
+      "time": "2022-10-20T12:00:00+00:00",
+      "equity": 6427.942339919604,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": -208.49918204926286
+    },
+    {
+      "time": "2022-10-21T00:00:00+00:00",
+      "equity": 6394.842402651245,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": -241.59911931762272
+    },
+    {
+      "time": "2022-10-21T12:00:00+00:00",
+      "equity": 6468.511448308071,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": -167.93007366079655
+    },
+    {
+      "time": "2022-10-22T00:00:00+00:00",
+      "equity": 6473.675403036386,
+      "capital": 6636.441521968867,
+      "unrealized_pnl": -162.76611893248122
+    },
+    {
+      "time": "2022-10-22T12:00:00+00:00",
+      "equity": 6482.116612693586,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-23T00:00:00+00:00",
+      "equity": 6482.116612693586,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-23T12:00:00+00:00",
+      "equity": 6482.116612693586,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-24T00:00:00+00:00",
+      "equity": 6482.116612693586,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-24T12:00:00+00:00",
+      "equity": 6482.116612693586,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-25T00:00:00+00:00",
+      "equity": 6482.116612693586,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-10-25T12:00:00+00:00",
+      "equity": 6449.746542858948,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": -32.3700698346386
+    },
+    {
+      "time": "2022-10-26T00:00:00+00:00",
+      "equity": 6619.019800316366,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 136.90318762278005
+    },
+    {
+      "time": "2022-10-26T12:00:00+00:00",
+      "equity": 6671.034221993629,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 188.91760930004344
+    },
+    {
+      "time": "2022-10-27T00:00:00+00:00",
+      "equity": 6623.287436222595,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 141.17082352900846
+    },
+    {
+      "time": "2022-10-27T12:00:00+00:00",
+      "equity": 6517.726868016848,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 35.61025532326195
+    },
+    {
+      "time": "2022-10-28T00:00:00+00:00",
+      "equity": 6479.038773661516,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": -3.077839032070127
+    },
+    {
+      "time": "2022-10-28T12:00:00+00:00",
+      "equity": 6614.546649964691,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 132.43003727110516
+    },
+    {
+      "time": "2022-10-29T00:00:00+00:00",
+      "equity": 6648.918940965644,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 166.80232827205796
+    },
+    {
+      "time": "2022-10-29T12:00:00+00:00",
+      "equity": 6684.970670325481,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 202.85405763189502
+    },
+    {
+      "time": "2022-10-30T00:00:00+00:00",
+      "equity": 6670.963576403008,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 188.84696370942197
+    },
+    {
+      "time": "2022-10-30T12:00:00+00:00",
+      "equity": 6625.137066231615,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 143.020453538029
+    },
+    {
+      "time": "2022-10-31T00:00:00+00:00",
+      "equity": 6656.706011750146,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 174.58939905656004
+    },
+    {
+      "time": "2022-10-31T12:00:00+00:00",
+      "equity": 6579.930310559771,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 97.81369786618501
+    },
+    {
+      "time": "2022-11-01T00:00:00+00:00",
+      "equity": 6588.253645600361,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 106.13703290677499
+    },
+    {
+      "time": "2022-11-01T12:00:00+00:00",
+      "equity": 6575.919567710352,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 93.80295501676584
+    },
+    {
+      "time": "2022-11-02T00:00:00+00:00",
+      "equity": 6559.992198188235,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 77.87558549464961
+    },
+    {
+      "time": "2022-11-02T12:00:00+00:00",
+      "equity": 6469.9222813080305,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": -12.19433138555501
+    },
+    {
+      "time": "2022-11-03T00:00:00+00:00",
+      "equity": 6462.46274917096,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": -19.653863522626317
+    },
+    {
+      "time": "2022-11-03T12:00:00+00:00",
+      "equity": 6488.559872579473,
+      "capital": 6482.116612693586,
+      "unrealized_pnl": 6.443259885887343
+    },
+    {
+      "time": "2022-11-04T00:00:00+00:00",
+      "equity": 6600.59735698,
+      "capital": 6600.59735698,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-04T12:00:00+00:00",
+      "equity": 6600.59735698,
+      "capital": 6600.59735698,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-05T00:00:00+00:00",
+      "equity": 6600.59735698,
+      "capital": 6600.59735698,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-05T12:00:00+00:00",
+      "equity": 6567.635623928581,
+      "capital": 6600.59735698,
+      "unrealized_pnl": -32.961733051418875
+    },
+    {
+      "time": "2022-11-06T00:00:00+00:00",
+      "equity": 6554.5152064490785,
+      "capital": 6600.59735698,
+      "unrealized_pnl": -46.08215053092151
+    },
+    {
+      "time": "2022-11-06T12:00:00+00:00",
+      "equity": 6448.802392836022,
+      "capital": 6600.59735698,
+      "unrealized_pnl": -151.79496414397832
+    },
+    {
+      "time": "2022-11-07T00:00:00+00:00",
+      "equity": 6394.781680058992,
+      "capital": 6600.59735698,
+      "unrealized_pnl": -205.81567692100842
+    },
+    {
+      "time": "2022-11-07T12:00:00+00:00",
+      "equity": 6351.287526956983,
+      "capital": 6600.59735698,
+      "unrealized_pnl": -249.30983002301662
+    },
+    {
+      "time": "2022-11-08T00:00:00+00:00",
+      "equity": 6077.1065789844115,
+      "capital": 6600.59735698,
+      "unrealized_pnl": -523.490777995588
+    },
+    {
+      "time": "2022-11-08T12:00:00+00:00",
+      "equity": 5721.22682080626,
+      "capital": 6600.59735698,
+      "unrealized_pnl": -879.3705361737406
+    },
+    {
+      "time": "2022-11-09T00:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-09T12:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-10T00:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-10T12:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-11T00:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-11T12:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-12T00:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-12T12:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-13T00:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-13T12:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-14T00:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-14T12:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-15T00:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-15T12:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-16T00:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-16T12:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-17T00:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-17T12:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-18T00:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-18T12:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-19T00:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-19T12:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-20T00:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-20T12:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-21T00:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-21T12:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-22T00:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-22T12:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-23T00:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-23T12:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-24T00:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-24T12:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-25T00:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-25T12:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-26T00:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-26T12:00:00+00:00",
+      "equity": 5488.590777264551,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-11-27T00:00:00+00:00",
+      "equity": 5461.182127070587,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": -27.408650193964853
+    },
+    {
+      "time": "2022-11-27T12:00:00+00:00",
+      "equity": 5421.754403514724,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": -66.83637374982752
+    },
+    {
+      "time": "2022-11-28T00:00:00+00:00",
+      "equity": 5350.070034577787,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": -138.52074268676486
+    },
+    {
+      "time": "2022-11-28T12:00:00+00:00",
+      "equity": 5350.651116418838,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": -137.93966084571372
+    },
+    {
+      "time": "2022-11-29T00:00:00+00:00",
+      "equity": 5444.766565060894,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": -43.82421220365689
+    },
+    {
+      "time": "2022-11-29T12:00:00+00:00",
+      "equity": 5426.502106284221,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": -62.088670980330335
+    },
+    {
+      "time": "2022-11-30T00:00:00+00:00",
+      "equity": 5572.073012271624,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 83.48223500707259
+    },
+    {
+      "time": "2022-11-30T12:00:00+00:00",
+      "equity": 5667.641165516307,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 179.0503882517564
+    },
+    {
+      "time": "2022-12-01T00:00:00+00:00",
+      "equity": 5646.722219238469,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 158.13144197391753
+    },
+    {
+      "time": "2022-12-01T12:00:00+00:00",
+      "equity": 5605.48851973343,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 116.89774246887868
+    },
+    {
+      "time": "2022-12-02T00:00:00+00:00",
+      "equity": 5612.577057873979,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 123.98628060942826
+    },
+    {
+      "time": "2022-12-02T12:00:00+00:00",
+      "equity": 5644.724750409856,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 156.1339731453047
+    },
+    {
+      "time": "2022-12-03T00:00:00+00:00",
+      "equity": 5595.002633783554,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 106.41185651900302
+    },
+    {
+      "time": "2022-12-03T12:00:00+00:00",
+      "equity": 5575.840139434347,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 87.24936216979569
+    },
+    {
+      "time": "2022-12-04T00:00:00+00:00",
+      "equity": 5596.168099067026,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 107.57732180247439
+    },
+    {
+      "time": "2022-12-04T12:00:00+00:00",
+      "equity": 5648.425845545187,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 159.8350682806354
+    },
+    {
+      "time": "2022-12-05T00:00:00+00:00",
+      "equity": 5716.18461045366,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 227.593833189108
+    },
+    {
+      "time": "2022-12-05T12:00:00+00:00",
+      "equity": 5601.985520680276,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 113.39474341572402
+    },
+    {
+      "time": "2022-12-06T00:00:00+00:00",
+      "equity": 5607.145923620974,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 118.55514635642226
+    },
+    {
+      "time": "2022-12-06T12:00:00+00:00",
+      "equity": 5641.423149040248,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 152.83237177569632
+    },
+    {
+      "time": "2022-12-07T00:00:00+00:00",
+      "equity": 5545.042801858639,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 56.45202459408794
+    },
+    {
+      "time": "2022-12-07T12:00:00+00:00",
+      "equity": 5559.117528497281,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 70.52675123272878
+    },
+    {
+      "time": "2022-12-08T00:00:00+00:00",
+      "equity": 5563.145482168203,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 74.55470490365126
+    },
+    {
+      "time": "2022-12-08T12:00:00+00:00",
+      "equity": 5687.127216799737,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 198.5364395351852
+    },
+    {
+      "time": "2022-12-09T00:00:00+00:00",
+      "equity": 5693.538926659516,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 204.94814939496408
+    },
+    {
+      "time": "2022-12-09T12:00:00+00:00",
+      "equity": 5655.65635254463,
+      "capital": 5488.590777264551,
+      "unrealized_pnl": 167.0655752800782
+    },
+    {
+      "time": "2022-12-10T00:00:00+00:00",
+      "equity": 5667.977928856008,
+      "capital": 5667.977928856008,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-12-10T12:00:00+00:00",
+      "equity": 5639.673464073783,
+      "capital": 5667.977928856008,
+      "unrealized_pnl": -28.30446478222469
+    },
+    {
+      "time": "2022-12-11T00:00:00+00:00",
+      "equity": 5652.612912617803,
+      "capital": 5667.977928856008,
+      "unrealized_pnl": -15.365016238204444
+    },
+    {
+      "time": "2022-12-11T12:00:00+00:00",
+      "equity": 5624.8177918522515,
+      "capital": 5667.977928856008,
+      "unrealized_pnl": -43.16013700375627
+    },
+    {
+      "time": "2022-12-12T00:00:00+00:00",
+      "equity": 5592.640379480567,
+      "capital": 5667.977928856008,
+      "unrealized_pnl": -75.33754937543982
+    },
+    {
+      "time": "2022-12-12T12:00:00+00:00",
+      "equity": 5665.410784498365,
+      "capital": 5667.977928856008,
+      "unrealized_pnl": -2.567144357643043
+    },
+    {
+      "time": "2022-12-13T00:00:00+00:00",
+      "equity": 5742.872974293573,
+      "capital": 5667.977928856008,
+      "unrealized_pnl": 74.89504543756573
+    },
+    {
+      "time": "2022-12-13T12:00:00+00:00",
+      "equity": 5853.045958308843,
+      "capital": 5667.977928856008,
+      "unrealized_pnl": 185.068029452836
+    },
+    {
+      "time": "2022-12-14T00:00:00+00:00",
+      "equity": 5869.847486532798,
+      "capital": 5667.977928856008,
+      "unrealized_pnl": 201.8695576767901
+    },
+    {
+      "time": "2022-12-14T12:00:00+00:00",
+      "equity": 5862.106864770203,
+      "capital": 5667.977928856008,
+      "unrealized_pnl": 194.128935914196
+    },
+    {
+      "time": "2022-12-15T00:00:00+00:00",
+      "equity": 5835.115109257766,
+      "capital": 5667.977928856008,
+      "unrealized_pnl": 167.1371804017585
+    },
+    {
+      "time": "2022-12-15T12:00:00+00:00",
+      "equity": 5715.410394063122,
+      "capital": 5667.977928856008,
+      "unrealized_pnl": 47.43246520711416
+    },
+    {
+      "time": "2022-12-16T00:00:00+00:00",
+      "equity": 5607.331427674823,
+      "capital": 5667.977928856008,
+      "unrealized_pnl": -60.64650118118465
+    },
+    {
+      "time": "2022-12-16T12:00:00+00:00",
+      "equity": 5476.853716135131,
+      "capital": 5667.977928856008,
+      "unrealized_pnl": -191.1242127208765
+    },
+    {
+      "time": "2022-12-17T00:00:00+00:00",
+      "equity": 5501.428790927133,
+      "capital": 5667.977928856008,
+      "unrealized_pnl": -166.54913792887442
+    },
+    {
+      "time": "2022-12-17T12:00:00+00:00",
+      "equity": 5523.955942819803,
+      "capital": 5667.977928856008,
+      "unrealized_pnl": -144.02198603620502
+    },
+    {
+      "time": "2022-12-18T00:00:00+00:00",
+      "equity": 5501.711944254051,
+      "capital": 5667.977928856008,
+      "unrealized_pnl": -166.26598460195672
+    },
+    {
+      "time": "2022-12-18T12:00:00+00:00",
+      "equity": 5511.780349762349,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-12-19T00:00:00+00:00",
+      "equity": 5511.780349762349,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-12-19T12:00:00+00:00",
+      "equity": 5511.780349762349,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-12-20T00:00:00+00:00",
+      "equity": 5511.780349762349,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-12-20T12:00:00+00:00",
+      "equity": 5511.780349762349,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-12-21T00:00:00+00:00",
+      "equity": 5511.780349762349,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-12-21T12:00:00+00:00",
+      "equity": 5511.780349762349,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-12-22T00:00:00+00:00",
+      "equity": 5511.780349762349,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-12-22T12:00:00+00:00",
+      "equity": 5511.780349762349,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-12-23T00:00:00+00:00",
+      "equity": 5511.780349762349,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-12-23T12:00:00+00:00",
+      "equity": 5511.780349762349,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-12-24T00:00:00+00:00",
+      "equity": 5511.780349762349,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-12-24T12:00:00+00:00",
+      "equity": 5511.780349762349,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-12-25T00:00:00+00:00",
+      "equity": 5484.255896640723,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": -27.524453121625733
+    },
+    {
+      "time": "2022-12-25T12:00:00+00:00",
+      "equity": 5487.614195877624,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": -24.166153884724555
+    },
+    {
+      "time": "2022-12-26T00:00:00+00:00",
+      "equity": 5498.099914660029,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": -13.68043510232055
+    },
+    {
+      "time": "2022-12-26T12:00:00+00:00",
+      "equity": 5516.524913677242,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": 4.744563914892421
+    },
+    {
+      "time": "2022-12-27T00:00:00+00:00",
+      "equity": 5487.927202408443,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": -23.853147353905655
+    },
+    {
+      "time": "2022-12-27T12:00:00+00:00",
+      "equity": 5445.335490824324,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": -66.44485893802559
+    },
+    {
+      "time": "2022-12-28T00:00:00+00:00",
+      "equity": 5436.98865000251,
+      "capital": 5511.780349762349,
+      "unrealized_pnl": -74.79169975983834
+    },
+    {
+      "time": "2022-12-28T12:00:00+00:00",
+      "equity": 5393.37314622384,
+      "capital": 5393.37314622384,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-12-29T00:00:00+00:00",
+      "equity": 5393.37314622384,
+      "capital": 5393.37314622384,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-12-29T12:00:00+00:00",
+      "equity": 5393.37314622384,
+      "capital": 5393.37314622384,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-12-30T00:00:00+00:00",
+      "equity": 5393.37314622384,
+      "capital": 5393.37314622384,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-12-30T12:00:00+00:00",
+      "equity": 5393.37314622384,
+      "capital": 5393.37314622384,
+      "unrealized_pnl": 0.0
+    },
+    {
+      "time": "2022-12-31T00:00:00+00:00",
+      "equity": 5393.37314622384,
+      "capital": 5393.37314622384,
+      "unrealized_pnl": 0.0
+    }
+  ],
+  "total_fees": 894.0150302559537,
+  "fee_pct_used": 0.25,
+  "trading_mode": "long_only",
+  "long_trades": 22,
+  "short_trades": 0,
+  "total_equity": 5393.37314622384,
+  "total_equity_return_pct": -46.0662685377616,
+  "open_position": null,
+  "unrealized_pnl": 0.0,
+  "stop_loss_pct": null,
+  "stop_loss_exits": 0,
+  "job_id": "sma_crossover_12h_2022",
+  "strategy_name": "sma_crossover",
+  "timeframe": "12h",
+  "year": 2022,
+  "start_date": "2022-01-01",
+  "end_date": "2022-12-31",
+  "data_bars": 788
+}

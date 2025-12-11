@@ -1,0 +1,51 @@
+# Batch Backtest Configuration
+# This config file controls the automated batch backtesting system.
+# It will run all combinations of strategies x timeframes x years.
+
+# Common settings applied to all backtests
+common:
+  symbol: "BTC/USD"
+  initial_capital: 10000.0
+  position_size_pct: 1.0        # 100% of capital per trade (matches individual runs)
+  trading_fee_pct: 0.25         # Alpaca crypto taker fee (25 bps)
+  trading_mode: "long_only"     # Options: "long_only" or "bidirectional"
+  lookback_bars: 50             # Warmup period for indicators
+  # stop_loss_pct: 10.0         # Stop-loss percentage (disabled by default). Uncomment to enable
+
+# Strategies to test
+# Each strategy can have custom parameters, or use {} for defaults
+strategies:
+  - name: "sma_crossover"
+    params: {}                  # Defaults: fast_period=10, slow_period=20, use_ema=false
+  - name: "rsi"
+    params: {}                  # Defaults: period=14, oversold=30, overbought=70
+  - name: "macd"
+    params: {}                  # Defaults: fast_period=12, slow_period=26, signal_period=9
+  - name: "bollinger"
+    params: {}                  # Defaults: period=20, std_dev=2.0
+  - name: "stochastic"
+    params: {}                  # Defaults: k_period=14, d_period=3, oversold=20, overbought=80
+  - name: "adx"
+    params: {}                  # Defaults: period=14, adx_threshold=25
+
+# Timeframes to test
+timeframes:
+  - "4h"
+  - "8h"
+  - "12h"
+  - "1d"
+
+# Years to test (generates full year date ranges)
+# For 2025: runs from Jan 1 to today's date
+years:
+  - 2021
+  - 2022
+  - 2023
+  - 2024
+  - 2025
+
+# Output settings
+output:
+  save_individual_results: true   # Save each backtest result as separate JSON
+  save_individual_charts: true   # Generate chart PNG for each backtest (slow)
+  generate_summary_report: true   # Generate markdown summary report

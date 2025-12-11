@@ -60,11 +60,7 @@ def get_filter_options(db: Session) -> dict:
     """
     entities = db.query(distinct(Asset.ownership_holding_entity)).all()
     asset_types = db.query(distinct(Asset.asset_type)).all()
-    report_dates = (
-        db.query(distinct(Asset.report_date))
-        .order_by(desc(Asset.report_date))
-        .all()
-    )
+    report_dates = db.query(distinct(Asset.report_date)).order_by(desc(Asset.report_date)).all()
 
     return {
         "entities": sorted([e[0] for e in entities if e[0]]),
@@ -299,13 +295,15 @@ def get_aggregation_by_entity(
         value_usd = r.value_usd or Decimal(0)
         value_eur = r.value_eur or Decimal(0)
         pct = float(value_usd / total_usd * 100) if total_usd > 0 else 0.0
-        groups.append({
-            "name": r.name,
-            "value_usd": value_usd,
-            "value_eur": value_eur,
-            "percentage": round(pct, 2),
-            "count": r.count,
-        })
+        groups.append(
+            {
+                "name": r.name,
+                "value_usd": value_usd,
+                "value_eur": value_eur,
+                "percentage": round(pct, 2),
+                "count": r.count,
+            }
+        )
 
     # Sort by value descending
     groups.sort(key=lambda x: x["value_usd"], reverse=True)
@@ -369,17 +367,19 @@ def get_aggregation_by_asset_type(
         value_usd = r.value_usd or Decimal(0)
         value_eur = r.value_eur or Decimal(0)
         pct = float(value_usd / total_usd * 100) if total_usd > 0 else 0.0
-        groups.append({
-            "asset_type": r.asset_type,
-            "value_usd": value_usd,
-            "value_eur": value_eur,
-            "percentage": round(pct, 2),
-            "count": r.count,
-            "paid_in_capital_usd": r.paid_in_usd or Decimal(0),
-            "paid_in_capital_eur": r.paid_in_eur or Decimal(0),
-            "unfunded_commitment_usd": r.unfunded_usd or Decimal(0),
-            "unfunded_commitment_eur": r.unfunded_eur or Decimal(0),
-        })
+        groups.append(
+            {
+                "asset_type": r.asset_type,
+                "value_usd": value_usd,
+                "value_eur": value_eur,
+                "percentage": round(pct, 2),
+                "count": r.count,
+                "paid_in_capital_usd": r.paid_in_usd or Decimal(0),
+                "paid_in_capital_eur": r.paid_in_eur or Decimal(0),
+                "unfunded_commitment_usd": r.unfunded_usd or Decimal(0),
+                "unfunded_commitment_eur": r.unfunded_eur or Decimal(0),
+            }
+        )
 
     # Sort by value descending
     groups.sort(key=lambda x: x["value_usd"], reverse=True)
@@ -448,11 +448,7 @@ def get_historical_nav(
         query = query.filter(Asset.report_date <= end_date)
 
     if group_by_entity:
-        results = (
-            query.group_by(Asset.report_date, Asset.ownership_holding_entity)
-            .order_by(Asset.report_date)
-            .all()
-        )
+        results = query.group_by(Asset.report_date, Asset.ownership_holding_entity).order_by(Asset.report_date).all()
 
         # Organize by entity
         series_by_entity: dict[str, list[dict]] = {}
@@ -460,23 +456,18 @@ def get_historical_nav(
             entity_name = r.ownership_holding_entity
             if entity_name not in series_by_entity:
                 series_by_entity[entity_name] = []
-            series_by_entity[entity_name].append({
-                "date": r.report_date,
-                "value_usd": r.value_usd or Decimal(0),
-                "value_eur": r.value_eur or Decimal(0),
-            })
+            series_by_entity[entity_name].append(
+                {
+                    "date": r.report_date,
+                    "value_usd": r.value_usd or Decimal(0),
+                    "value_eur": r.value_eur or Decimal(0),
+                }
+            )
 
         # Convert to list format
-        series = [
-            {"name": name, "data": data}
-            for name, data in sorted(series_by_entity.items())
-        ]
+        series = [{"name": name, "data": data} for name, data in sorted(series_by_entity.items())]
     else:
-        results = (
-            query.group_by(Asset.report_date)
-            .order_by(Asset.report_date)
-            .all()
-        )
+        results = query.group_by(Asset.report_date).order_by(Asset.report_date).all()
 
         series = [
             {
@@ -559,16 +550,18 @@ def get_flexible_aggregation(
     for r in results:
         value_usd = r.value_usd or Decimal(0)
         pct = float(value_usd / total_usd * 100) if total_usd > 0 else 0.0
-        groups.append({
-            "label": r.label or "Unknown",
-            "value_usd": value_usd,
-            "value_eur": r.value_eur or Decimal(0),
-            "percentage": round(pct, 2),
-            "count": r.count or 0,
-            "paid_in_capital_usd": r.paid_in or Decimal(0),
-            "unfunded_commitment_usd": r.unfunded or Decimal(0),
-            "avg_return": r.avg_return,
-        })
+        groups.append(
+            {
+                "label": r.label or "Unknown",
+                "value_usd": value_usd,
+                "value_eur": r.value_eur or Decimal(0),
+                "percentage": round(pct, 2),
+                "count": r.count or 0,
+                "paid_in_capital_usd": r.paid_in or Decimal(0),
+                "unfunded_commitment_usd": r.unfunded or Decimal(0),
+                "avg_return": r.avg_return,
+            }
+        )
 
     # Sort by value descending
     groups.sort(key=lambda x: x["value_usd"], reverse=True)

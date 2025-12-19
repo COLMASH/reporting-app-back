@@ -215,29 +215,30 @@ def import_structured_notes_sheet(excel_file: str, db: SessionLocal, assets_by_i
                 denomination_currency=clean_string_value(row.get("denomination_currency")) or "USD",
                 initial_investment_date=clean_date_value(row.get("initial_investment_date")),
                 number_of_shares=clean_numeric_value(row.get("number_of_shares")) or Decimal(0),
-                avg_purchase_price_base_currency=clean_numeric_value(row.get("avg_purchase_price_base_currency")) or Decimal(0),
+                # Note: Excel has old-style names for some columns
+                avg_purchase_price_base_currency=clean_numeric_value(row.get("avg_purchase_price")) or Decimal(0),
                 total_investment_commitment_base_currency=clean_numeric_value(row.get("total_investment_commitment_base_currency")) or Decimal(0),
                 paid_in_capital_base_currency=clean_numeric_value(row.get("paid_in_capital_base_currency")) or Decimal(0),
-                asset_level_financing_base_currency=clean_numeric_value(row.get("asset_level_financing_base_currency")) or Decimal(0),
-                unfunded_commitment_base_currency=clean_numeric_value(row.get("unfunded_commitment_base_currency")) or Decimal(0),
+                asset_level_financing_base_currency=clean_numeric_value(row.get("asset_level_financing")) or Decimal(0),
+                unfunded_commitment_base_currency=clean_numeric_value(row.get("pending_investment")) or Decimal(0),
                 current_share_price=clean_numeric_value(row.get("current_share_price")),
                 estimated_asset_value_base_currency=clean_numeric_value(row.get("estimated_asset_value_base_currency")),
-                total_asset_return_base_currency=clean_numeric_value(row.get("total_asset_return_base_currency")),
-                # FX Rates (NEW for StructuredNotes)
+                total_asset_return_base_currency=clean_numeric_value(row.get("total_asset_return")),
+                # FX Rates
                 usd_eur_inception=clean_numeric_value(row.get("usd_eur_inception")),
                 usd_eur_current=clean_numeric_value(row.get("usd_eur_current")),
-                # Multi-currency values - USD (NEW for StructuredNotes)
+                # Multi-currency values - USD
                 total_investment_commitment_usd=clean_numeric_value(row.get("total_investment_commitment_usd")),
                 paid_in_capital_usd=clean_numeric_value(row.get("paid_in_capital_usd")),
                 estimated_asset_value_usd=clean_numeric_value(row.get("estimated_asset_value_usd")),
                 total_asset_return_usd=clean_numeric_value(row.get("total_asset_return_usd")),
-                unrealized_gain_usd=clean_numeric_value(row.get("unrealized_gain_usd")),  # NEW
-                # Multi-currency values - EUR (NEW for StructuredNotes)
+                unrealized_gain_usd=clean_numeric_value(row.get("unrealized_gain_usd")),
+                # Multi-currency values - EUR
                 total_investment_commitment_eur=clean_numeric_value(row.get("total_investment_commitment_eur")),
                 paid_in_capital_eur=clean_numeric_value(row.get("paid_in_capital_eur")),
                 estimated_asset_value_eur=clean_numeric_value(row.get("estimated_asset_value_eur")),
                 total_asset_return_eur=clean_numeric_value(row.get("total_asset_return_eur")),
-                unrealized_gain_eur=clean_numeric_value(row.get("unrealized_gain_eur")),  # NEW
+                unrealized_gain_eur=clean_numeric_value(row.get("unrealized_gain_eur")),
             )
 
             db.add(asset)
@@ -335,6 +336,9 @@ def import_real_estate_sheet(excel_file: str, db: SessionLocal, assets_by_id: di
                 # FX Rates (NEW for RealEstate)
                 usd_eur_inception=clean_numeric_value(row.get("usd_eur_inception")),
                 usd_eur_current=clean_numeric_value(row.get("usd_eur_current")),
+                # Multi-currency values
+                estimated_asset_value_usd=clean_numeric_value(row.get("estimated_asset_value_usd")),
+                estimated_asset_value_eur=clean_numeric_value(row.get("estimated_asset_value_eur")),
             )
 
             db.add(asset)
@@ -355,14 +359,12 @@ def import_real_estate_sheet(excel_file: str, db: SessionLocal, assets_by_id: di
                 total_investment_to_date_eur=clean_numeric_value(row.get("total_investment_to_date_eur")) or Decimal(0),
                 equity_investment_to_date_eur=clean_numeric_value(row.get("equity_investment_to_date_eur")) or Decimal(0),
                 pending_equity_investment_eur=clean_numeric_value(row.get("pending_equity_investment_eur")) or Decimal(0),
-                estimated_net_asset_value_eur=clean_numeric_value(row.get("estimated_net_asset_value_eur")),  # NEW
                 estimated_capital_gain_eur=clean_numeric_value(row.get("estimated_capital_gain_eur")),
                 # NEW USD columns
                 estimated_total_cost_usd=clean_numeric_value(row.get("estimated_total_cost_usd")),
                 total_investment_to_date_usd=clean_numeric_value(row.get("total_investment_to_date_usd")),
                 equity_investment_to_date_usd=clean_numeric_value(row.get("equity_investment_to_date_usd")),
                 pending_equity_investment_usd=clean_numeric_value(row.get("pending_equity_investment_usd")),
-                estimated_net_asset_value_usd=clean_numeric_value(row.get("estimated_net_asset_value_usd")),
                 estimated_capital_gain_usd=clean_numeric_value(row.get("estimated_capital_gain_usd")),
             )
 

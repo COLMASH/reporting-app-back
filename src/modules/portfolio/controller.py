@@ -116,14 +116,12 @@ def _build_asset_response(
                 total_investment_to_date_eur=asset.real_estate.total_investment_to_date_eur,
                 equity_investment_to_date_eur=asset.real_estate.equity_investment_to_date_eur,
                 pending_equity_investment_eur=asset.real_estate.pending_equity_investment_eur,
-                estimated_net_asset_value_eur=asset.real_estate.estimated_net_asset_value_eur,  # NEW
                 estimated_capital_gain_eur=asset.real_estate.estimated_capital_gain_eur,
                 # NEW USD columns
                 estimated_total_cost_usd=asset.real_estate.estimated_total_cost_usd,
                 total_investment_to_date_usd=asset.real_estate.total_investment_to_date_usd,
                 equity_investment_to_date_usd=asset.real_estate.equity_investment_to_date_usd,
                 pending_equity_investment_usd=asset.real_estate.pending_equity_investment_usd,
-                estimated_net_asset_value_usd=asset.real_estate.estimated_net_asset_value_usd,
                 estimated_capital_gain_usd=asset.real_estate.estimated_capital_gain_usd,
             )
 

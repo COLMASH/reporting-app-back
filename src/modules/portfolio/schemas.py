@@ -195,7 +195,6 @@ class RealEstateAssetBase(BaseSchema):
     total_investment_to_date_eur: Decimal | None = None
     equity_investment_to_date_eur: Decimal | None = None
     pending_equity_investment_eur: Decimal | None = None
-    estimated_net_asset_value_eur: Decimal | None = None  # NEW
     estimated_capital_gain_eur: Decimal | None = None
 
     # NEW USD columns
@@ -203,7 +202,6 @@ class RealEstateAssetBase(BaseSchema):
     total_investment_to_date_usd: Decimal | None = None
     equity_investment_to_date_usd: Decimal | None = None
     pending_equity_investment_usd: Decimal | None = None
-    estimated_net_asset_value_usd: Decimal | None = None
     estimated_capital_gain_usd: Decimal | None = None
 
 
@@ -285,7 +283,6 @@ class RealEstateResponse(BaseSchema):
     total_investment_to_date_eur: Decimal | None = None
     equity_investment_to_date_eur: Decimal | None = None
     pending_equity_investment_eur: Decimal | None = None
-    estimated_net_asset_value_eur: Decimal | None = None  # NEW
     estimated_capital_gain_eur: Decimal | None = None
 
     # NEW USD columns
@@ -293,7 +290,6 @@ class RealEstateResponse(BaseSchema):
     total_investment_to_date_usd: Decimal | None = None
     equity_investment_to_date_usd: Decimal | None = None
     pending_equity_investment_usd: Decimal | None = None
-    estimated_net_asset_value_usd: Decimal | None = None
     estimated_capital_gain_usd: Decimal | None = None
 
 

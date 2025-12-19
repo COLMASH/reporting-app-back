@@ -196,7 +196,6 @@ class RealEstateAsset(Base):
     equity_investment_to_date_eur = Column(Numeric(20, 2), default=0)  # Calculated in Excel
     pending_equity_investment_eur = Column(Numeric(20, 2), default=0)  # Calculated in Excel
     # estimated_asset_value is in main assets table
-    estimated_net_asset_value_eur = Column(Numeric(20, 2))  # NEW
     estimated_capital_gain_eur = Column(Numeric(20, 2))  # Calculated in Excel
 
     # NEW USD columns for multi-currency support
@@ -204,7 +203,6 @@ class RealEstateAsset(Base):
     total_investment_to_date_usd = Column(Numeric(20, 2))
     equity_investment_to_date_usd = Column(Numeric(20, 2))
     pending_equity_investment_usd = Column(Numeric(20, 2))
-    estimated_net_asset_value_usd = Column(Numeric(20, 2))
     estimated_capital_gain_usd = Column(Numeric(20, 2))
 
     # Relationship

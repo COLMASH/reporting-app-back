@@ -171,13 +171,17 @@ async def list_assets(
         None,
         description="Filter by asset_type (None = all)",
     ),
+    holding_company: str | None = Query(
+        None,
+        description="Filter by holding_company (None = all)",
+    ),
+    managing_entity: str | None = Query(
+        None,
+        description="Filter by managing_entity (None = all)",
+    ),
     asset_group: str | None = Query(
         None,
-        description="Filter by asset_group (e.g., 'Liquid Assets')",
-    ),
-    asset_group_strategy: str | None = Query(
-        None,
-        description="Filter by asset_group_strategy (e.g., 'Direct investment')",
+        description="Filter by asset_group (None = all)",
     ),
     report_date: date | None = Query(
         None,
@@ -210,8 +214,9 @@ async def list_assets(
         db=db,
         entity=entity,
         asset_type=asset_type,
+        holding_company=holding_company,
+        managing_entity=managing_entity,
         asset_group=asset_group,
-        asset_group_strategy=asset_group_strategy,
         report_date=report_date,
         search=search,
         page=page,
@@ -269,13 +274,17 @@ async def get_portfolio_summary(
         None,
         description="Filter by asset_type",
     ),
+    holding_company: str | None = Query(
+        None,
+        description="Filter by holding_company",
+    ),
+    managing_entity: str | None = Query(
+        None,
+        description="Filter by managing_entity",
+    ),
     asset_group: str | None = Query(
         None,
-        description="Filter by asset_group (e.g., 'Liquid Assets')",
-    ),
-    asset_group_strategy: str | None = Query(
-        None,
-        description="Filter by asset_group_strategy (e.g., 'Direct investment')",
+        description="Filter by asset_group",
     ),
     report_date: date | None = Query(
         None,
@@ -292,8 +301,9 @@ async def get_portfolio_summary(
         db=db,
         entity=entity,
         asset_type=asset_type,
+        holding_company=holding_company,
+        managing_entity=managing_entity,
         asset_group=asset_group,
-        asset_group_strategy=asset_group_strategy,
         report_date=report_date,
     )
     return schemas.PortfolioSummaryResponse(**result)
@@ -316,13 +326,17 @@ async def get_aggregation_by_entity(
         None,
         description="Pre-filter by asset_type",
     ),
+    holding_company: str | None = Query(
+        None,
+        description="Filter by holding_company",
+    ),
+    managing_entity: str | None = Query(
+        None,
+        description="Filter by managing_entity",
+    ),
     asset_group: str | None = Query(
         None,
-        description="Filter by asset_group (e.g., 'Liquid Assets')",
-    ),
-    asset_group_strategy: str | None = Query(
-        None,
-        description="Filter by asset_group_strategy (e.g., 'Direct investment')",
+        description="Filter by asset_group",
     ),
     report_date: date | None = Query(
         None,
@@ -342,8 +356,9 @@ async def get_aggregation_by_entity(
         db=db,
         entity=entity,
         asset_type=asset_type,
+        holding_company=holding_company,
+        managing_entity=managing_entity,
         asset_group=asset_group,
-        asset_group_strategy=asset_group_strategy,
         report_date=report_date,
     )
     return schemas.EntityAggregationResponse(**result)
@@ -366,13 +381,17 @@ async def get_aggregation_by_asset_type(
         None,
         description="Filter by asset_type (returns only this type at 100%)",
     ),
+    holding_company: str | None = Query(
+        None,
+        description="Filter by holding_company",
+    ),
+    managing_entity: str | None = Query(
+        None,
+        description="Filter by managing_entity",
+    ),
     asset_group: str | None = Query(
         None,
-        description="Filter by asset_group (e.g., 'Liquid Assets')",
-    ),
-    asset_group_strategy: str | None = Query(
-        None,
-        description="Filter by asset_group_strategy (e.g., 'Direct investment')",
+        description="Filter by asset_group",
     ),
     report_date: date | None = Query(
         None,
@@ -394,8 +413,9 @@ async def get_aggregation_by_asset_type(
         db=db,
         entity=entity,
         asset_type=asset_type,
+        holding_company=holding_company,
+        managing_entity=managing_entity,
         asset_group=asset_group,
-        asset_group_strategy=asset_group_strategy,
         report_date=report_date,
     )
     return schemas.AssetTypeAggregationResponse(**result)
@@ -418,13 +438,17 @@ async def get_historical_nav(
         None,
         description="Filter by asset_type",
     ),
+    holding_company: str | None = Query(
+        None,
+        description="Filter by holding_company",
+    ),
+    managing_entity: str | None = Query(
+        None,
+        description="Filter by managing_entity",
+    ),
     asset_group: str | None = Query(
         None,
-        description="Filter by asset_group (e.g., 'Liquid Assets')",
-    ),
-    asset_group_strategy: str | None = Query(
-        None,
-        description="Filter by asset_group_strategy (e.g., 'Direct investment')",
+        description="Filter by asset_group",
     ),
     start_date: date | None = Query(
         None,
@@ -449,8 +473,9 @@ async def get_historical_nav(
         db=db,
         entity=entity,
         asset_type=asset_type,
+        holding_company=holding_company,
+        managing_entity=managing_entity,
         asset_group=asset_group,
-        asset_group_strategy=asset_group_strategy,
         start_date=start_date,
         end_date=end_date,
         group_by_entity=group_by_entity,
@@ -472,9 +497,10 @@ async def get_historical_nav(
 
     **Valid group_by values:**
     - `ownership_holding_entity` - By owner (ILV, Isis Invest, etc.)
+    - `holding_company` - By holding company
+    - `managing_entity` - By managing entity
     - `asset_type` - By type (Equities, Bonds, etc.)
-    - `asset_group` - By group (Various, StructuredNotes, etc.)
-    - `asset_group_strategy` - By strategy
+    - `asset_group` - By asset group
     - `geographic_focus` - By geography (USA, Europe, etc.)
     - `denomination_currency` - By currency (USD, EUR, etc.)
     - `asset_status` - By status (Active, Sold, etc.)
@@ -505,13 +531,17 @@ async def get_flexible_aggregation(
         None,
         description="Pre-filter by asset_type",
     ),
+    holding_company: str | None = Query(
+        None,
+        description="Filter by holding_company",
+    ),
+    managing_entity: str | None = Query(
+        None,
+        description="Filter by managing_entity",
+    ),
     asset_group: str | None = Query(
         None,
-        description="Filter by asset_group (e.g., 'Liquid Assets')",
-    ),
-    asset_group_strategy: str | None = Query(
-        None,
-        description="Filter by asset_group_strategy (e.g., 'Direct investment')",
+        description="Filter by asset_group",
     ),
     report_date: date | None = Query(
         None,
@@ -529,8 +559,9 @@ async def get_flexible_aggregation(
         group_by=group_by.value,
         entity=entity,
         asset_type=asset_type,
+        holding_company=holding_company,
+        managing_entity=managing_entity,
         asset_group=asset_group,
-        asset_group_strategy=asset_group_strategy,
         report_date=report_date,
     )
     return schemas.FlexibleAggregationResponse(**result)

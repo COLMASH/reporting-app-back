@@ -242,6 +242,7 @@ class FilterOptionsResponse(BaseSchema):
     """Response for GET /portfolio/filters endpoint."""
 
     entities: list[str]
+    holding_companies: list[str]  # NEW - for sidebar navigation
     asset_types: list[str]
     report_dates: list[date]
 

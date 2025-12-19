@@ -63,11 +63,13 @@ def get_filter_options(db: Session) -> dict:
     Used to populate sidebar, navbar, and date picker dropdowns.
     """
     entities = db.query(distinct(Asset.ownership_holding_entity)).all()
+    holding_companies = db.query(distinct(Asset.holding_company)).filter(Asset.holding_company.isnot(None)).all()
     asset_types = db.query(distinct(Asset.asset_type)).all()
     report_dates = db.query(distinct(Asset.report_date)).order_by(desc(Asset.report_date)).all()
 
     return {
         "entities": sorted([e[0] for e in entities if e[0]]),
+        "holding_companies": sorted([h[0] for h in holding_companies if h[0]]),
         "asset_types": sorted([t[0] for t in asset_types if t[0]]),
         "report_dates": [d[0] for d in report_dates if d[0]],
     }
@@ -82,8 +84,9 @@ def get_assets(
     db: Session,
     entity: str | None = None,
     asset_type: str | None = None,
+    holding_company: str | None = None,
+    managing_entity: str | None = None,
     asset_group: str | None = None,
-    asset_group_strategy: str | None = None,
     report_date: date | None = None,
     search: str | None = None,
     page: int = 1,
@@ -99,6 +102,9 @@ def get_assets(
         db: Database session
         entity: Filter by ownership_holding_entity (None = all)
         asset_type: Filter by asset_type (None = all)
+        holding_company: Filter by holding_company (None = all)
+        managing_entity: Filter by managing_entity (None = all)
+        asset_group: Filter by asset_group (None = all)
         report_date: Filter by report_date (None = latest)
         search: Search in asset_name (case-insensitive)
         page: Page number (1-based)
@@ -133,10 +139,12 @@ def get_assets(
         query = query.filter(Asset.ownership_holding_entity == entity)
     if asset_type:
         query = query.filter(Asset.asset_type == asset_type)
+    if holding_company:
+        query = query.filter(Asset.holding_company == holding_company)
+    if managing_entity:
+        query = query.filter(Asset.managing_entity == managing_entity)
     if asset_group:
         query = query.filter(Asset.asset_group == asset_group)
-    if asset_group_strategy:
-        query = query.filter(Asset.asset_group_strategy == asset_group_strategy)
     if search:
         query = query.filter(Asset.asset_name.ilike(f"%{search}%"))
 
@@ -202,8 +210,9 @@ def get_portfolio_summary(
     db: Session,
     entity: str | None = None,
     asset_type: str | None = None,
+    holding_company: str | None = None,
+    managing_entity: str | None = None,
     asset_group: str | None = None,
-    asset_group_strategy: str | None = None,
     report_date: date | None = None,
 ) -> dict:
     """
@@ -232,10 +241,12 @@ def get_portfolio_summary(
         query = query.filter(Asset.ownership_holding_entity == entity)
     if asset_type:
         query = query.filter(Asset.asset_type == asset_type)
+    if holding_company:
+        query = query.filter(Asset.holding_company == holding_company)
+    if managing_entity:
+        query = query.filter(Asset.managing_entity == managing_entity)
     if asset_group:
         query = query.filter(Asset.asset_group == asset_group)
-    if asset_group_strategy:
-        query = query.filter(Asset.asset_group_strategy == asset_group_strategy)
 
     result = query.first()
 
@@ -256,8 +267,9 @@ def get_aggregation_by_entity(
     db: Session,
     entity: str | None = None,
     asset_type: str | None = None,
+    holding_company: str | None = None,
+    managing_entity: str | None = None,
     asset_group: str | None = None,
-    asset_group_strategy: str | None = None,
     report_date: date | None = None,
 ) -> dict:
     """
@@ -283,10 +295,12 @@ def get_aggregation_by_entity(
         query = query.filter(Asset.ownership_holding_entity == entity)
     if asset_type:
         query = query.filter(Asset.asset_type == asset_type)
+    if holding_company:
+        query = query.filter(Asset.holding_company == holding_company)
+    if managing_entity:
+        query = query.filter(Asset.managing_entity == managing_entity)
     if asset_group:
         query = query.filter(Asset.asset_group == asset_group)
-    if asset_group_strategy:
-        query = query.filter(Asset.asset_group_strategy == asset_group_strategy)
 
     results = query.group_by(Asset.ownership_holding_entity).all()
 
@@ -324,8 +338,9 @@ def get_aggregation_by_asset_type(
     db: Session,
     entity: str | None = None,
     asset_type: str | None = None,
+    holding_company: str | None = None,
+    managing_entity: str | None = None,
     asset_group: str | None = None,
-    asset_group_strategy: str | None = None,
     report_date: date | None = None,
 ) -> dict:
     """
@@ -355,10 +370,12 @@ def get_aggregation_by_asset_type(
         query = query.filter(Asset.ownership_holding_entity == entity)
     if asset_type:
         query = query.filter(Asset.asset_type == asset_type)
+    if holding_company:
+        query = query.filter(Asset.holding_company == holding_company)
+    if managing_entity:
+        query = query.filter(Asset.managing_entity == managing_entity)
     if asset_group:
         query = query.filter(Asset.asset_group == asset_group)
-    if asset_group_strategy:
-        query = query.filter(Asset.asset_group_strategy == asset_group_strategy)
 
     results = query.group_by(Asset.asset_type).all()
 
@@ -400,8 +417,9 @@ def get_historical_nav(
     db: Session,
     entity: str | None = None,
     asset_type: str | None = None,
+    holding_company: str | None = None,
+    managing_entity: str | None = None,
     asset_group: str | None = None,
-    asset_group_strategy: str | None = None,
     start_date: date | None = None,
     end_date: date | None = None,
     group_by_entity: bool = True,
@@ -414,6 +432,9 @@ def get_historical_nav(
         db: Database session
         entity: Filter by entity (ignored if group_by_entity=true)
         asset_type: Filter by asset_type
+        holding_company: Filter by holding_company
+        managing_entity: Filter by managing_entity
+        asset_group: Filter by asset_group
         start_date: Start of date range
         end_date: End of date range
         group_by_entity: Return separate series per entity (default: true)
@@ -442,10 +463,12 @@ def get_historical_nav(
     # Apply filters
     if asset_type:
         query = query.filter(Asset.asset_type == asset_type)
+    if holding_company:
+        query = query.filter(Asset.holding_company == holding_company)
+    if managing_entity:
+        query = query.filter(Asset.managing_entity == managing_entity)
     if asset_group:
         query = query.filter(Asset.asset_group == asset_group)
-    if asset_group_strategy:
-        query = query.filter(Asset.asset_group_strategy == asset_group_strategy)
     if start_date:
         query = query.filter(Asset.report_date >= start_date)
     if end_date:
@@ -495,8 +518,9 @@ def get_flexible_aggregation(
     group_by: str,
     entity: str | None = None,
     asset_type: str | None = None,
+    holding_company: str | None = None,
+    managing_entity: str | None = None,
     asset_group: str | None = None,
-    asset_group_strategy: str | None = None,
     report_date: date | None = None,
 ) -> dict:
     """
@@ -508,6 +532,9 @@ def get_flexible_aggregation(
         group_by: Column name to group by (e.g., 'geographic_focus', 'denomination_currency')
         entity: Pre-filter by entity
         asset_type: Pre-filter by asset_type
+        holding_company: Pre-filter by holding_company
+        managing_entity: Pre-filter by managing_entity
+        asset_group: Pre-filter by asset_group
         report_date: Filter by report_date (default: latest)
 
     Returns:
@@ -537,10 +564,12 @@ def get_flexible_aggregation(
         query = query.filter(Asset.ownership_holding_entity == entity)
     if asset_type:
         query = query.filter(Asset.asset_type == asset_type)
+    if holding_company:
+        query = query.filter(Asset.holding_company == holding_company)
+    if managing_entity:
+        query = query.filter(Asset.managing_entity == managing_entity)
     if asset_group:
         query = query.filter(Asset.asset_group == asset_group)
-    if asset_group_strategy:
-        query = query.filter(Asset.asset_group_strategy == asset_group_strategy)
 
     results = query.group_by(group_column).all()
 

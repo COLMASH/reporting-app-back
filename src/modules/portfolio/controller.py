@@ -432,7 +432,7 @@ async def get_historical_nav(
     db: DbSession,
     entity: str | None = Query(
         None,
-        description="Filter by entity (ignored if group_by_entity=true)",
+        description="Filter by ownership_holding_entity",
     ),
     asset_type: str | None = Query(
         None,
@@ -458,16 +458,21 @@ async def get_historical_nav(
         None,
         description="End of date range",
     ),
-    group_by_entity: bool = Query(
-        True,
-        description="Return separate series per entity",
+    group_by: str | None = Query(
+        None,
+        description="Field to group series by (holding_company, ownership_holding_entity). None = single total series.",
     ),
 ) -> schemas.HistoricalNavResponse:
     """
     Get historical NAV time series data.
 
-    Used for historical NAV chart (stacked bars by entity).
-    Returns series with name and data points (date, value).
+    Used for historical NAV chart (stacked bars by entity or holding company).
+    Returns series with name and data points (date, value_usd, value_eur).
+
+    Valid group_by values:
+    - `holding_company` - Group by parent holding company
+    - `ownership_holding_entity` - Group by ownership entity
+    - None (omit) - Single "Total" series
     """
     result = service.get_historical_nav(
         db=db,
@@ -478,7 +483,7 @@ async def get_historical_nav(
         asset_group=asset_group,
         start_date=start_date,
         end_date=end_date,
-        group_by_entity=group_by_entity,
+        group_by=group_by,
     )
     return schemas.HistoricalNavResponse(**result)
 

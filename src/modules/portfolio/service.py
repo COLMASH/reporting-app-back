@@ -413,6 +413,10 @@ def get_aggregation_by_asset_type(
     }
 
 
+# Valid group_by values for historical NAV endpoint
+HISTORICAL_GROUP_BY_FIELDS = {"holding_company", "ownership_holding_entity"}
+
+
 def get_historical_nav(
     db: Session,
     entity: str | None = None,
@@ -422,68 +426,64 @@ def get_historical_nav(
     asset_group: str | None = None,
     start_date: date | None = None,
     end_date: date | None = None,
-    group_by_entity: bool = True,
+    group_by: str | None = None,
 ) -> dict:
     """
     Get historical NAV time series data.
-    Used for historical NAV chart (stacked bars by entity).
+    Used for historical NAV chart (stacked bars by entity or holding company).
 
     Args:
         db: Database session
-        entity: Filter by entity (ignored if group_by_entity=true)
+        entity: Filter by ownership_holding_entity
         asset_type: Filter by asset_type
         holding_company: Filter by holding_company
         managing_entity: Filter by managing_entity
         asset_group: Filter by asset_group
         start_date: Start of date range
         end_date: End of date range
-        group_by_entity: Return separate series per entity (default: true)
+        group_by: Field to group series by (holding_company, ownership_holding_entity).
+                  None = single total series.
 
     Returns:
         Dict with series list containing name and data points
     """
-    if group_by_entity:
-        # Group by date and entity
+    if group_by and group_by in HISTORICAL_GROUP_BY_FIELDS:
+        # Get the column dynamically
+        group_column = getattr(Asset, group_by)
+
+        # Group by date and specified field
         query = db.query(
             Asset.report_date,
-            Asset.ownership_holding_entity,
+            group_column.label("group_name"),
             func.sum(Asset.estimated_asset_value_usd).label("value_usd"),
             func.sum(Asset.estimated_asset_value_eur).label("value_eur"),
         )
-    else:
-        # Group by date only (single series)
-        query = db.query(
-            Asset.report_date,
-            func.sum(Asset.estimated_asset_value_usd).label("value_usd"),
-            func.sum(Asset.estimated_asset_value_eur).label("value_eur"),
-        )
+
+        # Apply filters
         if entity:
             query = query.filter(Asset.ownership_holding_entity == entity)
+        if asset_type:
+            query = query.filter(Asset.asset_type == asset_type)
+        if holding_company:
+            query = query.filter(Asset.holding_company == holding_company)
+        if managing_entity:
+            query = query.filter(Asset.managing_entity == managing_entity)
+        if asset_group:
+            query = query.filter(Asset.asset_group == asset_group)
+        if start_date:
+            query = query.filter(Asset.report_date >= start_date)
+        if end_date:
+            query = query.filter(Asset.report_date <= end_date)
 
-    # Apply filters
-    if asset_type:
-        query = query.filter(Asset.asset_type == asset_type)
-    if holding_company:
-        query = query.filter(Asset.holding_company == holding_company)
-    if managing_entity:
-        query = query.filter(Asset.managing_entity == managing_entity)
-    if asset_group:
-        query = query.filter(Asset.asset_group == asset_group)
-    if start_date:
-        query = query.filter(Asset.report_date >= start_date)
-    if end_date:
-        query = query.filter(Asset.report_date <= end_date)
+        results = query.group_by(Asset.report_date, group_column).order_by(Asset.report_date).all()
 
-    if group_by_entity:
-        results = query.group_by(Asset.report_date, Asset.ownership_holding_entity).order_by(Asset.report_date).all()
-
-        # Organize by entity
-        series_by_entity: dict[str, list[dict]] = {}
+        # Organize by group
+        series_by_group: dict[str, list[dict]] = {}
         for r in results:
-            entity_name = r.ownership_holding_entity
-            if entity_name not in series_by_entity:
-                series_by_entity[entity_name] = []
-            series_by_entity[entity_name].append(
+            group_name = r.group_name or "Unknown"
+            if group_name not in series_by_group:
+                series_by_group[group_name] = []
+            series_by_group[group_name].append(
                 {
                     "date": r.report_date,
                     "value_usd": r.value_usd or Decimal(0),
@@ -492,8 +492,31 @@ def get_historical_nav(
             )
 
         # Convert to list format
-        series = [{"name": name, "data": data} for name, data in sorted(series_by_entity.items())]
+        series = [{"name": name, "data": data} for name, data in sorted(series_by_group.items())]
     else:
+        # No grouping - single "Total" series
+        query = db.query(
+            Asset.report_date,
+            func.sum(Asset.estimated_asset_value_usd).label("value_usd"),
+            func.sum(Asset.estimated_asset_value_eur).label("value_eur"),
+        )
+
+        # Apply filters
+        if entity:
+            query = query.filter(Asset.ownership_holding_entity == entity)
+        if asset_type:
+            query = query.filter(Asset.asset_type == asset_type)
+        if holding_company:
+            query = query.filter(Asset.holding_company == holding_company)
+        if managing_entity:
+            query = query.filter(Asset.managing_entity == managing_entity)
+        if asset_group:
+            query = query.filter(Asset.asset_group == asset_group)
+        if start_date:
+            query = query.filter(Asset.report_date >= start_date)
+        if end_date:
+            query = query.filter(Asset.report_date <= end_date)
+
         results = query.group_by(Asset.report_date).order_by(Asset.report_date).all()
 
         series = [

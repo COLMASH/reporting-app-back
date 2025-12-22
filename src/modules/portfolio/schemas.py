@@ -385,9 +385,11 @@ class PortfolioSummaryResponse(BaseSchema):
     total_estimated_value_usd: Decimal
     total_paid_in_capital_usd: Decimal
     total_unfunded_commitment_usd: Decimal
+    total_unrealized_gain_usd: Decimal
     total_estimated_value_eur: Decimal
     total_paid_in_capital_eur: Decimal
     total_unfunded_commitment_eur: Decimal
+    total_unrealized_gain_eur: Decimal
     weighted_avg_return: Decimal | None = None
 
 

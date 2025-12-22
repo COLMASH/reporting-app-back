@@ -229,9 +229,11 @@ def get_portfolio_summary(
         func.sum(Asset.estimated_asset_value_usd).label("total_value_usd"),
         func.sum(Asset.paid_in_capital_usd).label("total_paid_in_usd"),
         func.sum(Asset.unfunded_commitment_usd).label("total_unfunded_usd"),
+        func.sum(Asset.unrealized_gain_usd).label("total_unrealized_gain_usd"),
         func.sum(Asset.estimated_asset_value_eur).label("total_value_eur"),
         func.sum(Asset.paid_in_capital_eur).label("total_paid_in_eur"),
         func.sum(Asset.unfunded_commitment_eur).label("total_unfunded_eur"),
+        func.sum(Asset.unrealized_gain_eur).label("total_unrealized_gain_eur"),
         func.avg(Asset.total_asset_return_usd).label("avg_return"),
     )
 
@@ -250,15 +252,33 @@ def get_portfolio_summary(
 
     result = query.first()
 
+    # Handle empty result (no matching assets)
+    if result is None:
+        return {
+            "report_date": report_date,
+            "total_assets": 0,
+            "total_estimated_value_usd": Decimal(0),
+            "total_paid_in_capital_usd": Decimal(0),
+            "total_unfunded_commitment_usd": Decimal(0),
+            "total_unrealized_gain_usd": Decimal(0),
+            "total_estimated_value_eur": Decimal(0),
+            "total_paid_in_capital_eur": Decimal(0),
+            "total_unfunded_commitment_eur": Decimal(0),
+            "total_unrealized_gain_eur": Decimal(0),
+            "weighted_avg_return": None,
+        }
+
     return {
         "report_date": report_date,
         "total_assets": result.total_assets or 0,
         "total_estimated_value_usd": result.total_value_usd or Decimal(0),
         "total_paid_in_capital_usd": result.total_paid_in_usd or Decimal(0),
         "total_unfunded_commitment_usd": result.total_unfunded_usd or Decimal(0),
+        "total_unrealized_gain_usd": result.total_unrealized_gain_usd or Decimal(0),
         "total_estimated_value_eur": result.total_value_eur or Decimal(0),
         "total_paid_in_capital_eur": result.total_paid_in_eur or Decimal(0),
         "total_unfunded_commitment_eur": result.total_unfunded_eur or Decimal(0),
+        "total_unrealized_gain_eur": result.total_unrealized_gain_eur or Decimal(0),
         "weighted_avg_return": result.avg_return,
     }
 

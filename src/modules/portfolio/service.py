@@ -380,6 +380,8 @@ def get_aggregation_by_asset_type(
         func.count(Asset.id).label("count"),
         func.sum(Asset.paid_in_capital_usd).label("paid_in_usd"),
         func.sum(Asset.paid_in_capital_eur).label("paid_in_eur"),
+        func.sum(Asset.unrealized_gain_usd).label("unrealized_gain_usd"),
+        func.sum(Asset.unrealized_gain_eur).label("unrealized_gain_eur"),
         func.sum(Asset.unfunded_commitment_usd).label("unfunded_usd"),
         func.sum(Asset.unfunded_commitment_eur).label("unfunded_eur"),
     )
@@ -417,6 +419,8 @@ def get_aggregation_by_asset_type(
                 "count": r.count,
                 "paid_in_capital_usd": r.paid_in_usd or Decimal(0),
                 "paid_in_capital_eur": r.paid_in_eur or Decimal(0),
+                "unrealized_gain_usd": r.unrealized_gain_usd or Decimal(0),
+                "unrealized_gain_eur": r.unrealized_gain_eur or Decimal(0),
                 "unfunded_commitment_usd": r.unfunded_usd or Decimal(0),
                 "unfunded_commitment_eur": r.unfunded_eur or Decimal(0),
             }

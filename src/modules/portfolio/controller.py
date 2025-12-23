@@ -171,6 +171,10 @@ async def list_assets(
         None,
         description="Filter by asset_type (None = all)",
     ),
+    asset_subtype: str | None = Query(
+        None,
+        description="Filter by asset_subtype (None = all)",
+    ),
     holding_company: str | None = Query(
         None,
         description="Filter by holding_company (None = all)",
@@ -218,6 +222,7 @@ async def list_assets(
         db=db,
         entity=entity,
         asset_type=asset_type,
+        asset_subtype=asset_subtype,
         holding_company=holding_company,
         managing_entity=managing_entity,
         asset_group=asset_group,
@@ -279,6 +284,10 @@ async def get_portfolio_summary(
         None,
         description="Filter by asset_type",
     ),
+    asset_subtype: str | None = Query(
+        None,
+        description="Filter by asset_subtype",
+    ),
     holding_company: str | None = Query(
         None,
         description="Filter by holding_company",
@@ -310,6 +319,7 @@ async def get_portfolio_summary(
         db=db,
         entity=entity,
         asset_type=asset_type,
+        asset_subtype=asset_subtype,
         holding_company=holding_company,
         managing_entity=managing_entity,
         asset_group=asset_group,
@@ -391,6 +401,10 @@ async def get_aggregation_by_asset_type(
         None,
         description="Filter by asset_type (returns only this type at 100%)",
     ),
+    asset_subtype: str | None = Query(
+        None,
+        description="Filter by asset_subtype",
+    ),
     holding_company: str | None = Query(
         None,
         description="Filter by holding_company",
@@ -427,6 +441,7 @@ async def get_aggregation_by_asset_type(
         db=db,
         entity=entity,
         asset_type=asset_type,
+        asset_subtype=asset_subtype,
         holding_company=holding_company,
         managing_entity=managing_entity,
         asset_group=asset_group,
@@ -452,6 +467,10 @@ async def get_historical_nav(
     asset_type: str | None = Query(
         None,
         description="Filter by asset_type",
+    ),
+    asset_subtype: str | None = Query(
+        None,
+        description="Filter by asset_subtype",
     ),
     holding_company: str | None = Query(
         None,
@@ -497,6 +516,7 @@ async def get_historical_nav(
         db=db,
         entity=entity,
         asset_type=asset_type,
+        asset_subtype=asset_subtype,
         holding_company=holding_company,
         managing_entity=managing_entity,
         asset_group=asset_group,
@@ -556,6 +576,10 @@ async def get_flexible_aggregation(
         None,
         description="Pre-filter by asset_type",
     ),
+    asset_subtype: str | None = Query(
+        None,
+        description="Filter by asset_subtype",
+    ),
     holding_company: str | None = Query(
         None,
         description="Filter by holding_company",
@@ -588,6 +612,7 @@ async def get_flexible_aggregation(
         group_by=group_by.value,
         entity=entity,
         asset_type=asset_type,
+        asset_subtype=asset_subtype,
         holding_company=holding_company,
         managing_entity=managing_entity,
         asset_group=asset_group,

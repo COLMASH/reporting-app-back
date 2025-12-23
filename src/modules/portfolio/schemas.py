@@ -23,6 +23,7 @@ class GroupByField(str, Enum):
     HOLDING_COMPANY = "holding_company"  # NEW
     MANAGING_ENTITY = "managing_entity"  # Renamed from ASSET_GROUP
     ASSET_TYPE = "asset_type"
+    ASSET_SUBTYPE = "asset_subtype"  # For subtype summary table
     ASSET_GROUP = "asset_group"  # Renamed from ASSET_GROUP_STRATEGY
     GEOGRAPHIC_FOCUS = "geographic_focus"
     DENOMINATION_CURRENCY = "denomination_currency"

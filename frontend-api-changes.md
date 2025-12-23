@@ -1,6 +1,40 @@
 # Frontend API Changes - December 2025
 
-## Latest Update: Geographic Focus Filter Parameter
+## Latest Update: Asset Subtype Support
+
+Enables "Asset Subtype Summary" table when viewing specific asset types.
+
+### 1. New `group_by` Value for Flexible Aggregation
+
+| Value | Description |
+|-------|-------------|
+| `asset_subtype` | Group by asset subtype |
+
+**Usage:**
+```bash
+# Get subtypes for Private Equity
+GET /portfolio/aggregations/flexible?asset_type=Private%20Equity&group_by=asset_subtype
+```
+
+### 2. New `asset_subtype` Filter Parameter
+
+All portfolio endpoints now support filtering by `asset_subtype`:
+
+- `GET /portfolio/assets`
+- `GET /portfolio/aggregations/summary`
+- `GET /portfolio/aggregations/by-asset-type`
+- `GET /portfolio/aggregations/historical`
+- `GET /portfolio/aggregations/flexible`
+
+**Usage (click-to-filter from subtype table row):**
+```bash
+GET /portfolio/assets?asset_type=Private%20Equity&asset_subtype=Venture%20Capital
+GET /portfolio/aggregations/summary?asset_type=Private%20Equity&asset_subtype=Buyout
+```
+
+---
+
+## Geographic Focus Filter Parameter
 
 All portfolio endpoints now support filtering by `geographic_focus`. This enables click-to-filter on the "Distribution by Geographic Focus" chart.
 

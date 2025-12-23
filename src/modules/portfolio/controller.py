@@ -183,6 +183,10 @@ async def list_assets(
         None,
         description="Filter by asset_group (None = all)",
     ),
+    geographic_focus: str | None = Query(
+        None,
+        description="Filter by geographic_focus (None = all)",
+    ),
     report_date: date | None = Query(
         None,
         description="Filter by report_date (default: latest)",
@@ -217,6 +221,7 @@ async def list_assets(
         holding_company=holding_company,
         managing_entity=managing_entity,
         asset_group=asset_group,
+        geographic_focus=geographic_focus,
         report_date=report_date,
         search=search,
         page=page,
@@ -286,6 +291,10 @@ async def get_portfolio_summary(
         None,
         description="Filter by asset_group",
     ),
+    geographic_focus: str | None = Query(
+        None,
+        description="Filter by geographic_focus",
+    ),
     report_date: date | None = Query(
         None,
         description="Report date (default: latest)",
@@ -304,6 +313,7 @@ async def get_portfolio_summary(
         holding_company=holding_company,
         managing_entity=managing_entity,
         asset_group=asset_group,
+        geographic_focus=geographic_focus,
         report_date=report_date,
     )
     return schemas.PortfolioSummaryResponse(**result)
@@ -393,6 +403,10 @@ async def get_aggregation_by_asset_type(
         None,
         description="Filter by asset_group",
     ),
+    geographic_focus: str | None = Query(
+        None,
+        description="Filter by geographic_focus",
+    ),
     report_date: date | None = Query(
         None,
         description="Report date (default: latest)",
@@ -416,6 +430,7 @@ async def get_aggregation_by_asset_type(
         holding_company=holding_company,
         managing_entity=managing_entity,
         asset_group=asset_group,
+        geographic_focus=geographic_focus,
         report_date=report_date,
     )
     return schemas.AssetTypeAggregationResponse(**result)
@@ -450,6 +465,10 @@ async def get_historical_nav(
         None,
         description="Filter by asset_group",
     ),
+    geographic_focus: str | None = Query(
+        None,
+        description="Filter by geographic_focus",
+    ),
     start_date: date | None = Query(
         None,
         description="Start of date range",
@@ -481,6 +500,7 @@ async def get_historical_nav(
         holding_company=holding_company,
         managing_entity=managing_entity,
         asset_group=asset_group,
+        geographic_focus=geographic_focus,
         start_date=start_date,
         end_date=end_date,
         group_by=group_by,
@@ -548,6 +568,10 @@ async def get_flexible_aggregation(
         None,
         description="Filter by asset_group",
     ),
+    geographic_focus: str | None = Query(
+        None,
+        description="Filter by geographic_focus",
+    ),
     report_date: date | None = Query(
         None,
         description="Report date (default: latest)",
@@ -567,6 +591,7 @@ async def get_flexible_aggregation(
         holding_company=holding_company,
         managing_entity=managing_entity,
         asset_group=asset_group,
+        geographic_focus=geographic_focus,
         report_date=report_date,
     )
     return schemas.FlexibleAggregationResponse(**result)

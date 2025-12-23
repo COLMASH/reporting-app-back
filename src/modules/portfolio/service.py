@@ -87,6 +87,7 @@ def get_assets(
     holding_company: str | None = None,
     managing_entity: str | None = None,
     asset_group: str | None = None,
+    geographic_focus: str | None = None,
     report_date: date | None = None,
     search: str | None = None,
     page: int = 1,
@@ -145,6 +146,8 @@ def get_assets(
         query = query.filter(Asset.managing_entity == managing_entity)
     if asset_group:
         query = query.filter(Asset.asset_group == asset_group)
+    if geographic_focus:
+        query = query.filter(Asset.geographic_focus == geographic_focus)
     if search:
         query = query.filter(Asset.asset_name.ilike(f"%{search}%"))
 
@@ -213,6 +216,7 @@ def get_portfolio_summary(
     holding_company: str | None = None,
     managing_entity: str | None = None,
     asset_group: str | None = None,
+    geographic_focus: str | None = None,
     report_date: date | None = None,
 ) -> dict:
     """
@@ -249,6 +253,8 @@ def get_portfolio_summary(
         query = query.filter(Asset.managing_entity == managing_entity)
     if asset_group:
         query = query.filter(Asset.asset_group == asset_group)
+    if geographic_focus:
+        query = query.filter(Asset.geographic_focus == geographic_focus)
 
     result = query.first()
 
@@ -361,6 +367,7 @@ def get_aggregation_by_asset_type(
     holding_company: str | None = None,
     managing_entity: str | None = None,
     asset_group: str | None = None,
+    geographic_focus: str | None = None,
     report_date: date | None = None,
 ) -> dict:
     """
@@ -398,6 +405,8 @@ def get_aggregation_by_asset_type(
         query = query.filter(Asset.managing_entity == managing_entity)
     if asset_group:
         query = query.filter(Asset.asset_group == asset_group)
+    if geographic_focus:
+        query = query.filter(Asset.geographic_focus == geographic_focus)
 
     results = query.group_by(Asset.asset_type).all()
 
@@ -448,6 +457,7 @@ def get_historical_nav(
     holding_company: str | None = None,
     managing_entity: str | None = None,
     asset_group: str | None = None,
+    geographic_focus: str | None = None,
     start_date: date | None = None,
     end_date: date | None = None,
     group_by: str | None = None,
@@ -463,6 +473,7 @@ def get_historical_nav(
         holding_company: Filter by holding_company
         managing_entity: Filter by managing_entity
         asset_group: Filter by asset_group
+        geographic_focus: Filter by geographic_focus
         start_date: Start of date range
         end_date: End of date range
         group_by: Field to group series by (holding_company, ownership_holding_entity).
@@ -494,6 +505,8 @@ def get_historical_nav(
             query = query.filter(Asset.managing_entity == managing_entity)
         if asset_group:
             query = query.filter(Asset.asset_group == asset_group)
+        if geographic_focus:
+            query = query.filter(Asset.geographic_focus == geographic_focus)
         if start_date:
             query = query.filter(Asset.report_date >= start_date)
         if end_date:
@@ -536,6 +549,8 @@ def get_historical_nav(
             query = query.filter(Asset.managing_entity == managing_entity)
         if asset_group:
             query = query.filter(Asset.asset_group == asset_group)
+        if geographic_focus:
+            query = query.filter(Asset.geographic_focus == geographic_focus)
         if start_date:
             query = query.filter(Asset.report_date >= start_date)
         if end_date:
@@ -568,6 +583,7 @@ def get_flexible_aggregation(
     holding_company: str | None = None,
     managing_entity: str | None = None,
     asset_group: str | None = None,
+    geographic_focus: str | None = None,
     report_date: date | None = None,
 ) -> dict:
     """
@@ -582,6 +598,7 @@ def get_flexible_aggregation(
         holding_company: Pre-filter by holding_company
         managing_entity: Pre-filter by managing_entity
         asset_group: Pre-filter by asset_group
+        geographic_focus: Pre-filter by geographic_focus
         report_date: Filter by report_date (default: latest)
 
     Returns:
@@ -617,6 +634,8 @@ def get_flexible_aggregation(
         query = query.filter(Asset.managing_entity == managing_entity)
     if asset_group:
         query = query.filter(Asset.asset_group == asset_group)
+    if geographic_focus:
+        query = query.filter(Asset.geographic_focus == geographic_focus)
 
     results = query.group_by(group_column).all()
 

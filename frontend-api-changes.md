@@ -1,6 +1,35 @@
 # Frontend API Changes - December 2025
 
-## Latest Update: Unrealized Gain/Loss in Asset Type Aggregation
+## Latest Update: Geographic Focus Filter Parameter
+
+All portfolio endpoints now support filtering by `geographic_focus`. This enables click-to-filter on the "Distribution by Geographic Focus" chart.
+
+### New Query Parameter
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `geographic_focus` | `string` | Filter by geographic focus (e.g., "France", "USA", "Europe") |
+
+### Affected Endpoints
+
+- `GET /portfolio/assets`
+- `GET /portfolio/aggregations/summary`
+- `GET /portfolio/aggregations/by-asset-type`
+- `GET /portfolio/aggregations/historical`
+- `GET /portfolio/aggregations/flexible`
+
+### Usage Example
+
+```bash
+# Filter all endpoints by geographic focus
+GET /portfolio/aggregations/summary?geographic_focus=France
+GET /portfolio/assets?geographic_focus=USA
+GET /portfolio/aggregations/by-asset-type?geographic_focus=Europe
+```
+
+---
+
+## Unrealized Gain/Loss in Asset Type Aggregation
 
 The `/portfolio/aggregations/by-asset-type` endpoint now includes unrealized gain fields for the Asset Type Summary table.
 

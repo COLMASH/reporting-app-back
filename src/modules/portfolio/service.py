@@ -8,7 +8,7 @@ from decimal import Decimal
 from typing import cast
 from uuid import UUID
 
-from sqlalchemy import desc, distinct, func
+from sqlalchemy import desc, distinct, func, nullslast
 from sqlalchemy.orm import Session, joinedload
 
 from src.core.exceptions import NotFoundError, ValidationError
@@ -154,12 +154,14 @@ def get_assets(
     # Get total count before pagination
     total = query.count()
 
-    # Apply sorting (with whitelist validation)
+    # Apply sorting (with whitelist validation, NULLS LAST for consistent ordering)
     if sort_by not in ALLOWED_SORT_COLUMNS:
         sort_by = "asset_name"  # Default to safe column
     sort_column = getattr(Asset, sort_by)
     if sort_order == "desc":
-        sort_column = desc(sort_column)
+        sort_column = nullslast(desc(sort_column))
+    else:
+        sort_column = nullslast(sort_column)
     query = query.order_by(sort_column)
 
     # Apply pagination

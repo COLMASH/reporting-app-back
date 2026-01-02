@@ -108,20 +108,24 @@ Example: If adding a `Comment` model to `src/modules/reporting_results/models.py
 
 ### Deployment (GCP Compute Engine)
 
-**Instance**: `malatesta-dev-server` (Zone: `us-central1-a`)
+| | DEV | PROD |
+|---|-----|------|
+| **Instance** | `malatesta-dev-server` | `malatesta-prod-server` |
+| **Branch** | `develop` | `master` |
+| **Zone** | `us-central1-a` | `us-central1-a` |
+
 **User**: `proyecto_ai_ilv`
 **App Path**: `/home/proyecto_ai_ilv/reporting-app-back`
-**Service**: `reporting-backend` (systemd)
+**Services**: `reporting-backend`, `cloudflared` (systemd)
 **Port**: `8000`
 
-**CI/CD**: GitHub Actions auto-deploys `develop` branch
-- Workflow: `.github/workflows/deploy-develop.yml`
-- On push → SSH to GCP → git pull → uv sync → alembic upgrade → systemctl restart
+**CI/CD**: GitHub Actions auto-deploys on push
+- `develop` → DEV server (`.github/workflows/deploy-develop.yml`)
+- `master` → PROD server (`.github/workflows/deploy-production.yml`)
 
-**HTTPS**: ngrok tunnel (free tier - URL changes on restart)
-- Start: `nohup ngrok http 8000 > /tmp/ngrok.log 2>&1 &`
-- Get URL: `curl http://localhost:4040/api/tunnels | jq '.tunnels[0].public_url'`
-- Frontend needs header: `ngrok-skip-browser-warning: true`
+**HTTPS**: Cloudflare Tunnel (free tier - URL changes on service restart)
+- Get URL: `sudo journalctl -u cloudflared | grep "trycloudflare.com" | tail -1`
+- After restart: Update Vercel env vars with new URL
 
 **Service Management**:
 - Status: `sudo systemctl status reporting-backend`
@@ -146,4 +150,4 @@ These exist in config/models but have no implementation:
 2. **UUID Keys**: Never use auto-increment IDs
 3. **Auth**: Don't create users from JWT tokens
 4. **Redis**: Optional - rate limiting works without it
-5. **Swagger**: Disabled in production by default
+5. **Swagger**: Enabled in all environments (`/docs` and `/redoc`)

@@ -1,0 +1,74 @@
+name: Deploy to GCP (Production)
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Deploy to GCP Production
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.GCP_SSH_PRIVATE_KEY_PROD }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.GCP_HOST_PROD }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to server
+        env:
+          GCP_USER: ${{ secrets.GCP_USER_PROD }}
+          GCP_HOST: ${{ secrets.GCP_HOST_PROD }}
+          APP_DIR: ${{ secrets.GCP_APP_DIR_PROD }}
+        run: |
+          ssh -o StrictHostKeyChecking=no ${GCP_USER}@${GCP_HOST} << ENDSSH
+            set -e
+
+            # Navigate to app directory
+            cd ${APP_DIR}
+
+            echo "=== Pulling latest code from master branch ==="
+            git fetch origin
+            git checkout master
+            git pull origin master
+
+            echo "=== Installing/updating dependencies ==="
+            uv sync --frozen
+
+            echo "=== Running database migrations ==="
+            uv run alembic upgrade head
+
+            echo "=== Restarting the service ==="
+            sudo systemctl restart reporting-backend
+
+            echo "=== Checking service status ==="
+            sudo systemctl status reporting-backend --no-pager
+
+            echo "=== Deployment complete! ==="
+          ENDSSH
+
+      - name: Verify deployment
+        env:
+          GCP_USER: ${{ secrets.GCP_USER_PROD }}
+          GCP_HOST: ${{ secrets.GCP_HOST_PROD }}
+        run: |
+          ssh ${GCP_USER}@${GCP_HOST} << 'ENDSSH'
+            # Wait a few seconds for service to stabilize
+            sleep 5
+
+            # Check if service is running
+            if systemctl is-active --quiet reporting-backend; then
+              echo "✓ Service is running"
+              exit 0
+            else
+              echo "✗ Service failed to start"
+              sudo journalctl -u reporting-backend -n 50 --no-pager
+              exit 1
+            fi
+          ENDSSH

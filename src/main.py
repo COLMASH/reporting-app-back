@@ -58,8 +58,8 @@ app = FastAPI(
     title=settings.app_name,
     description="Backend API for Excel file analysis and reporting",
     version="0.1.0",
-    docs_url="/docs" if not settings.is_production else None,
-    redoc_url="/redoc" if not settings.is_production else None,
+    docs_url="/docs",
+    redoc_url="/redoc",
     lifespan=lifespan,
 )
 

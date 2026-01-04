@@ -20,12 +20,12 @@ class StorageClient:
     def __init__(self) -> None:
         """Initialize Supabase client."""
         try:
-            if not settings.supabase_url or not settings.supabase_anon_key:
-                raise StorageError("Supabase URL and key must be configured")
+            if not settings.supabase_url or not settings.supabase_service_key:
+                raise StorageError("Supabase URL and service key must be configured")
 
             self.client: Client = create_client(
                 supabase_url=settings.supabase_url,
-                supabase_key=settings.supabase_anon_key,
+                supabase_key=settings.supabase_service_key,  # Service role bypasses RLS
             )
             self.bucket_name = settings.supabase_bucket_name
 

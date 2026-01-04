@@ -26,6 +26,7 @@ class Settings(BaseSettings):
     # Supabase
     supabase_url: str = Field(default="https://placeholder.supabase.co", description="Supabase project URL")
     supabase_anon_key: str = Field(default="placeholder-key", description="Supabase anonymous key")
+    supabase_service_key: str = Field(default="", description="Supabase service role key (bypasses RLS)")
     supabase_bucket_name: str = Field(default="excel-files", description="Supabase storage bucket name for file uploads")
 
     # Authentication

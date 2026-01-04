@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from src.modules.auth.controller import router as auth_router
 from src.modules.files.controller import router as files_router
 from src.modules.portfolio.controller import router as portfolio_router
+from src.modules.portfolio_reports.controller import router as portfolio_reports_router
 from src.modules.reporting_analyses.controller import router as reporting_router
 from src.modules.results.controller import router as results_router
 
@@ -27,6 +28,7 @@ def register_routes(app: FastAPI) -> None:
     app.include_router(reporting_router, prefix=api_v1_prefix)
     app.include_router(results_router, prefix=api_v1_prefix)
     app.include_router(portfolio_router, prefix=api_v1_prefix)
+    app.include_router(portfolio_reports_router, prefix=api_v1_prefix)
 
     # Health check route
     @app.get("/health")

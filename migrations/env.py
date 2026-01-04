@@ -27,6 +27,9 @@ from src.modules.portfolio.models import (
     Asset, StructuredNote, RealEstateAsset
 )
 
+# Portfolio reports module
+from src.modules.portfolio_reports.models import PortfolioReport
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

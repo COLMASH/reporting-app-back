@@ -187,7 +187,7 @@ def create_excel_analyzer_agent() -> Any:
 
     # Initialize Anthropic model with Code Execution tool AND structured output
     base_model = ChatAnthropic(
-        model_name="claude-sonnet-4-20250514",
+        model_name="claude-opus-4-5-20251101",
         api_key=SecretStr(settings.anthropic_api_key),
         temperature=0,
         max_tokens_to_sample=MAX_TOKENS,

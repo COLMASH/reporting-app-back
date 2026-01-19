@@ -636,6 +636,8 @@ def get_flexible_aggregation(
         func.count(Asset.id).label("count"),
         func.sum(Asset.paid_in_capital_usd).label("paid_in"),
         func.sum(Asset.unfunded_commitment_usd).label("unfunded"),
+        func.sum(Asset.unrealized_gain_usd).label("unrealized_gain_usd"),
+        func.sum(Asset.unrealized_gain_eur).label("unrealized_gain_eur"),
         func.avg(Asset.total_asset_return_usd).label("avg_return"),
     )
 
@@ -677,6 +679,8 @@ def get_flexible_aggregation(
                 "count": r.count or 0,
                 "paid_in_capital_usd": r.paid_in or Decimal(0),
                 "unfunded_commitment_usd": r.unfunded or Decimal(0),
+                "unrealized_gain_usd": r.unrealized_gain_usd or Decimal(0),
+                "unrealized_gain_eur": r.unrealized_gain_eur or Decimal(0),
                 "avg_return": r.avg_return,
             }
         )

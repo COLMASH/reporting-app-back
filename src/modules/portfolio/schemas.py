@@ -473,7 +473,9 @@ class FlexibleAggregationGroup(BaseSchema):
     percentage: Decimal
     count: int
     paid_in_capital_usd: Decimal
+    paid_in_capital_eur: Decimal
     unfunded_commitment_usd: Decimal
+    unfunded_commitment_eur: Decimal
     unrealized_gain_usd: Decimal
     unrealized_gain_eur: Decimal
     avg_return: Decimal | None = None

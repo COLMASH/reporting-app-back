@@ -405,6 +405,9 @@ def import_real_estate_multi_report(
                     equity_investment_to_date_usd=clean_numeric_value(row.get("equity_investment_to_date_usd")),
                     pending_equity_investment_usd=clean_numeric_value(row.get("pending_equity_investment_usd")),
                     estimated_capital_gain_usd=clean_numeric_value(row.get("estimated_capital_gain_usd")),
+                    # Return columns
+                    total_asset_return_usd=clean_numeric_value(row.get("total_asset_return_USD")),
+                    total_asset_return_eur=clean_numeric_value(row.get("total_asset_return_EUR")),
                 )
                 db.add(real_estate)
                 real_estate_created += 1

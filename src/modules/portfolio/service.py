@@ -8,11 +8,11 @@ from decimal import Decimal
 from typing import cast
 from uuid import UUID
 
-from sqlalchemy import desc, distinct, func, nullslast
+from sqlalchemy import case, desc, distinct, func, nullslast
 from sqlalchemy.orm import Session, joinedload
 
 from src.core.exceptions import NotFoundError, ValidationError
-from src.modules.portfolio.models import Asset
+from src.modules.portfolio.models import Asset, RealEstateAsset
 
 # Constants
 DEFAULT_PAGE_SIZE = 20
@@ -50,6 +50,36 @@ def get_latest_report_date(db: Session) -> date | None:
     """Get the most recent report_date in the database."""
     result = db.query(func.max(Asset.report_date)).scalar()
     return cast(date | None, result)
+
+
+def _build_real_estate_case_expressions() -> tuple:
+    """
+    Build CASE expressions for Real Estate data normalization.
+
+    Real Estate uses different field names for equivalent concepts:
+    - equity_investment_to_date = paid_in_capital
+    - estimated_capital_gain = unrealized_gain
+
+    Returns:
+        Tuple of (paid_in_usd, paid_in_eur, unrealized_usd, unrealized_eur) CASE expressions
+    """
+    paid_in_usd = case(
+        (Asset.asset_type == "Real Estate", RealEstateAsset.equity_investment_to_date_usd),
+        else_=Asset.paid_in_capital_usd,
+    )
+    paid_in_eur = case(
+        (Asset.asset_type == "Real Estate", RealEstateAsset.equity_investment_to_date_eur),
+        else_=Asset.paid_in_capital_eur,
+    )
+    unrealized_usd = case(
+        (Asset.asset_type == "Real Estate", RealEstateAsset.estimated_capital_gain_usd),
+        else_=Asset.unrealized_gain_usd,
+    )
+    unrealized_eur = case(
+        (Asset.asset_type == "Real Estate", RealEstateAsset.estimated_capital_gain_eur),
+        else_=Asset.unrealized_gain_eur,
+    )
+    return paid_in_usd, paid_in_eur, unrealized_usd, unrealized_eur
 
 
 # ============================================================
@@ -234,18 +264,21 @@ def get_portfolio_summary(
     if report_date is None:
         report_date = get_latest_report_date(db)
 
+    # Build CASE expressions for Real Estate normalization
+    paid_in_usd, paid_in_eur, unrealized_usd, unrealized_eur = _build_real_estate_case_expressions()
+
     query = db.query(
         func.count(Asset.id).label("total_assets"),
         func.sum(Asset.estimated_asset_value_usd).label("total_value_usd"),
-        func.sum(Asset.paid_in_capital_usd).label("total_paid_in_usd"),
+        func.sum(paid_in_usd).label("total_paid_in_usd"),
         func.sum(Asset.unfunded_commitment_usd).label("total_unfunded_usd"),
-        func.sum(Asset.unrealized_gain_usd).label("total_unrealized_gain_usd"),
+        func.sum(unrealized_usd).label("total_unrealized_gain_usd"),
         func.sum(Asset.estimated_asset_value_eur).label("total_value_eur"),
-        func.sum(Asset.paid_in_capital_eur).label("total_paid_in_eur"),
+        func.sum(paid_in_eur).label("total_paid_in_eur"),
         func.sum(Asset.unfunded_commitment_eur).label("total_unfunded_eur"),
-        func.sum(Asset.unrealized_gain_eur).label("total_unrealized_gain_eur"),
+        func.sum(unrealized_eur).label("total_unrealized_gain_eur"),
         func.avg(Asset.total_asset_return_usd).label("avg_return"),
-    )
+    ).outerjoin(RealEstateAsset, Asset.id == RealEstateAsset.asset_id)
 
     if report_date:
         query = query.filter(Asset.report_date == report_date)
@@ -389,18 +422,21 @@ def get_aggregation_by_asset_type(
     if report_date is None:
         report_date = get_latest_report_date(db)
 
+    # Build CASE expressions for Real Estate normalization
+    paid_in_usd, paid_in_eur, unrealized_usd, unrealized_eur = _build_real_estate_case_expressions()
+
     query = db.query(
         Asset.asset_type,
         func.sum(Asset.estimated_asset_value_usd).label("value_usd"),
         func.sum(Asset.estimated_asset_value_eur).label("value_eur"),
         func.count(Asset.id).label("count"),
-        func.sum(Asset.paid_in_capital_usd).label("paid_in_usd"),
-        func.sum(Asset.paid_in_capital_eur).label("paid_in_eur"),
-        func.sum(Asset.unrealized_gain_usd).label("unrealized_gain_usd"),
-        func.sum(Asset.unrealized_gain_eur).label("unrealized_gain_eur"),
+        func.sum(paid_in_usd).label("paid_in_usd"),
+        func.sum(paid_in_eur).label("paid_in_eur"),
+        func.sum(unrealized_usd).label("unrealized_gain_usd"),
+        func.sum(unrealized_eur).label("unrealized_gain_eur"),
         func.sum(Asset.unfunded_commitment_usd).label("unfunded_usd"),
         func.sum(Asset.unfunded_commitment_eur).label("unfunded_eur"),
-    )
+    ).outerjoin(RealEstateAsset, Asset.id == RealEstateAsset.asset_id)
 
     if report_date:
         query = query.filter(Asset.report_date == report_date)
@@ -629,19 +665,22 @@ def get_flexible_aggregation(
     if group_column is None:
         raise ValidationError(f"Invalid group_by field: {group_by}")
 
+    # Build CASE expressions for Real Estate normalization
+    paid_in_usd, paid_in_eur, unrealized_usd, unrealized_eur = _build_real_estate_case_expressions()
+
     query = db.query(
         group_column.label("label"),
         func.sum(Asset.estimated_asset_value_usd).label("value_usd"),
         func.sum(Asset.estimated_asset_value_eur).label("value_eur"),
         func.count(Asset.id).label("count"),
-        func.sum(Asset.paid_in_capital_usd).label("paid_in"),
-        func.sum(Asset.paid_in_capital_eur).label("paid_in_eur"),
+        func.sum(paid_in_usd).label("paid_in"),
+        func.sum(paid_in_eur).label("paid_in_eur"),
         func.sum(Asset.unfunded_commitment_usd).label("unfunded"),
         func.sum(Asset.unfunded_commitment_eur).label("unfunded_eur"),
-        func.sum(Asset.unrealized_gain_usd).label("unrealized_gain_usd"),
-        func.sum(Asset.unrealized_gain_eur).label("unrealized_gain_eur"),
+        func.sum(unrealized_usd).label("unrealized_gain_usd"),
+        func.sum(unrealized_eur).label("unrealized_gain_eur"),
         func.avg(Asset.total_asset_return_usd).label("avg_return"),
-    )
+    ).outerjoin(RealEstateAsset, Asset.id == RealEstateAsset.asset_id)
 
     if report_date:
         query = query.filter(Asset.report_date == report_date)

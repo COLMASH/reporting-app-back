@@ -275,7 +275,7 @@ GET /api/v1/portfolio/aggregations/summary
   "total_estimated_value_eur": 48254000.00,
   "total_paid_in_capital_eur": 41400000.00,
   "total_unfunded_commitment_eur": 7820000.00,
-  "weighted_avg_return": 0.165
+  "total_return_pct": 0.165
 }
 ```
 
@@ -286,7 +286,7 @@ Display as KPI cards at the top of the dashboard:
 - Portfolio Value: `total_estimated_value_usd` or `total_estimated_value_eur`
 - Paid In Capital: `total_paid_in_capital_usd` or `total_paid_in_capital_eur`
 - Unfunded: `total_unfunded_commitment_usd` or `total_unfunded_commitment_eur`
-- Avg Return: `weighted_avg_return` (format as percentage)
+- Total Return: `total_return_pct` (format as percentage, calculated as (NAV - Cost) / Cost)
 
 Use currency toggle to switch between USD and EUR values.
 
@@ -749,7 +749,7 @@ interface PortfolioSummary {
   total_estimated_value_eur: number;
   total_paid_in_capital_eur: number;
   total_unfunded_commitment_eur: number;
-  weighted_avg_return: number | null;
+  total_return_pct: number | null;
 }
 
 // Entity Aggregation Group

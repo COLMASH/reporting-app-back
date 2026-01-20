@@ -391,7 +391,7 @@ class PortfolioSummaryResponse(BaseSchema):
     total_paid_in_capital_eur: Decimal
     total_unfunded_commitment_eur: Decimal
     total_unrealized_gain_eur: Decimal
-    weighted_avg_return: Decimal | None = None
+    total_return_pct: Decimal | None = None
 
 
 class AggregationGroup(BaseSchema):

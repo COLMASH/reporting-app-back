@@ -319,8 +319,13 @@ def get_portfolio_summary(
             "total_paid_in_capital_eur": Decimal(0),
             "total_unfunded_commitment_eur": Decimal(0),
             "total_unrealized_gain_eur": Decimal(0),
-            "weighted_avg_return": None,
+            "total_return_pct": None,
         }
+
+    # Calculate total return as (NAV - Cost) / Cost
+    total_nav = result.total_value_usd or Decimal(0)
+    total_cost = result.total_paid_in_usd or Decimal(0)
+    total_return_pct = (total_nav - total_cost) / total_cost if total_cost > 0 else None
 
     return {
         "report_date": report_date,
@@ -333,7 +338,7 @@ def get_portfolio_summary(
         "total_paid_in_capital_eur": result.total_paid_in_eur or Decimal(0),
         "total_unfunded_commitment_eur": result.total_unfunded_eur or Decimal(0),
         "total_unrealized_gain_eur": result.total_unrealized_gain_eur or Decimal(0),
-        "weighted_avg_return": result.avg_return,
+        "total_return_pct": total_return_pct,
     }
 
 

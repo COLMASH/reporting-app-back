@@ -123,6 +123,9 @@ def _build_asset_response(
                 equity_investment_to_date_usd=asset.real_estate.equity_investment_to_date_usd,
                 pending_equity_investment_usd=asset.real_estate.pending_equity_investment_usd,
                 estimated_capital_gain_usd=asset.real_estate.estimated_capital_gain_usd,
+                # Return columns
+                total_asset_return_usd=asset.real_estate.total_asset_return_usd,
+                total_asset_return_eur=asset.real_estate.total_asset_return_eur,
             )
 
     return schemas.AssetResponse(**asset_dict)

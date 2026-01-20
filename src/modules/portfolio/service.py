@@ -57,8 +57,8 @@ def _build_real_estate_case_expressions() -> tuple:
     Build CASE expressions for Real Estate data normalization.
 
     Real Estate uses different field names for equivalent concepts:
-    - equity_investment_to_date = paid_in_capital
-    - estimated_capital_gain = unrealized_gain
+    - equity_investment_to_date = paid_in_capital (Cost Basis)
+    - unrealized_gain = NAV - Cost (calculated, not stored)
 
     Returns:
         Tuple of (paid_in_usd, paid_in_eur, unrealized_usd, unrealized_eur) CASE expressions
@@ -71,12 +71,19 @@ def _build_real_estate_case_expressions() -> tuple:
         (Asset.asset_type == "Real Estate", RealEstateAsset.equity_investment_to_date_eur),
         else_=Asset.paid_in_capital_eur,
     )
+    # Calculate unrealized as NAV - Cost (not stored estimated_capital_gain)
     unrealized_usd = case(
-        (Asset.asset_type == "Real Estate", RealEstateAsset.estimated_capital_gain_usd),
+        (
+            Asset.asset_type == "Real Estate",
+            Asset.estimated_asset_value_usd - RealEstateAsset.equity_investment_to_date_usd,
+        ),
         else_=Asset.unrealized_gain_usd,
     )
     unrealized_eur = case(
-        (Asset.asset_type == "Real Estate", RealEstateAsset.estimated_capital_gain_eur),
+        (
+            Asset.asset_type == "Real Estate",
+            Asset.estimated_asset_value_eur - RealEstateAsset.equity_investment_to_date_eur,
+        ),
         else_=Asset.unrealized_gain_eur,
     )
     return paid_in_usd, paid_in_eur, unrealized_usd, unrealized_eur

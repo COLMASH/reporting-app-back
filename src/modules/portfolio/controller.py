@@ -34,13 +34,31 @@ def _build_asset_response(
     include_extension: bool = False,
 ) -> schemas.AssetResponse:
     """Convert Asset ORM model to AssetResponse schema."""
+
+    # Normalize Real Estate values: use extension data with calculated unrealized gain
+    if asset.asset_type == "Real Estate" and asset.real_estate:
+        paid_in_capital_usd = asset.real_estate.equity_investment_to_date_usd
+        paid_in_capital_eur = asset.real_estate.equity_investment_to_date_eur
+        # Calculate unrealized as NAV - Cost
+        nav_usd = asset.estimated_asset_value_usd or 0
+        cost_usd = asset.real_estate.equity_investment_to_date_usd or 0
+        unrealized_gain_usd = nav_usd - cost_usd if nav_usd else None
+        nav_eur = asset.estimated_asset_value_eur or 0
+        cost_eur = asset.real_estate.equity_investment_to_date_eur or 0
+        unrealized_gain_eur = nav_eur - cost_eur if nav_eur else None
+    else:
+        paid_in_capital_usd = asset.paid_in_capital_usd
+        paid_in_capital_eur = asset.paid_in_capital_eur
+        unrealized_gain_usd = asset.unrealized_gain_usd
+        unrealized_gain_eur = asset.unrealized_gain_eur
+
     asset_dict: dict = {
         "id": asset.id,
         "display_id": asset.display_id,
-        "holding_company": asset.holding_company,  # NEW
+        "holding_company": asset.holding_company,
         "ownership_holding_entity": asset.ownership_holding_entity,
-        "managing_entity": asset.managing_entity,  # Renamed from asset_group
-        "asset_group": asset.asset_group,  # Renamed from asset_group_strategy
+        "managing_entity": asset.managing_entity,
+        "asset_group": asset.asset_group,
         "asset_type": asset.asset_type,
         "asset_subtype": asset.asset_subtype,
         "asset_subtype_2": asset.asset_subtype_2,
@@ -67,17 +85,17 @@ def _build_asset_response(
         "estimated_asset_value_base_currency": asset.estimated_asset_value_base_currency,
         "total_asset_return_base_currency": asset.total_asset_return_base_currency,
         "total_investment_commitment_usd": asset.total_investment_commitment_usd,
-        "paid_in_capital_usd": asset.paid_in_capital_usd,
+        "paid_in_capital_usd": paid_in_capital_usd,
         "unfunded_commitment_usd": asset.unfunded_commitment_usd,
         "estimated_asset_value_usd": asset.estimated_asset_value_usd,
         "total_asset_return_usd": asset.total_asset_return_usd,
-        "unrealized_gain_usd": asset.unrealized_gain_usd,  # NEW
+        "unrealized_gain_usd": unrealized_gain_usd,
         "total_investment_commitment_eur": asset.total_investment_commitment_eur,
-        "paid_in_capital_eur": asset.paid_in_capital_eur,
+        "paid_in_capital_eur": paid_in_capital_eur,
         "unfunded_commitment_eur": asset.unfunded_commitment_eur,
         "estimated_asset_value_eur": asset.estimated_asset_value_eur,
         "total_asset_return_eur": asset.total_asset_return_eur,
-        "unrealized_gain_eur": asset.unrealized_gain_eur,  # NEW
+        "unrealized_gain_eur": unrealized_gain_eur,
         "created_at": asset.created_at,
         "updated_at": asset.updated_at,
     }

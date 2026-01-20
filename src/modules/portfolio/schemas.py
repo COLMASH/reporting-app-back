@@ -205,10 +205,6 @@ class RealEstateAssetBase(BaseSchema):
     pending_equity_investment_usd: Decimal | None = None
     estimated_capital_gain_usd: Decimal | None = None
 
-    # Return columns
-    total_asset_return_usd: Decimal | None = None
-    total_asset_return_eur: Decimal | None = None
-
 
 class RealEstateAssetCreate(RealEstateAssetBase):
     """Schema for creating real estate assets."""
@@ -297,10 +293,6 @@ class RealEstateResponse(BaseSchema):
     equity_investment_to_date_usd: Decimal | None = None
     pending_equity_investment_usd: Decimal | None = None
     estimated_capital_gain_usd: Decimal | None = None
-
-    # Return columns
-    total_asset_return_usd: Decimal | None = None
-    total_asset_return_eur: Decimal | None = None
 
 
 class AssetResponse(BaseSchema):

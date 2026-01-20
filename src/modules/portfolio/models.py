@@ -205,10 +205,6 @@ class RealEstateAsset(Base):
     pending_equity_investment_usd = Column(Numeric(20, 2))
     estimated_capital_gain_usd = Column(Numeric(20, 2))
 
-    # Return columns
-    total_asset_return_usd = Column(Numeric(10, 6))
-    total_asset_return_eur = Column(Numeric(10, 6))
-
     # Relationship
     asset = relationship("Asset", back_populates="real_estate")
 

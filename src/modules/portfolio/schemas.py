@@ -359,6 +359,10 @@ class AssetResponse(BaseSchema):
     total_asset_return_eur: Decimal | None = None
     unrealized_gain_eur: Decimal | None = None  # NEW
 
+    # Realized gains (for Structured Notes)
+    realized_gain_usd: Decimal | None = None
+    realized_gain_eur: Decimal | None = None
+
     # Timestamps
     created_at: datetime
     updated_at: datetime | None = None

@@ -239,6 +239,9 @@ def import_structured_notes_sheet(excel_file: str, db: SessionLocal, assets_by_i
                 estimated_asset_value_eur=clean_numeric_value(row.get("estimated_asset_value_eur")),
                 total_asset_return_eur=clean_numeric_value(row.get("total_asset_return_eur")),
                 unrealized_gain_eur=clean_numeric_value(row.get("unrealized_gain_eur")),
+                # Realized gains (NEW - for Structured Notes)
+                realized_gain_usd=clean_numeric_value(row.get("realized_gain_usd")),
+                realized_gain_eur=clean_numeric_value(row.get("realized_gain_eur")),
             )
 
             db.add(asset)
@@ -342,6 +345,9 @@ def import_real_estate_sheet(excel_file: str, db: SessionLocal, assets_by_id: di
                 # Return columns (at Asset level like all other assets)
                 total_asset_return_usd=clean_numeric_value(row.get("total_asset_return_USD")),
                 total_asset_return_eur=clean_numeric_value(row.get("total_asset_return_EUR")),
+                # Unrealized gains (from Excel)
+                unrealized_gain_usd=clean_numeric_value(row.get("unrealized_gain_usd")),
+                unrealized_gain_eur=clean_numeric_value(row.get("unrealized_gain_eur")),
             )
 
             db.add(asset)

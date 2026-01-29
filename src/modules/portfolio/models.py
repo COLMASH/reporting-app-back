@@ -86,6 +86,10 @@ class Asset(Base):
     unrealized_gain_usd = Column(Numeric(20, 2))
     unrealized_gain_eur = Column(Numeric(20, 2))
 
+    # Realized gain columns (NEW - for Structured Notes)
+    realized_gain_usd = Column(Numeric(20, 2))
+    realized_gain_eur = Column(Numeric(20, 2))
+
     # Minimal audit fields
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

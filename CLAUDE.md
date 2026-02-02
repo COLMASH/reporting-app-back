@@ -151,3 +151,25 @@ These exist in config/models but have no implementation:
 3. **Auth**: Don't create users from JWT tokens
 4. **Redis**: Optional - rate limiting works without it
 5. **Swagger**: Enabled in all environments (`/docs` and `/redoc`)
+
+## Portfolio ETL
+
+### Important Excel Sheets
+Only these sheets are used for portfolio data import:
+- `Various/StructuredNotes` - All non-Real Estate assets
+- `RealEstate` - Real Estate assets with extension data
+
+### Real Estate Field Normalization
+Real Estate uses different column names for equivalent financial concepts. During ETL, these are normalized to Asset table fields:
+
+| Excel Column (Real Estate) | Asset Field | Description |
+|---------------------------|-------------|-------------|
+| `equity_investment_to_date_usd/eur` | `paid_in_capital_usd/eur` | Cost basis |
+| `estimated_capital_gain_usd/eur` | `realized_gain_usd/eur` | Realized gain |
+| `unrealized_gain_usd/eur` | `unrealized_gain_usd/eur` | Direct import |
+
+The original values are also stored in the `RealEstateAsset` extension table for Real Estate-specific views.
+
+### ETL Scripts
+- **Production**: `scripts/migrate_portfolio_data.py`
+- **Development**: `scripts/migrate_portfolio_data_dev.py` (supports multiple report dates)

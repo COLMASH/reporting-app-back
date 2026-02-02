@@ -348,6 +348,11 @@ def import_real_estate_sheet(excel_file: str, db: SessionLocal, assets_by_id: di
                 # Unrealized gains (from Excel)
                 unrealized_gain_usd=clean_numeric_value(row.get("unrealized_gain_usd")),
                 unrealized_gain_eur=clean_numeric_value(row.get("unrealized_gain_eur")),
+                # Normalized fields (Real Estate uses different column names)
+                paid_in_capital_usd=clean_numeric_value(row.get("equity_investment_to_date_usd")),
+                paid_in_capital_eur=clean_numeric_value(row.get("equity_investment_to_date_eur")),
+                realized_gain_usd=clean_numeric_value(row.get("estimated_capital_gain_usd")),
+                realized_gain_eur=clean_numeric_value(row.get("estimated_capital_gain_eur")),
             )
 
             db.add(asset)

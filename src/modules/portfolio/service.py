@@ -34,8 +34,10 @@ ALLOWED_SORT_COLUMNS = {
     "paid_in_capital_usd",
     "unfunded_commitment_usd",
     "total_asset_return_usd",
-    "unrealized_gain_usd",  # NEW
-    "unrealized_gain_eur",  # NEW
+    "unrealized_gain_usd",
+    "unrealized_gain_eur",
+    "realized_gain_usd",
+    "realized_gain_eur",
     "created_at",
     "display_id",
 }

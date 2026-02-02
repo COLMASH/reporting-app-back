@@ -286,10 +286,11 @@ def get_portfolio_summary(
             "total_return_pct": None,
         }
 
-    # Calculate total return as (NAV - Cost) / Cost
+    # Calculate total return as (NAV + Realized Gains - Cost) / Cost
     total_nav = result.total_value_usd or Decimal(0)
     total_cost = result.total_paid_in_usd or Decimal(0)
-    total_return_pct = (total_nav - total_cost) / total_cost if total_cost > 0 else None
+    total_realized = result.total_realized_gain_usd or Decimal(0)
+    total_return_pct = (total_nav + total_realized - total_cost) / total_cost if total_cost > 0 else None
 
     return {
         "report_date": report_date,

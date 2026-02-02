@@ -452,6 +452,8 @@ def get_aggregation_by_asset_type(
         func.sum(paid_in_eur).label("paid_in_eur"),
         func.sum(unrealized_usd).label("unrealized_gain_usd"),
         func.sum(unrealized_eur).label("unrealized_gain_eur"),
+        func.sum(Asset.realized_gain_usd).label("realized_gain_usd"),
+        func.sum(Asset.realized_gain_eur).label("realized_gain_eur"),
         func.sum(Asset.unfunded_commitment_usd).label("unfunded_usd"),
         func.sum(Asset.unfunded_commitment_eur).label("unfunded_eur"),
     ).outerjoin(RealEstateAsset, Asset.id == RealEstateAsset.asset_id)
@@ -495,6 +497,8 @@ def get_aggregation_by_asset_type(
                 "paid_in_capital_eur": r.paid_in_eur or Decimal(0),
                 "unrealized_gain_usd": r.unrealized_gain_usd or Decimal(0),
                 "unrealized_gain_eur": r.unrealized_gain_eur or Decimal(0),
+                "realized_gain_usd": r.realized_gain_usd or Decimal(0),
+                "realized_gain_eur": r.realized_gain_eur or Decimal(0),
                 "unfunded_commitment_usd": r.unfunded_usd or Decimal(0),
                 "unfunded_commitment_eur": r.unfunded_eur or Decimal(0),
             }
@@ -697,6 +701,8 @@ def get_flexible_aggregation(
         func.sum(Asset.unfunded_commitment_eur).label("unfunded_eur"),
         func.sum(unrealized_usd).label("unrealized_gain_usd"),
         func.sum(unrealized_eur).label("unrealized_gain_eur"),
+        func.sum(Asset.realized_gain_usd).label("realized_gain_usd"),
+        func.sum(Asset.realized_gain_eur).label("realized_gain_eur"),
         func.avg(Asset.total_asset_return_usd).label("avg_return"),
     ).outerjoin(RealEstateAsset, Asset.id == RealEstateAsset.asset_id)
 
@@ -742,6 +748,8 @@ def get_flexible_aggregation(
                 "unfunded_commitment_eur": r.unfunded_eur or Decimal(0),
                 "unrealized_gain_usd": r.unrealized_gain_usd or Decimal(0),
                 "unrealized_gain_eur": r.unrealized_gain_eur or Decimal(0),
+                "realized_gain_usd": r.realized_gain_usd or Decimal(0),
+                "realized_gain_eur": r.realized_gain_eur or Decimal(0),
                 "avg_return": r.avg_return,
             }
         )

@@ -280,10 +280,12 @@ def get_portfolio_summary(
         func.sum(paid_in_usd).label("total_paid_in_usd"),
         func.sum(Asset.unfunded_commitment_usd).label("total_unfunded_usd"),
         func.sum(unrealized_usd).label("total_unrealized_gain_usd"),
+        func.sum(Asset.realized_gain_usd).label("total_realized_gain_usd"),
         func.sum(Asset.estimated_asset_value_eur).label("total_value_eur"),
         func.sum(paid_in_eur).label("total_paid_in_eur"),
         func.sum(Asset.unfunded_commitment_eur).label("total_unfunded_eur"),
         func.sum(unrealized_eur).label("total_unrealized_gain_eur"),
+        func.sum(Asset.realized_gain_eur).label("total_realized_gain_eur"),
         func.avg(Asset.total_asset_return_usd).label("avg_return"),
     ).outerjoin(RealEstateAsset, Asset.id == RealEstateAsset.asset_id)
 
@@ -315,10 +317,12 @@ def get_portfolio_summary(
             "total_paid_in_capital_usd": Decimal(0),
             "total_unfunded_commitment_usd": Decimal(0),
             "total_unrealized_gain_usd": Decimal(0),
+            "total_realized_gain_usd": Decimal(0),
             "total_estimated_value_eur": Decimal(0),
             "total_paid_in_capital_eur": Decimal(0),
             "total_unfunded_commitment_eur": Decimal(0),
             "total_unrealized_gain_eur": Decimal(0),
+            "total_realized_gain_eur": Decimal(0),
             "total_return_pct": None,
         }
 
@@ -334,10 +338,12 @@ def get_portfolio_summary(
         "total_paid_in_capital_usd": result.total_paid_in_usd or Decimal(0),
         "total_unfunded_commitment_usd": result.total_unfunded_usd or Decimal(0),
         "total_unrealized_gain_usd": result.total_unrealized_gain_usd or Decimal(0),
+        "total_realized_gain_usd": result.total_realized_gain_usd or Decimal(0),
         "total_estimated_value_eur": result.total_value_eur or Decimal(0),
         "total_paid_in_capital_eur": result.total_paid_in_eur or Decimal(0),
         "total_unfunded_commitment_eur": result.total_unfunded_eur or Decimal(0),
         "total_unrealized_gain_eur": result.total_unrealized_gain_eur or Decimal(0),
+        "total_realized_gain_eur": result.total_realized_gain_eur or Decimal(0),
         "total_return_pct": total_return_pct,
     }
 

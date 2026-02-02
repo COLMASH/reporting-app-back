@@ -96,6 +96,8 @@ def _build_asset_response(
         "estimated_asset_value_eur": asset.estimated_asset_value_eur,
         "total_asset_return_eur": asset.total_asset_return_eur,
         "unrealized_gain_eur": unrealized_gain_eur,
+        "realized_gain_usd": asset.realized_gain_usd,
+        "realized_gain_eur": asset.realized_gain_eur,
         "created_at": asset.created_at,
         "updated_at": asset.updated_at,
     }
